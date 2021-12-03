@@ -1,0 +1,32 @@
+.page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+    .page-content {
+        padding: 30px 70px;
+        background-color: #757575;
+        border: 4px dashed #353535;
+        font-size: 16px;
+        color: #fff;
+        border-radius: .5rem;
+        text-align: center;
+        
+        button {
+            border: none;
+            border-radius: .25rem;
+            color: #333;
+            background-color: #e5e5e5;
+            margin-top: 20px;
+            padding: .35rem .75rem;
+            border: 1px solid transparent;
+            transition: .3s ease-in all;
+
+            &:hover {
+                cursor: pointer;
+                border-color: #000;
+            }
+        }
+    }
+}
