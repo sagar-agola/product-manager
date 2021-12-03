@@ -1,0 +1,29 @@
+<button [routerLink]="['/static-data/create']" routerLinkActive="router-link-active" >Create</button>
+<table border="1">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Technology</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngIf="users.length == 0">
+            <td colspan="4">
+                Users not found
+            </td>
+        </tr>
+        <tr *ngFor="let user of users; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.role }}</td>
+            <td>{{ user.technology }}</td>
+            <td>
+                <button [routerLink]="[ '/static-data/edit', user.id]" routerLinkActive="router-link-active" >Edit</button>
+                <button (click)="delete(user.id)">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
