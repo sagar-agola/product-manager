@@ -126,7 +126,7 @@ namespace PM.Business.Repositories
                     Slug = model.Title.CreateSlug(),
                     SubTitle = model.SubTitle,
                     Description = model.Description,
-                    ImageUrl = "TODO save image in static folder and save relative path",
+                    ImageUrl = await FileHelpers.UploadImage(model.Image),
                     Quentity = model.Quentity,
                     RetailPrice = model.RetailPrice,
                     SalePrice = model.SalePrice,
@@ -171,7 +171,9 @@ namespace PM.Business.Repositories
 
                 if (model.Image != null)
                 {
-                    product.ImageUrl = "TODO save image in static folder and save relative path";
+                    FileHelpers.Delete(product.ImageUrl);
+
+                    product.ImageUrl = await FileHelpers.UploadImage(model.Image);
                 }
             }
 
