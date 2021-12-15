@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { GetAllProductsRequestModel } from '../models/get-all-products-request.model';
+import { ProductService } from '../product.service';
 
 @Component({
   selector: 'app-product-list',
@@ -7,9 +9,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProductListComponent implements OnInit {
 
-  constructor() { }
+  requestBody: GetAllProductsRequestModel = {
+    pageNumber: 1,
+    pageSize: 10,
+    sortField: "Id",
+    isAsc: false,
+    title: null
+  };
+
+  constructor(
+    private _productService: ProductService
+  ) { }
 
   ngOnInit(): void {
+    this._productService.GetAll(this.requestBody).subscribe(response => {
+      console.log(response);
+    });
   }
 
 }
