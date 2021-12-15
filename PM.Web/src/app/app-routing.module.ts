@@ -5,16 +5,16 @@ import { NotFoundComponent } from './modules/common-components/not-found/not-fou
 
 const routes: Routes = [
   {
-    path: '',
-    loadChildren: () => import("src/app/modules/product/product.module").then(m => m.ProductModule)
-  },
-  {
     path: 'products',
     loadChildren: () => import("src/app/modules/product/product.module").then(m => m.ProductModule)
   },
   {
     path: 'static-data',
     loadChildren: () => import("src/app/modules/static-data/static-data.module").then(m => m.StaticDataModule)
+  },
+  {
+    path: '',
+    redirectTo: '/products', pathMatch: 'full'
   },
   {
     path: '**',
