@@ -7,11 +7,13 @@ import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
+    FormsModule,
     HttpClientModule,
     MatToolbarModule,
     MatSidenavModule,
@@ -22,6 +24,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
   ],
   exports: [
     CommonModule,
+    FormsModule,
     HttpClientModule,
     MatToolbarModule,
     MatSidenavModule,

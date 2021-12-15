@@ -1,3 +1,9 @@
-a.active {
-    background-color: #5a31a0;
+a {
+    &.active {
+        background-color: #58319b;
+    }
+
+    &:hover:not(.mat-list-item) {
+        color: #fff;
+    }
 }

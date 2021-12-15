@@ -1,0 +1,22 @@
+table {
+    width: 100%;
+
+    thead tr {
+        border-bottom: 2px solid #dedede;
+    }
+
+    tbody tr {
+        border-bottom: 1px solid #dedede;
+    }
+
+    th {
+        font-weight: bold;
+        text-align: center;
+        padding: .55rem .75rem;
+    }
+
+    td {
+        text-align: center;
+        padding: .35rem .75rem;
+    }
+}

@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { StaticDataRoutingModule } from './static-data-routing.module';
 import { ListComponent } from './list/list.component';
 import { DetailComponent } from './detail/detail.component';
-import { FormsModule } from '@angular/forms';
+import { SharedModule } from 'src/app/common/shared.module';
 
 
 @NgModule({
@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
   ],
   imports: [
     CommonModule,
-    FormsModule,
+    SharedModule,
     StaticDataRoutingModule
   ]
 })
