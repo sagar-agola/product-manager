@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { PaginatedResponse } from 'src/app/common/models/paginated-response.model';
 import { GetAllProductsRequestModel } from '../models/get-all-products-request.model';
+import { ProductDetail } from '../models/product-detail.model';
 import { ProductService } from '../product.service';
 
 @Component({
@@ -17,13 +19,28 @@ export class ProductListComponent implements OnInit {
     title: null
   };
 
+  products: ProductDetail[] = [];
+  paginationInfo: PaginatedResponse<ProductDetail> = {};
+
   constructor(
     private _productService: ProductService
   ) { }
 
   ngOnInit(): void {
+    this.getProducts();
+  }
+
+  getProducts(): void {
+    this.products = [];
+    this.paginationInfo = {};
+
     this._productService.GetAll(this.requestBody).subscribe(response => {
-      console.log(response);
+      if (response && response.totalRecords > 0) {
+        this.products = response.data;
+
+        delete response.data;
+        this.paginationInfo = response;
+      }
     });
   }
 

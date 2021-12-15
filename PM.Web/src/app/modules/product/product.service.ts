@@ -14,7 +14,7 @@ import { ProductDetail } from './models/product-detail.model';
 })
 export class ProductService extends BaseService {
 
-  private _basePath: string = `${environment.apiUrl}/products`;
+  private _basePath: string = `${environment.apiUrl}/api/products`;
 
   constructor(
     http: HttpClient,
@@ -26,5 +26,17 @@ export class ProductService extends BaseService {
 
   GetAll(model: GetAllProductsRequestModel): Observable<PaginatedResponse<ProductDetail>> {
     return this.post<PaginatedResponse<ProductDetail>>(this._basePath, model);
+  }
+
+  Get(id: number): Observable<ProductDetail> {
+    return this.get<ProductDetail>(`${this._basePath}/${id}`);
+  }
+
+  Save(model: FormData): Observable<void> {
+    return this.postFormData(`${this._basePath}/save`, model);
+  }
+
+  Delete(id: number): Observable<void> {
+    return this.delete(`${this._basePath}/${id}`);
   }
 }

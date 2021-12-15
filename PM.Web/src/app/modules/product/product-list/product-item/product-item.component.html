@@ -1,0 +1,66 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{ product.title }}</mat-card-title>
+        <mat-card-subtitle>{{ product.subTitle }}</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="{{ baseApiUrl }}/{{ product.imageUrl }}" alt="Product Image" class="img-thumbnail mx-auto" />
+    <mat-card-content>
+        <div class="row">
+            <div class="col-5" style="text-align: justify;">
+                {{ product.description }}
+            </div>
+            <div class="col-7">
+                <div class="mb-2">
+                    <div>
+                        <b>Category</b>
+                    </div>
+                    <div>
+                        {{ product.category }}
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6">
+                        <div>
+                            <b>Sale Price</b>
+                        </div>
+                        <div>
+                            {{ product.salePrice }}
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div>
+                            <b>Retail Price</b>
+                        </div>
+                        <div>
+                            {{ product.retailPrice }}
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <div>
+                        <b>Available Quentity</b>
+                    </div>
+                    <div>
+                        {{ product.quentity }}
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <div>
+                        <b>Date Product Added</b>
+                    </div>
+                    <div>
+                        {{ product.createdAt | date }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions align="end">
+        <button mat-raised-button color="primary">
+            Edit
+        </button>
+        <button mat-raised-button color="warn">
+            Delete
+        </button>
+    </mat-card-actions>
+</mat-card>
