@@ -5,6 +5,7 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
 import { ProductViewComponent } from './product-view/product-view.component';
 import { SharedModule } from 'src/app/common/shared.module';
 import { ProductItemComponent } from './product-list/product-item/product-item.component';
+import { NgxDropzoneModule } from 'ngx-dropzone';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { ProductItemComponent } from './product-list/product-item/product-item.c
   ],
   imports: [
     SharedModule,
+    NgxDropzoneModule,
     ProductRoutingModule
   ]
 })

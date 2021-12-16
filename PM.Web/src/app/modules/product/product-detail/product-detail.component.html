@@ -1,1 +1,127 @@
-<p>product-detail works!</p>
+<div class="container">
+    <mat-card class="mt-4">
+        <mat-card-header class="d-flex justify-content-center mb-3">
+            <mat-card-title>
+                <span *ngIf="!product.id">
+                    Create New Product
+                </span>
+                <span *ngIf="product.id">
+                    Edit Product Details
+                </span>
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="productDetailForm">
+                <div class="row">
+                    <div class="col-7">
+                        <div class="mb-2" [ngClass]="{ 'has-error': formErrors.title }">
+                            <input type="text" class="form-control" placeholder="Product Title" (blur)="validateForm()" formControlName="title" />
+                            <div class="validation-block" *ngIf="formErrors.title">
+                                {{ formErrors.title }}
+                            </div>
+                        </div>
+                        <div class="mb-2" [ngClass]="{ 'has-error': formErrors.subTitle }">
+                            <input type="text" class="form-control" placeholder="Sub Title" (blur)="validateForm()" formControlName="subTitle" />
+                            <div class="validation-block" *ngIf="formErrors.subTitle">
+                                {{ formErrors.subTitle }}
+                            </div>
+                        </div>
+                        <div class="mb-2" [ngClass]="{ 'has-error': formErrors.description }">
+                            <textarea rows="5" class="form-control" placeholder="Detailed Description..." (blur)="validateForm()" formControlName="description"></textarea>
+                            <div class="validation-block" *ngIf="formErrors.description">
+                                {{ formErrors.description }}
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6" [ngClass]="{ 'has-error': formErrors.retailPrice }">
+                                <input type="text" class="form-control" placeholder="Retail Price" (blur)="validateForm()" formControlName="retailPrice" />
+                                <div class="validation-block" *ngIf="formErrors.retailPrice">
+                                    {{ formErrors.retailPrice }}
+                                </div>
+                            </div>
+                            <div class="col-6" [ngClass]="{ 'has-error': formErrors.salePrice }">
+                                <input type="text" class="form-control" placeholder="Sale Price" (blur)="validateForm()" formControlName="salePrice" />
+                                <div class="validation-block" *ngIf="formErrors.salePrice">
+                                    {{ formErrors.salePrice }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6" [ngClass]="{ 'has-error': formErrors.quentity }">
+                                <input type="text" class="form-control" placeholder="Initial Available Quentity" (blur)="validateForm()" formControlName="quentity" />
+                                <div class="validation-block" *ngIf="formErrors.quentity">
+                                    {{ formErrors.quentity }}
+                                </div>
+                            </div>
+                            <div class="col-6" [ngClass]="{ 'has-error': formErrors.categoryId }">
+                                <ng-select
+                                    [items]="categories"
+                                    placeholder="Select Product Category"
+                                    bindLabel="name" 
+                                    bindValue="id"
+                                    formControlName="categoryId"
+                                    (blur)="validateForm()">
+                                </ng-select>
+                                <div class="validation-block" *ngIf="formErrors.categoryId">
+                                    {{ formErrors.categoryId }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3" [ngClass]="{ 'has-error': formErrors.manufactoredAt }">
+                            <div class="datepicker-container">
+                                <input class="form-control" matInput [matDatepicker]="picker" placeholder="Manufactored Date" [max]="todayDate"(blur)="validateForm()"  formControlName="manufactoredAt" />
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            </div>
+                            <div class="validation-block" *ngIf="formErrors.manufactoredAt">
+                                {{ formErrors.manufactoredAt }}
+                            </div>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </div>
+                        <div class="mb-2" [ngClass]="{ 'has-error': formErrors.isTurmsAccepted }">
+                            <mat-checkbox color="primary" (click)="validateForm()" formControlName="isTurmsAccepted">I Aegree to turms and conditions!</mat-checkbox>
+                            <div class="validation-block" *ngIf="formErrors.isTurmsAccepted">
+                                {{ formErrors.isTurmsAccepted }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-5">
+                        <div class="custom-dropzone mt-0" ngx-dropzone [multiple]="false" (change)="onFileUploaded($event)" accept="image/*">
+                            <ngx-dropzone-label>
+                                <div>
+                                    <img src="assets/images/dropbox.svg" alt="">
+                                    <div class="mt-2">
+                                        Drag and Drop <b>Image</b> here
+                                    </div>
+                                    <div class="mt-2">- OR -</div>
+                                    <button class="mt-4" mat-raised-button color="primary">Browse</button>
+                                </div>
+                            </ngx-dropzone-label>
+                        </div>
+                        <div class="alert alert-danger" *ngIf="imageErrorList.length > 0">
+                            <ul class="mb-0">
+                                <li *ngFor="let error of imageErrorList">{{ error }}</li>
+                            </ul>
+                        </div>
+                        <div *ngIf="selectedImagePath" style="margin: 30px;">
+                            <img class="img-thumbnail" src="{{selectedImagePath}}" alt="" />
+                            <div class="d-flex justify-content-end">
+                                <button mat-raised-button color="warn" (click)="removeImage()">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </mat-card-content>
+        <mat-card-actions class="text-center">
+            <button mat-raised-button color="primary" (click)="save()">
+                <span *ngIf="!product.id">Create</span>
+                <span *ngIf="product.id">Edit</span>
+            </button>
+            <button mat-raised-button (click)="cancel()">
+                Cancel
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</div>
