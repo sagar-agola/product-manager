@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace PM.Business.Core.DataTransferModels.Product
@@ -26,6 +27,9 @@ namespace PM.Business.Core.DataTransferModels.Product
         public IFormFile Image { get; set; }
 
         public int Quentity { get; set; }
+
+        [Required(ErrorMessage = "Manufactored Date is required")]
+        public DateTime ManufactoredAt { get; set; }
 
         [Required(ErrorMessage = "Product category is required")]
         public int CategoryId { get; set; }

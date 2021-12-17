@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ProductDetail } from '../models/product-detail.model';
+import { environment } from 'src/environments/environment';
 import { ProductService } from '../product.service';
 
 @Component({
@@ -52,7 +52,7 @@ export class ProductDetailComponent implements OnInit {
     { id: 1, name: "one" },
     { id: 2, name: "two"}
   ];
-  product: ProductDetail = {};
+  productId: number = 0;
   selectedImagePath: string = "";
   imageErrorList: string[] = [];
   isFormSubmitted: boolean = false;
@@ -71,7 +71,8 @@ export class ProductDetailComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       if (params.id && params.id > 0) {
-        this.product.id = Number(params.id);
+        this.productId = Number(params.id);
+        this.getProductDetails();
       }
     });
 
@@ -111,6 +112,16 @@ export class ProductDetailComponent implements OnInit {
     });
   }
 
+  getProductDetails(): void {
+    this._productService.Get(this.productId).subscribe(response => {
+      if (response) {
+        this.productDetailForm.patchValue(response);
+        this.productDetailForm.patchValue({ isTurmsAccepted: true });
+        this.selectedImagePath = `${environment.apiUrl}/${response.imageUrl}`;
+      }
+    });
+  }
+
   onFileUploaded(event: any) {
     this.imageErrorList = [];
     const image = event.addedFiles[0];
@@ -119,7 +130,7 @@ export class ProductDetailComponent implements OnInit {
       let splitedName: string[] = image.name.split('.');
       let extension: string = splitedName[splitedName.length - 1];
 
-      if (["jpg", "jpeg", "png"].includes(extension.toLocaleLowerCase()) == false) {
+      if (["jpg", "jpeg", "png", "webp"].includes(extension.toLocaleLowerCase()) == false) {
         this.imageErrorList.push("Product Image must be JPG, JPEG or PNG");
         return;
       }
@@ -153,6 +164,7 @@ export class ProductDetailComponent implements OnInit {
       return;
     }
 
+    this.productFormData.set("Id", this.productId.toString());
     this.productFormData.set("Title", this.productDetailForm.get("title").value);
     this.productFormData.set("SubTitle", this.productDetailForm.get("subTitle").value);
     this.productFormData.set("Description", this.productDetailForm.get("description").value);
@@ -160,9 +172,12 @@ export class ProductDetailComponent implements OnInit {
     this.productFormData.set("SalePrice", this.productDetailForm.get("salePrice").value);
     this.productFormData.set("Quentity", this.productDetailForm.get("quentity").value);
     this.productFormData.set("CategoryId", this.productDetailForm.get("categoryId").value);
+    this.productFormData.set("ManufactoredAt", new Date(this.productDetailForm.get("manufactoredAt").value).toDateString());
 
     this._productService.Save(this.productFormData).subscribe(response => {
-      console.log(response);
+      if (response) {
+        this.cancel();
+      }
     });
   }
 

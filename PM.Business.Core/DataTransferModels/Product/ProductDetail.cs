@@ -13,7 +13,9 @@ namespace PM.Business.Core.DataTransferModels.Product
         public decimal SalePrice { get; set; }
         public string ImageUrl { get; set; }
         public int Quentity { get; set; }
+        public int CategoryId { get; set; }
         public string Category { get; set; }
+        public DateTime ManufactoredAt { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
     }

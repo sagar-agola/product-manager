@@ -2,15 +2,16 @@
     <mat-card class="mt-4">
         <mat-card-header class="d-flex justify-content-center mb-3">
             <mat-card-title>
-                <span *ngIf="!product.id">
+                <span *ngIf="!productId">
                     Create New Product
                 </span>
-                <span *ngIf="product.id">
+                <span *ngIf="productId">
                     Edit Product Details
                 </span>
             </mat-card-title>
         </mat-card-header>
         <mat-card-content>
+            <hr />
             <form [formGroup]="productDetailForm">
                 <div class="row">
                     <div class="col-7">
@@ -78,7 +79,7 @@
                             <mat-datepicker #picker></mat-datepicker>
                         </div>
                         <div class="mb-2" [ngClass]="{ 'has-error': formErrors.isTurmsAccepted }">
-                            <mat-checkbox color="primary" (click)="validateForm()" formControlName="isTurmsAccepted">I Aegree to turms and conditions!</mat-checkbox>
+                            <mat-checkbox color="primary" (click)="validateForm()" formControlName="isTurmsAccepted">I Agree to turms and conditions!</mat-checkbox>
                             <div class="validation-block" *ngIf="formErrors.isTurmsAccepted">
                                 {{ formErrors.isTurmsAccepted }}
                             </div>
@@ -116,8 +117,8 @@
         </mat-card-content>
         <mat-card-actions class="text-center">
             <button mat-raised-button color="primary" (click)="save()">
-                <span *ngIf="!product.id">Create</span>
-                <span *ngIf="product.id">Edit</span>
+                <span *ngIf="!productId">Create</span>
+                <span *ngIf="productId">Edit</span>
             </button>
             <button mat-raised-button (click)="cancel()">
                 Cancel

@@ -43,6 +43,7 @@ namespace PM.Business.Repositories
                                                   ImageUrl = product.ImageUrl,
                                                   Quentity = product.Quentity,
                                                   IsActive = product.IsActive,
+                                                  ManufactoredAt = product.ManufactoredAt,
                                                   CreatedAt = product.CreatedAt,
                                                   Category = category.Title
                                               };
@@ -87,7 +88,9 @@ namespace PM.Business.Repositories
                                                      ImageUrl = product.ImageUrl,
                                                      Quentity = product.Quentity,
                                                      IsActive = product.IsActive,
+                                                     ManufactoredAt = product.ManufactoredAt,
                                                      CreatedAt = product.CreatedAt,
+                                                     CategoryId = product.CategoryId,
                                                      Category = category.Title
                                                  }).FirstOrDefaultAsync();
 
@@ -131,6 +134,7 @@ namespace PM.Business.Repositories
                     RetailPrice = model.RetailPrice,
                     SalePrice = model.SalePrice,
                     CategoryId = model.CategoryId,
+                    ManufactoredAt = model.ManufactoredAt,
                     CreatedAt = DateTime.UtcNow,
                     IsActive = true
                 };
@@ -167,6 +171,7 @@ namespace PM.Business.Repositories
                 product.RetailPrice = model.RetailPrice;
                 product.SalePrice = model.SalePrice;
                 product.CategoryId = model.CategoryId;
+                product.ManufactoredAt = model.ManufactoredAt;
                 product.UpdatedAt = DateTime.UtcNow;
 
                 if (model.Image != null)

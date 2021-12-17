@@ -32,7 +32,7 @@ export class ProductService extends BaseService {
     return this.get<ProductDetail>(`${this._basePath}/${id}`);
   }
 
-  Save(model: FormData): Observable<void> {
+  Save(model: FormData): Observable<any> {
     return this.postFormData(`${this._basePath}/save`, model);
   }
 

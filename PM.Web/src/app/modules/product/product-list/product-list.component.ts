@@ -36,7 +36,10 @@ export class ProductListComponent implements OnInit {
 
     this._productService.GetAll(this.requestBody).subscribe(response => {
       if (response && response.totalRecords > 0) {
-        this.products = response.data;
+        this.products = response.data.map(product => {
+          product.description = product.description.length > 100 ? product.description.substring(0, 100) + "..." : product.description;
+          return product;
+        })
 
         delete response.data;
         this.paginationInfo = response;
