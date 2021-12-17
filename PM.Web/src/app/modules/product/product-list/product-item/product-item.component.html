@@ -43,7 +43,7 @@
         <button mat-raised-button color="primary" [routerLink]="['/products/edit', product.id, product.slug ]">
             Edit
         </button>
-        <button mat-raised-button color="warn">
+        <button mat-raised-button color="warn" (click)="deleteProduct(product.id)">
             Delete
         </button>
     </mat-card-actions>

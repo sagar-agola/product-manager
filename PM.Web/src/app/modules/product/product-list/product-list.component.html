@@ -24,7 +24,7 @@
     </div>
     <div class="row">
         <div class="col-12 col-sm-6 col-md-4 mb-4" *ngFor="let product of products">
-            <app-product-item [product]="product"></app-product-item>
+            <app-product-item [product]="product" (onDeleteProduct)="deleteProduct($event)"></app-product-item>
         </div>
         <div class="col-12" *ngIf="products.length == 0">
             <mat-card>

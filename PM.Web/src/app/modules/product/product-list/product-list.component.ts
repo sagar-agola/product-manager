@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { PaginatedResponse } from 'src/app/common/models/paginated-response.model';
 import { CategoryService } from '../../category/category.service';
 import { CategoryDetail } from '../../category/models/category-detail.model';
+import { ConfirmDialogComponent, ConfirmDialogModel } from '../../common-components/confirm-dialog/confirm-dialog.component';
 import { GetAllProductsRequestModel } from '../models/get-all-products-request.model';
 import { ProductDetail } from '../models/product-detail.model';
 import { ProductService } from '../product.service';
@@ -29,6 +31,7 @@ export class ProductListComponent implements OnInit {
 
   constructor(
     private spinner: NgxSpinnerService,
+    private dialog: MatDialog,
     private _productService: ProductService,
     private _categoryService: CategoryService
   ) { }
@@ -63,6 +66,29 @@ export class ProductListComponent implements OnInit {
     this._categoryService.GetAll().subscribe(response => {
       if (response && response.length > 0) {
         this.categories = response;
+      }
+    });
+  }
+
+  deleteProduct(id: any): void {
+    const message = `Are you sure you want to do this?`;
+
+    const dialogData = new ConfirmDialogModel("Confirm Action", message);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      maxWidth: "400px",
+      data: dialogData,
+      position: {
+        top: "80px"
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((isConfirmed: boolean) => {
+      if (isConfirmed) {
+        this.spinner.show();
+        this._productService.Delete(id).subscribe(() => {
+          this.spinner.hide();
+          this.getProducts();
+        });
       }
     });
   }
