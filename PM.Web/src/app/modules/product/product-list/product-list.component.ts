@@ -18,7 +18,7 @@ export class ProductListComponent implements OnInit {
 
   requestBody: GetAllProductsRequestModel = {
     pageNumber: 1,
-    pageSize: 10,
+    pageSize: 5,
     sortField: "Id",
     isAsc: false,
     title: null,
@@ -28,6 +28,7 @@ export class ProductListComponent implements OnInit {
   categories: CategoryDetail[] = [];
   products: ProductDetail[] = [];
   paginationInfo: PaginatedResponse<ProductDetail> = {};
+  pageSizeOptions: number[] = [5, 10, 25, 100];
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -68,6 +69,13 @@ export class ProductListComponent implements OnInit {
         this.categories = response;
       }
     });
+  }
+
+  pageChanged(event: any): void {
+    this.requestBody.pageNumber = event.pageIndex + 1;
+    this.requestBody.pageSize = event.pageSize;
+
+    this.getProducts();
   }
 
   deleteProduct(id: any): void {

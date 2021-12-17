@@ -22,6 +22,14 @@
             <mat-icon>add</mat-icon> Create New Product
         </button>
     </div>
+    <mat-card class="mb-3 p-0">
+        <mat-paginator
+            [length]="paginationInfo.totalRecords"
+            [pageSize]="paginationInfo.pageSize"
+            [pageSizeOptions]="pageSizeOptions"
+            (page)="pageChanged($event)">
+        </mat-paginator>
+    </mat-card>
     <div class="row">
         <div class="col-12 col-sm-6 col-md-4 mb-4" *ngFor="let product of products">
             <app-product-item [product]="product" (onDeleteProduct)="deleteProduct($event)" (onToggleActiveProduct)="getProducts()"></app-product-item>
