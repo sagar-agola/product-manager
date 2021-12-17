@@ -2,6 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { environment } from 'src/environments/environment';
 import { CategoryService } from '../../category/category.service';
 import { CategoryDetail } from '../../category/models/category-detail.model';
@@ -64,6 +65,7 @@ export class ProductDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private formBuilder: FormBuilder,
+    private spinner: NgxSpinnerService,
     private _productService: ProductService,
     private _categoryService: CategoryService
   ) { }
@@ -123,7 +125,10 @@ export class ProductDetailComponent implements OnInit {
   }
 
   getProductDetails(): void {
+    this.spinner.show();
     this._productService.Get(this.productId).subscribe(response => {
+      this.spinner.hide();
+
       if (response) {
         this.productDetailForm.patchValue(response);
         this.productDetailForm.patchValue({ isTurmsAccepted: true });
@@ -184,7 +189,10 @@ export class ProductDetailComponent implements OnInit {
     this.productFormData.set("CategoryId", this.productDetailForm.get("categoryId").value);
     this.productFormData.set("ManufactoredAt", new Date(this.productDetailForm.get("manufactoredAt").value).toDateString());
 
+    this.spinner.show();
     this._productService.Save(this.productFormData).subscribe(response => {
+      this.spinner.hide();
+
       if (response) {
         this.cancel();
       }

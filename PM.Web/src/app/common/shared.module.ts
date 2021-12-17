@@ -13,6 +13,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [],
@@ -20,6 +21,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxSpinnerModule,
     HttpClientModule,
     NgSelectModule,
     MatToolbarModule,
@@ -37,6 +39,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxSpinnerModule,
     HttpClientModule,
     NgSelectModule,
     MatToolbarModule,

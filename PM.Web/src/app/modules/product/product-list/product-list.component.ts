@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { PaginatedResponse } from 'src/app/common/models/paginated-response.model';
 import { CategoryService } from '../../category/category.service';
 import { CategoryDetail } from '../../category/models/category-detail.model';
@@ -27,6 +28,7 @@ export class ProductListComponent implements OnInit {
   paginationInfo: PaginatedResponse<ProductDetail> = {};
 
   constructor(
+    private spinner: NgxSpinnerService,
     private _productService: ProductService,
     private _categoryService: CategoryService
   ) { }
@@ -40,7 +42,10 @@ export class ProductListComponent implements OnInit {
     this.products = [];
     this.paginationInfo = {};
 
+    this.spinner.show();
     this._productService.GetAll(this.requestBody).subscribe(response => {
+      this.spinner.hide();
+
       if (response && response.totalRecords > 0) {
         this.products = response.data.map(product => {
           product.description = product.description.length > 100 ? product.description.substring(0, 100) + "..." : product.description;
