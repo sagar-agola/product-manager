@@ -79,7 +79,7 @@ export class ProductListComponent implements OnInit {
   }
 
   deleteProduct(id: any): void {
-    const message = `Are you sure you want to do this?`;
+    const message = `Are you sure you want to delete this Product?`;
 
     const dialogData = new ConfirmDialogModel("Confirm Action", message);
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {

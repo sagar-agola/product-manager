@@ -37,5 +37,12 @@ namespace PM.Api.Controllers
             ExecutionResult result = await _categoryRepository.Delete(id);
             return FromExecutionResult(result);
         }
+
+        [HttpGet(ApiRoutes.Category.ToggleActive)]
+        public async Task<IActionResult> ToggleActive(int id)
+        {
+            ExecutionResult result = await _categoryRepository.ToggleActive(id);
+            return FromExecutionResult(result);
+        }
     }
 }

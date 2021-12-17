@@ -51,14 +51,19 @@
             public const string GetAll = _base;
 
             /// <summary>
-            /// api/products
+            /// api/categories
             /// </summary>
             public const string Save = _base;
 
             /// <summary>
-            /// api/products/{id}
+            /// api/categories/{id}
             /// </summary>
             public const string Delete = _base + "{id}";
+
+            /// <summary>
+            /// api/categories/toggle-active/{id}
+            /// </summary>
+            public const string ToggleActive = _base + "toggle-active/{id}";
         }
     }
 }

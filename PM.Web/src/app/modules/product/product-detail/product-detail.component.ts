@@ -119,7 +119,10 @@ export class ProductDetailComponent implements OnInit {
     this.categories = [];
     this._categoryService.GetAll().subscribe(response => {
       if (response && response.length > 0) {
-        this.categories = response;
+        this.categories = response.map(category => {
+          category.disabled = category.isActive == false;
+          return category;
+        });
       }
     });
   }

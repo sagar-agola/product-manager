@@ -9,6 +9,10 @@ const routes: Routes = [
     loadChildren: () => import("src/app/modules/product/product.module").then(m => m.ProductModule)
   },
   {
+    path: 'categories',
+    loadChildren: () => import("src/app/modules/category/category.module").then(m => m.CategoryModule)
+  },
+  {
     path: 'static-data',
     loadChildren: () => import("src/app/modules/static-data/static-data.module").then(m => m.StaticDataModule)
   },

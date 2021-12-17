@@ -31,6 +31,7 @@ namespace PM.Business.Repositories
                 {
                     Id = c.Id,
                     Title = c.Title,
+                    IsActive = c.IsActive,
                     CreatedAt = c.CreatedAt
                 }).ToListAsync();
 
@@ -123,6 +124,26 @@ namespace PM.Business.Repositories
             await _context.SaveChangesAsync();
 
             return new ExecutionResult(new InfoMessage(string.Format(MessageHelper.SuccessMessage, "Category", "deleted")));
+        }
+
+        #endregion
+
+        #region Toggle Active
+
+        public async Task<ExecutionResult> ToggleActive(int id)
+        {
+            Category category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && c.DeletedAt.HasValue == false);
+
+            if (category == null)
+            {
+                return new ExecutionResult(new ErrorInfo(string.Format(MessageHelper.NotFound, "Category")));
+            }
+
+            category.IsActive = !category.IsActive;
+
+            await _context.SaveChangesAsync();
+
+            return new ExecutionResult(new InfoMessage(string.Format(MessageHelper.SuccessMessage, "Category", category.IsActive ? "activated" : "deactivated")));
         }
 
         #endregion
