@@ -34,6 +34,11 @@
             /// api/products/{id}
             /// </summary>
             public const string Delete = _base + "{id}";
+
+            /// <summary>
+            /// api/products/toggle-active/{id}
+            /// </summary>
+            public const string ToggleActive = _base + "toggle-active/{id}";
         }
 
         public static class Category

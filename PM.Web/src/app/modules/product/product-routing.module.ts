@@ -14,11 +14,11 @@ const routes: Routes = [
     component: ProductDetailComponent
   },
   {
-    path: 'edit/:id/:slug',
+    path: 'edit/:id',
     component: ProductDetailComponent
   },
   {
-    path: 'view/:id/:slug',
+    path: 'view/:id',
     component: ProductViewComponent
   }
 ];

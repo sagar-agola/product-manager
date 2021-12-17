@@ -39,4 +39,8 @@ export class ProductService extends BaseService {
   Delete(id: number): Observable<void> {
     return this.delete(`${this._basePath}/${id}`);
   }
+
+  ToggleActive(id: number): Observable<void> {
+    return this.get(`${this._basePath}/toggle-active/${id}`);
+  }
 }

@@ -10,5 +10,6 @@ export class ProductDetail {
     quentity?: number;
     category?: string;
     isActive?: boolean;
+    manufactoredAt?: Date;
     createdAt?: Date;
 }

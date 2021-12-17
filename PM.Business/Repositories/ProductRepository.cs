@@ -216,5 +216,25 @@ namespace PM.Business.Repositories
         }
 
         #endregion
+
+        #region Toggle Active
+
+        public async Task<ExecutionResult> ToggleActive(int id)
+        {
+            Product product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id && p.DeletedAt.HasValue == false);
+
+            if (product == null)
+            {
+                return new ExecutionResult(new ErrorInfo(string.Format(MessageHelper.NotFound, "Product")));
+            }
+
+            product.IsActive = !product.IsActive;
+
+            await _context.SaveChangesAsync();
+
+            return new ExecutionResult(new InfoMessage(string.Format(MessageHelper.SuccessMessage, "Product", product.IsActive ? "activated" : "deactivated")));
+        }
+
+        #endregion
     }
 }

@@ -36,12 +36,25 @@
                         {{ product.quentity }}
                     </div>
                 </div>
+                <div class="mb-2">
+                    <div>
+                        <mat-slide-toggle
+                            color="primary"
+                            [checked]="product.isActive"
+                            (change)="toggleActive()">
+                            <b>Is Active</b>
+                        </mat-slide-toggle>
+                    </div>
+                </div>
             </div>
         </div>
     </mat-card-content>
     <mat-card-actions align="end">
-        <button mat-raised-button color="primary" [routerLink]="['/products/edit', product.id, product.slug ]">
+        <button mat-raised-button color="primary" [routerLink]="['/products/edit', product.id ]" style="margin-right: 0;">
             Edit
+        </button>
+        <button mat-raised-button color="primary" [routerLink]="['/products/view', product.id ]">
+            View
         </button>
         <button mat-raised-button color="warn" (click)="deleteProduct(product.id)">
             Delete

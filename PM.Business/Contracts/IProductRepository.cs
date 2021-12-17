@@ -10,5 +10,6 @@ namespace PM.Business.Contracts
         Task<ExecutionResult<ProductDetail>> Get(int id);
         Task<ExecutionResult> Save(SaveProductRequestModel model);
         Task<ExecutionResult> Delete(int id);
+        Task<ExecutionResult> ToggleActive(int id);
     }
 }
