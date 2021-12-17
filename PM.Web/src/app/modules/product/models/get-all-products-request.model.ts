@@ -2,4 +2,5 @@ import { PaginationBaseRequestModel } from "src/app/common/models/pagination-bas
 
 export class GetAllProductsRequestModel extends PaginationBaseRequestModel {
     title: string;
+    categoryId?: number;
 }

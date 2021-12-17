@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { CategoryService } from '../../category/category.service';
+import { CategoryDetail } from '../../category/models/category-detail.model';
 import { ProductService } from '../product.service';
 
 @Component({
@@ -48,10 +50,7 @@ export class ProductDetailComponent implements OnInit {
     }
   };
 
-  categories: any[] = [
-    { id: 1, name: "one" },
-    { id: 2, name: "two"}
-  ];
+  categories: CategoryDetail[] = [];
   productId: number = 0;
   selectedImagePath: string = "";
   imageErrorList: string[] = [];
@@ -65,7 +64,8 @@ export class ProductDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private formBuilder: FormBuilder,
-    private _productService: ProductService
+    private _productService: ProductService,
+    private _categoryService: CategoryService
   ) { }
 
   ngOnInit(): void {
@@ -76,6 +76,7 @@ export class ProductDetailComponent implements OnInit {
       }
     });
 
+    this.getCategoryList();
     this.setupProductForm();
   }
 
@@ -108,6 +109,15 @@ export class ProductDetailComponent implements OnInit {
             this.formErrors[key] += messages[errorKey] + ' ';
           }
         }
+      }
+    });
+  }
+
+  getCategoryList(): void {
+    this.categories = [];
+    this._categoryService.GetAll().subscribe(response => {
+      if (response && response.length > 0) {
+        this.categories = response;
       }
     });
   }

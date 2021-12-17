@@ -30,7 +30,8 @@ namespace PM.Business.Repositories
                                               where
                                                    product.DeletedAt.HasValue == false &&
                                                    category.DeletedAt.HasValue == false &&
-                                                   (string.IsNullOrEmpty(model.Title) || product.Title.Contains(model.Title))
+                                                   (string.IsNullOrEmpty(model.Title) || product.Title.Contains(model.Title)) &&
+                                                   (model.CategoryId.HasValue == false || category.Id == model.CategoryId)
                                               select new ProductDetail
                                               {
                                                   Id = product.Id,

@@ -1,7 +1,21 @@
 <div class="container">
     <div class="d-flex my-3">
         <div class="flex-grow-1" style="margin-right: 20px;">
-            <input type="text" class="form-control" [(ngModel)]="requestBody.title" (input)="getProducts()" placeholder="Start typing to search..." />    
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <input type="text" class="form-control" [(ngModel)]="requestBody.title" (input)="getProducts()" placeholder="Start typing to search..." />    
+                </div>
+                <div class="col-12 col-md-6">
+                    <ng-select
+                        [items]="categories"
+                        placeholder="Filter by Product Category"
+                        bindLabel="title" 
+                        bindValue="id"
+                        [(ngModel)]="requestBody.categoryId"
+                        (change)="getProducts()">
+                    </ng-select>
+                </div>
+            </div>            
         </div>
         
         <button mat-raised-button color="primary" [routerLink]="[ '/products/create/' ]">
@@ -9,7 +23,7 @@
         </button>
     </div>
     <div class="row">
-        <div class="col-12 col-sm-6 col-md-4 mb-3" *ngFor="let product of products">
+        <div class="col-12 col-sm-6 col-md-4 mb-4" *ngFor="let product of products">
             <app-product-item [product]="product"></app-product-item>
         </div>
         <div class="col-12" *ngIf="products.length == 0">
