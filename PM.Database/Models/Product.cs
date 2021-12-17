@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PM.Database.Models
@@ -31,6 +32,8 @@ namespace PM.Database.Models
         public string ImageUrl { get; set; }
 
         public int Quentity { get; set; }
+
+        public DateTime ManufactoredAt { get; set; }
 
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; }
