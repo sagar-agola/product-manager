@@ -14,6 +14,7 @@ namespace PM.Api.ServiceInstallers
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
         }
     }
 }

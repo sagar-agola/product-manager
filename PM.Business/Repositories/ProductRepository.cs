@@ -200,7 +200,7 @@ namespace PM.Business.Repositories
 
         public async Task<ExecutionResult> Delete(int id)
         {
-            Product product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id && p.DeletedAt.HasValue);
+            Product product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id && p.DeletedAt.HasValue == false);
 
             if (product == null)
             {

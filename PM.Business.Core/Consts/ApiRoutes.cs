@@ -35,5 +35,25 @@
             /// </summary>
             public const string Delete = _base + "{id}";
         }
+
+        public static class Category
+        {
+            private const string _base = _root + "categories/";
+
+            /// <summary>
+            /// api/categories
+            /// </summary>
+            public const string GetAll = _base;
+
+            /// <summary>
+            /// api/products
+            /// </summary>
+            public const string Save = _base;
+
+            /// <summary>
+            /// api/products/{id}
+            /// </summary>
+            public const string Delete = _base + "{id}";
+        }
     }
 }
