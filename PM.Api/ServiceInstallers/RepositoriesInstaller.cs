@@ -15,6 +15,7 @@ namespace PM.Api.ServiceInstallers
         {
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
         }
     }
 }

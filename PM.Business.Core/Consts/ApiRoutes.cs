@@ -65,5 +65,25 @@
             /// </summary>
             public const string ToggleActive = _base + "toggle-active/{id}";
         }
+
+        public static class User
+        {
+            private const string _base = _root + "users/";
+
+            /// <summary>
+            /// api/users/login
+            /// </summary>
+            public const string Login = _base + "login";
+
+            /// <summary>
+            /// api/users/register
+            /// </summary>
+            public const string Register = _base + "register";
+
+            /// <summary>
+            /// api/users/confirm-email
+            /// </summary>
+            public const string ConfirmEmail = _base + "confirm-email";
+        }
     }
 }
