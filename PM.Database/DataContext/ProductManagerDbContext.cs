@@ -11,5 +11,6 @@ namespace PM.Database.DataContext
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ExceptionLog> ExceptionLogs { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }
