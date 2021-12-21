@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PM.Business.Contracts;
 using PM.Business.Core.Consts;
 using PM.Business.Core.DataTransferModels;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace PM.Api.Controllers
 {
+    [Authorize]
     public class CategoryController : BaseController
     {
         private readonly ICategoryRepository _categoryRepository;

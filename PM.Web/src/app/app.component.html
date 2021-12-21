@@ -5,6 +5,7 @@
             <a mat-button [routerLink]="'/products'" routerLinkActive="active"> Products </a>
             <a mat-button [routerLink]="'/categories'" routerLinkActive="active"> Categories </a>
             <a mat-button [routerLink]="'/static-data'" routerLinkActive="active"> Static Data CRUD </a>
+            <a mat-button (click)="logout()" *ngIf="isLoggedIn"> Log Out</a>
         </div>
         <button mat-icon-button style="margin-left: auto;">
             <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
@@ -17,6 +18,7 @@
             <a mat-list-item [routerLink]="'/products'" (click)="sidenav.toggle()"> Products </a>
             <a mat-list-item [routerLink]="'/categories'" (click)="sidenav.toggle()"> Categories </a>
             <a mat-list-item [routerLink]="'/static-data'"(click)="sidenav.toggle()"> Static Data CRUD </a>
+            <a mat-list-item (click)="logout(); sidenav.toggle();" *ngIf="isLoggedIn"> Log Out </a>
             <a mat-list-item (click)="sidenav.toggle()">Close</a>
         </mat-nav-list>
     </mat-sidenav>

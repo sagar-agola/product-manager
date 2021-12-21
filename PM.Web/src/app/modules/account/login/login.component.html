@@ -1,0 +1,46 @@
+<main class="main d-flex" style="height: 100vh;">
+    <div class="container">
+        <div class="mx-auto mt-5" style="max-width: 500px">
+            <mat-card>
+                <mat-card-title-group>
+                    <mat-card-title>Login</mat-card-title>
+                    <mat-card-subtitle class="mt-2">Sign In to your Account</mat-card-subtitle>
+                </mat-card-title-group>
+                <mat-card-content>
+                    <form #loginForm="ngForm" (submit)="login()">
+                        <div class="mb-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><mat-icon> email</mat-icon></span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Email Address" required #email="ngModel" name="email" [(ngModel)]="requestModel.email" />
+                            </div>
+                            <div class="validation-block" *ngIf="email.errors && email.errors.required && (email.touched || loginForm.submitted)">
+                                Email Address is required
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><mat-icon>lock</mat-icon></span>
+                                </div>
+                                <input type="password" class="form-control" placeholder="Password" required #password="ngModel" name="password" [(ngModel)]="requestModel.password" />
+                            </div>
+                            <div class="validation-block" *ngIf="password.errors && password.errors.required && (password.touched || loginForm.submitted)">
+                                Password is required
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.submitted && (loginForm.invalid || showLoader)">
+                                    <span *ngIf="showLoader == false">Login</span>
+                                    <i *ngIf="showLoader" class="fa fa-spinner fa-spin"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</main>

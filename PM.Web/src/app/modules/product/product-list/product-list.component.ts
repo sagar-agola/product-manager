@@ -54,7 +54,7 @@ export class ProductListComponent implements OnInit {
         this.products = response.data.map(product => {
           product.description = product.description.length > 100 ? product.description.substring(0, 100) + "..." : product.description;
           return product;
-        })
+        });
 
         delete response.data;
         this.paginationInfo = response;

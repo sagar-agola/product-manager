@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { UserService } from 'src/app/modules/account/user.service';
 import { NotificationService } from './notification.service';
 
 @Injectable({
@@ -11,13 +12,13 @@ import { NotificationService } from './notification.service';
 export class BaseService {
 
   constructor(
-    private http: HttpClient,
-    private router: Router,
+    private _http: HttpClient,
+    private _router: Router,
     private _notificationService: NotificationService
   ) { }
 
   protected get<T>(method: string, params?: any): Observable<any> {
-    return this.http.get(method, {
+    return this._http.get(method, {
       headers: this.setHeaders(),
       params: this.setParams(params)
     }).pipe(
@@ -29,7 +30,7 @@ export class BaseService {
   protected post<T>(method: string, body: any): Observable<any> {
     const model = JSON.stringify(body);
 
-    return this.http.post(method, model, { 
+    return this._http.post(method, model, { 
       headers: this.setHeaders()
     }).pipe(
       map((response) => this.extractData<T>(response)),
@@ -38,7 +39,7 @@ export class BaseService {
   }
 
   protected delete<T>(method: string, params?: any): Observable<any> {
-    return this.http.delete(method, {
+    return this._http.delete(method, {
       headers: this.setHeaders(),
       params: this.setParams(params)
     }).pipe(
@@ -48,7 +49,7 @@ export class BaseService {
   }
 
   protected postFormData<T>(method: string, body: any): Observable<any> {
-    return this.http.post(method, body, {
+    return this._http.post(method, body, {
       headers: this.setHeaders('formData')
     }).pipe(
       map((response) => this.extractData<T>(response)),
@@ -68,8 +69,13 @@ export class BaseService {
       headers = headers.set('Content-Type', 'application/json');
     }
 
+    const token = JSON.parse(localStorage.getItem('token'));
+    if (token) {
+      headers = headers.append('Authorization', 'Bearer ' + token);
+    }
+
     // time zone  offset in minutes
-    headers = headers.set('TimeZoneOffset', String((new Date().getTimezoneOffset() * -1)));
+    headers = headers.set("TimeZoneOffset", String((new Date().getTimezoneOffset() * -1)));
 
     return headers;
   }
@@ -105,7 +111,9 @@ export class BaseService {
 
     if ((response.status == 401 || response.status == 403)) {
       this._notificationService.showSimpleNotification("You are not authorized to access this route");
-      this.router.navigate(['']);
+
+      let userService: UserService = new UserService(this._http, this._notificationService, this._router);
+      userService.Logout();
     }
     else if (error && error.errors && error.errors.length > 0) {
       error.errors.forEach((err: any) => {

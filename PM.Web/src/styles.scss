@@ -60,10 +60,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     .ng-select-container {
         border-color: #f44336 !important;   
     }
+}
 
-    .validation-block {
-        margin-top: 6px;
-        color: #f44336;
-        font-size: 12px;
-    }
+.validation-block {
+    margin-top: 6px;
+    color: #f44336;
+    font-size: 12px;
+}
+
+.input-group-text {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
 }
