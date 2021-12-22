@@ -1,6 +1,6 @@
 <div class="container">
     <div class="d-flex my-3">
-        <div class="flex-grow-1" style="margin-right: 20px;">
+        <div class="flex-grow-1" style="margin-right: 25px;">
             <div class="row">
                 <div class="col-12 col-md-6">
                     <input type="text" class="form-control" [(ngModel)]="requestBody.title" (input)="getProducts()" placeholder="Start typing to search..." />    
@@ -18,8 +18,12 @@
             </div>            
         </div>
         
-        <button mat-raised-button color="primary" [routerLink]="[ '/products/create/' ]">
+        <button mat-raised-button color="primary" [routerLink]="[ '/products/create/' ]" style="margin-right: 25px;">
             <mat-icon>add</mat-icon> Create New Product
+        </button>
+
+        <button mat-raised-button color="primary" [routerLink]="[ '/products/kendo/' ]">
+            <mat-icon>table_chart</mat-icon> Kendo Grid Demo
         </button>
     </div>
     <mat-card class="mb-3 p-0">
