@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using PM.Api.ServiceInstallers.Base;
 using PM.Business.Helpers;
+using PM.Business.Helpers.Contracts;
 
 namespace PM.Api.ServiceInstallers
 {
@@ -11,6 +12,8 @@ namespace PM.Api.ServiceInstallers
         {
             services.AddScoped<PasswordManager>();
             services.AddScoped<TokenManager>();
+
+            services.AddScoped<IAuthService, AuthService>();
         }
     }
 }
