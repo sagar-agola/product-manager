@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
         this.showLoader = false;
 
         if (response) {
-          localStorage.setItem('token', JSON.stringify(response.accessToken));
+          localStorage.setItem('token', response.accessToken);
         
           delete response.accessToken; // set token separately to local storage
           localStorage.setItem('currentUser', JSON.stringify(response));

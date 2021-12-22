@@ -69,13 +69,13 @@ export class BaseService {
       headers = headers.set('Content-Type', 'application/json');
     }
 
-    const token = JSON.parse(localStorage.getItem('token'));
+    const token = localStorage.getItem('token');
     if (token) {
       headers = headers.append('Authorization', 'Bearer ' + token);
     }
 
     // time zone  offset in minutes
-    headers = headers.set("TimeZoneOffset", String((new Date().getTimezoneOffset() * -1)));
+    headers = headers.set("TimeZoneOffset", String((new Date().getTimezoneOffset())));
 
     return headers;
   }
