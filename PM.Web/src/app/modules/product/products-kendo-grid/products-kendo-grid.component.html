@@ -1,0 +1,19 @@
+<div class="container mt-4">
+    <input type="text" class="form-control mb-2" placeholder="Start typing anything to search..." [(ngModel)]="searchTerm" (input)="loadGridItems()" />
+    <kendo-grid
+        [data]="gridItems | async"
+        [pageSize]="pageSize"
+        [skip]="skip"
+        [pageable]="pageOptions"
+        [sortable]="true"
+        [sort]="sortDescriptor"
+        (pageChange)="pageChange($event)"
+        (sortChange)="handleSortChange($event)">
+        <kendo-grid-column field="id" title="ID">
+        </kendo-grid-column>
+        <kendo-grid-column field="title" title="Product Title">
+        </kendo-grid-column>
+        <kendo-grid-column field="category" title="Category">
+        </kendo-grid-column>
+    </kendo-grid>
+</div>

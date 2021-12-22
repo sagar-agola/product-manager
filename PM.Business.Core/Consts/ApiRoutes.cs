@@ -21,6 +21,11 @@
             public const string GetAll = _base;
 
             /// <summary>
+            /// api/products/kendo-grid
+            /// </summary>
+            public const string GetKendoData = _base + "kendo-grid";
+
+            /// <summary>
             /// api/products/{id}
             /// </summary>
             public const string Get = _base + "{id}";

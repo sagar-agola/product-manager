@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using PM.Database.Models;
 using PM.Business.Core.Consts;
 using System;
+using PM.Business.Core.DataTransferModels.Kendo;
 
 namespace PM.Business.Repositories
 {
@@ -63,6 +64,54 @@ namespace PM.Business.Repositories
             };
 
             return new ExecutionResult<PaginatedResponse<ProductDetail>>(response);
+        }
+
+        #endregion
+
+        #region Get Kendo Data
+
+        public async Task<KendoResponseModel<ProductDetail>> GetKendoData(GetKendoDataRequestModel model)
+        {
+            IQueryable<ProductDetail> query = from category in _context.Categories
+                                              from product in _context.Products.Where(p => p.CategoryId == category.Id)
+                                              where
+                                                   product.DeletedAt.HasValue == false &&
+                                                   category.DeletedAt.HasValue == false &&
+                                                   (
+                                                        string.IsNullOrEmpty(model.SearchTerm) ||
+                                                        product.Title.Contains(model.SearchTerm) ||
+                                                        category.Title.Contains(model.SearchTerm)
+                                                    )
+                                              select new ProductDetail
+                                              {
+                                                  Id = product.Id,
+                                                  Title = product.Title,
+                                                  Slug = product.Slug,
+                                                  SubTitle = product.SubTitle,
+                                                  Description = product.Description,
+                                                  RetailPrice = product.RetailPrice,
+                                                  SalePrice = product.SalePrice,
+                                                  ImageUrl = product.ImageUrl,
+                                                  Quentity = product.Quentity,
+                                                  IsActive = product.IsActive,
+                                                  ManufactoredAt = product.ManufactoredAt,
+                                                  CreatedAt = product.CreatedAt,
+                                                  Category = category.Title
+                                              };
+
+            string sortField = model.Sort != null && model.Sort.Count > 0 ? model.Sort[0].Field.ToPascaleCase() : "Id";
+            bool isAsc = model.Sort != null && model.Sort.Count > 0 ? model.Sort[0].Dir == "asc" : false;
+
+            return new KendoResponseModel<ProductDetail>
+            {
+                Data = await query
+                    .AsNoTracking()
+                    .OrderBy(sortField, isAsc)
+                    .Skip(model.Skip)
+                    .Take(model.PageSize)
+                    .ToListAsync(),
+                Total = await query.CountAsync()
+            };
         }
 
         #endregion

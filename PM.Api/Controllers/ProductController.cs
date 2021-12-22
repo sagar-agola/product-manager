@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PM.Business.Contracts;
 using PM.Business.Core.Consts;
 using PM.Business.Core.DataTransferModels;
+using PM.Business.Core.DataTransferModels.Kendo;
 using PM.Business.Core.DataTransferModels.Product;
 using System.Threading.Tasks;
 
@@ -23,6 +24,13 @@ namespace PM.Api.Controllers
         {
             ExecutionResult<PaginatedResponse<ProductDetail>> result = await _productRepository.GetAll(model);
             return FromExecutionResult(result);
+        }
+
+        [HttpPost(ApiRoutes.Product.GetKendoData)]
+        public async Task<IActionResult> GetKendoData(GetKendoDataRequestModel model)
+        {
+            KendoResponseModel<ProductDetail> response = await _productRepository.GetKendoData(model);
+            return Ok(response);
         }
 
         [HttpGet(ApiRoutes.Product.Get)]

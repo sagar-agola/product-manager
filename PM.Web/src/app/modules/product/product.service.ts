@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { GridDataResult } from '@progress/kendo-angular-grid';
 import { Observable } from 'rxjs';
 import { PaginatedResponse } from 'src/app/common/models/paginated-response.model';
 import { BaseService } from 'src/app/common/services/base.service';
@@ -26,6 +27,10 @@ export class ProductService extends BaseService {
 
   GetAll(model: GetAllProductsRequestModel): Observable<PaginatedResponse<ProductDetail>> {
     return this.post<PaginatedResponse<ProductDetail>>(this._basePath, model);
+  }
+
+  GetKendoData(model: any): Observable<GridDataResult> {
+    return this.post<GridDataResult>(`${this._basePath}/kendo-grid`, model);
   }
 
   Get(id: number): Observable<ProductDetail> {

@@ -7,19 +7,23 @@ import { SharedModule } from 'src/app/common/shared.module';
 import { ProductItemComponent } from './product-list/product-item/product-item.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { CommonComponentsModule } from '../common-components/common-components.module';
+import { ProductsKendoGridComponent } from './products-kendo-grid/products-kendo-grid.component';
+import { GridModule } from '@progress/kendo-angular-grid';
 
 @NgModule({
   declarations: [
     ProductListComponent,
     ProductDetailComponent,
     ProductViewComponent,
-    ProductItemComponent
+    ProductItemComponent,
+    ProductsKendoGridComponent
   ],
   imports: [
     SharedModule,
     NgxDropzoneModule,
     ProductRoutingModule,
-    CommonComponentsModule
+    CommonComponentsModule,
+    GridModule
   ]
 })
 export class ProductModule { }
