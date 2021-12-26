@@ -2,9 +2,7 @@
 using PM.Business.Contracts;
 using PM.Business.Core.Consts;
 using PM.Business.Core.DataTransferModels;
-using PM.Business.Core.DataTransferModels.Category;
 using PM.Business.Core.DataTransferModels.User;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace PM.Api.Controllers
@@ -24,11 +22,11 @@ namespace PM.Api.Controllers
             ExecutionResult<LoginResponseModel> result = await _userRepository.Login(model);
             return FromExecutionResult(result);
         }
-        
+
         [HttpPost(ApiRoutes.User.Register)]
         public async Task<IActionResult> Register(RegisterRequestModel model)
         {
-            ExecutionResult result = await _userRepository.Register(model);
+            ExecutionResult<string> result = await _userRepository.Register(model);
             return FromExecutionResult(result);
         }
 

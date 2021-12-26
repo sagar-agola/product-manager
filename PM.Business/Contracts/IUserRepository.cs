@@ -7,7 +7,7 @@ namespace PM.Business.Contracts
     public interface IUserRepository
     {
         Task<ExecutionResult<LoginResponseModel>> Login(LoginRequestModel model);
-        Task<ExecutionResult> Register(RegisterRequestModel model);
+        Task<ExecutionResult<string>> Register(RegisterRequestModel model);
         Task<ExecutionResult> ConfirmEmail(ConfirmEmailRequestModel model);
     }
 }

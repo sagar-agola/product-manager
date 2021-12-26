@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using PM.Business.Contracts;
+using PM.Business.Core.AppSettings;
 using PM.Business.Core.Consts;
 using PM.Business.Core.DataTransferModels;
 using PM.Business.Core.DataTransferModels.User;
@@ -17,14 +19,17 @@ namespace PM.Business.Repositories
         private readonly ProductManagerDbContext _context;
         private readonly PasswordManager _passwordManager;
         private readonly TokenManager _tokenManager;
+        private readonly AppSettings _appSettings;
 
         public UserRepository(ProductManagerDbContext context,
                               PasswordManager passwordManager,
-                              TokenManager tokenManager)
+                              TokenManager tokenManager,
+                              IOptions<AppSettings> options)
         {
             _context = context;
             _passwordManager = passwordManager;
             _tokenManager = tokenManager;
+            _appSettings = options.Value;
         }
 
         #region Login
@@ -76,12 +81,12 @@ namespace PM.Business.Repositories
 
         #region Register
 
-        public async Task<ExecutionResult> Register(RegisterRequestModel model)
+        public async Task<ExecutionResult<string>> Register(RegisterRequestModel model)
         {
             bool isEmailExists = await _context.Users.AnyAsync(u => u.Email == model.Email && !u.DeletedAt.HasValue);
             if (isEmailExists)
             {
-                return new ExecutionResult(
+                return new ExecutionResult<string>(
                     new ErrorInfo(
                         string.Format(
                             MessageHelper.ResourceAlreadyExists,
@@ -110,7 +115,15 @@ namespace PM.Business.Repositories
 
             await _context.SaveChangesAsync();
 
-            return new ExecutionResult(new InfoMessage(string.Format(MessageHelper.SuccessMessage, "User", "registered")));
+            return new ExecutionResult<string>(
+                $"{ _appSettings.ClientBaseUrl }/account/confirm-email/{ user.Id }/{ user.EmailToken }",
+                new InfoMessage(
+                    string.Format(
+                        MessageHelper.SuccessMessage,
+                        "User",
+                        "registered")
+                    )
+                );
         }
 
         #endregion
