@@ -119,6 +119,19 @@ namespace PM.Business.Repositories
                 return new ExecutionResult(new ErrorInfo(string.Format(MessageHelper.NotFound, "Category")));
             }
 
+            bool isProductExists = await _context.Products.AnyAsync(p => p.CategoryId == id && !p.DeletedAt.HasValue);
+            if (isProductExists)
+            {
+                return new ExecutionResult(
+                    new ErrorInfo(
+                        string.Format(
+                            MessageHelper.ReferenceExists,
+                            "Category",
+                            "Products")
+                        )
+                    );
+            }
+
             category.DeletedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
