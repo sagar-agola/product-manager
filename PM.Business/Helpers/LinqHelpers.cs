@@ -39,5 +39,78 @@ namespace PM.Business.Helpers
 
             return orderedQuery;
         }
+
+        public static Expression<Func<T, bool>> DataGridWhereField<T>(string field, string value)
+        {
+            ParameterExpression parameter = Expression.Parameter(typeof(T), "p");
+            MemberExpression property = Expression.Property(parameter, field);
+            Type fieldType = property.Type;
+            Expression<Func<T, bool>> lambda;
+
+            if (fieldType == typeof(string))
+            {
+                lambda = StringSearch<T>(property, parameter, value);
+            }
+            else if (fieldType == typeof(int))
+            {
+                lambda = IntSearch<T>(property, parameter, value);
+            }
+            else
+            {
+                lambda = NotExqualLambda<T>(parameter);
+            }
+
+            return lambda;
+        }
+
+        private static Expression<Func<T, bool>> StringSearch<T>(Expression property, ParameterExpression parameter, string value)
+        {
+            ConstantExpression argument = Expression.Constant(value.ToUpper(), typeof(string));
+            Expression toUpperExpression = Expression.Call(property, "ToUpper", null, null);
+            MethodInfo method = typeof(string).GetMethod("Contains", new[] { typeof(string) });
+            MethodCallExpression whereClause = Expression.Call(toUpperExpression, method, argument);
+            Expression<Func<T, bool>> lambda = Expression.Lambda<Func<T, bool>>(whereClause, parameter);
+
+            return lambda;
+        }
+
+        private static Expression<Func<T, bool>> IntSearch<T>(Expression property, ParameterExpression parameter, string value)
+        {
+            ConstantExpression argument = Expression.Constant(Convert.ToInt32(value), typeof(int));
+            Expression equalExp = Expression.Equal(property, argument);
+            Expression<Func<T, bool>> lambda = Expression.Lambda<Func<T, bool>>(equalExp, parameter);
+
+            return lambda;
+        }
+
+        private static MethodCallExpression GenerateToStringMethodCall(Type type, Expression property, string format = null)
+        {
+            MethodCallExpression dateToString;
+
+            if (format == null)
+            {
+                MethodInfo methodToString1 = type.GetMethod("ToString", Type.EmptyTypes);
+                dateToString = Expression.Call(property, methodToString1);
+            }
+            else
+            {
+                ConstantExpression p1 = Expression.Constant(format, typeof(string));
+                MethodInfo methodToString2 = type.GetMethod("ToString", new[] { typeof(string) });
+                Expression toStringExpression = Expression.Call(property, methodToString2, p1);
+                dateToString = Expression.Call(toStringExpression, "ToUpper", null, null);
+            }
+
+            return dateToString;
+        }
+
+        private static Expression<Func<T, bool>> NotExqualLambda<T>(ParameterExpression parameter)
+        {
+            ConstantExpression argument1 = Expression.Constant(1, typeof(int));
+            ConstantExpression argument2 = Expression.Constant(2, typeof(int));
+            Expression equalExp = Expression.Equal(argument1, argument2);
+            Expression<Func<T, bool>> lambda = Expression.Lambda<Func<T, bool>>(equalExp, parameter);
+
+            return lambda;
+        }
     }
 }

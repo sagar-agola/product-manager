@@ -9,6 +9,7 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
 import { CommonComponentsModule } from '../common-components/common-components.module';
 import { ProductsKendoGridComponent } from './products-kendo-grid/products-kendo-grid.component';
 import { GridModule } from '@progress/kendo-angular-grid';
+import { CustomKendoComponentsModule } from '../custom-kendo-components/custom-kendo-components.module';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { GridModule } from '@progress/kendo-angular-grid';
     NgxDropzoneModule,
     ProductRoutingModule,
     CommonComponentsModule,
-    GridModule
+    GridModule,
+    CustomKendoComponentsModule
   ]
 })
 export class ProductModule { }

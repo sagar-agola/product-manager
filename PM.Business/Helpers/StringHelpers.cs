@@ -22,7 +22,7 @@
                 return string.Empty;
             }
 
-            if(input.Length == 1)
+            if (input.Length == 1)
             {
                 return input.ToUpper();
             }
@@ -30,6 +30,14 @@
             {
                 return $"{ input[0].ToString().ToUpper() }{ input[1..] }";
             }
+        }
+
+        /// <summary>
+        /// Check null or empty or white space for string
+        /// </summary>
+        public static bool IsEmptyString(this string input)
+        {
+            return string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input);
         }
     }
 }

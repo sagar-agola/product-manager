@@ -7,13 +7,30 @@
         [pageable]="pageOptions"
         [sortable]="true"
         [sort]="sortDescriptor"
-        (pageChange)="pageChange($event)"
-        (sortChange)="handleSortChange($event)">
-        <kendo-grid-column field="id" title="ID">
+        [filterable]="true"
+        [filter]="filter"
+        (pageChange)="onPageChange($event)"
+        (sortChange)="onSortChange($event)"
+        (filterChange)="onFilterChange($event)">
+        <kendo-grid-column
+            field="id" title="ID">
         </kendo-grid-column>
-        <kendo-grid-column field="title" title="Product Title">
+        <kendo-grid-column
+            field="title" title="Product Title" filter="text">
         </kendo-grid-column>
-        <kendo-grid-column field="category" title="Category">
+        <kendo-grid-column
+            field="category" title="Category">
+            <ng-template kendoGridFilterCellTemplate let-filter>
+                <app-kendo-dropdown-filter
+                    [column]="columns[1]"
+                    [data]="categories"
+                    textField="title"
+                    valueField="id"
+                    searchField="CategoryId"
+                    title="Category"
+                    (onFilterChange)="onDropdownFilterChange($event)">
+                </app-kendo-dropdown-filter>
+              </ng-template>
         </kendo-grid-column>
     </kendo-grid>
 </div>

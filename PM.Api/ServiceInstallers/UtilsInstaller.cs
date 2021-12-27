@@ -12,6 +12,7 @@ namespace PM.Api.ServiceInstallers
         {
             services.AddScoped<PasswordManager>();
             services.AddScoped<TokenManager>();
+            services.AddScoped<GridDataTableHelpers>();
 
             services.AddScoped<IAuthService, AuthService>();
         }

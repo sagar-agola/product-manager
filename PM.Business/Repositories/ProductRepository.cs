@@ -16,10 +16,12 @@ namespace PM.Business.Repositories
     public class ProductRepository : IProductRepository
     {
         private readonly ProductManagerDbContext _context;
+        private readonly GridDataTableHelpers _gridDataTableHelpers;
 
-        public ProductRepository(ProductManagerDbContext context)
+        public ProductRepository(ProductManagerDbContext context, GridDataTableHelpers gridDataTableHelpers)
         {
             _context = context;
+            _gridDataTableHelpers = gridDataTableHelpers;
         }
 
         #region Get All
@@ -96,22 +98,11 @@ namespace PM.Business.Repositories
                                                   IsActive = product.IsActive,
                                                   ManufactoredAt = product.ManufactoredAt,
                                                   CreatedAt = product.CreatedAt,
-                                                  Category = category.Title
+                                                  Category = category.Title,
+                                                  CategoryId = category.Id
                                               };
 
-            string sortField = model.Sort != null && model.Sort.Count > 0 ? model.Sort[0].Field.ToPascaleCase() : "Id";
-            bool isAsc = model.Sort != null && model.Sort.Count > 0 ? model.Sort[0].Dir == "asc" : false;
-
-            return new KendoResponseModel<ProductDetail>
-            {
-                Data = await query
-                    .AsNoTracking()
-                    .OrderBy(sortField, isAsc)
-                    .Skip(model.Skip)
-                    .Take(model.PageSize)
-                    .ToListAsync(),
-                Total = await query.CountAsync()
-            };
+            return await _gridDataTableHelpers.FilterByDataTableRequest(query, model);
         }
 
         #endregion
