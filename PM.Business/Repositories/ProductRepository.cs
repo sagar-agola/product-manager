@@ -78,12 +78,7 @@ namespace PM.Business.Repositories
                                               from product in _context.Products.Where(p => p.CategoryId == category.Id)
                                               where
                                                    product.DeletedAt.HasValue == false &&
-                                                   category.DeletedAt.HasValue == false &&
-                                                   (
-                                                        string.IsNullOrEmpty(model.SearchTerm) ||
-                                                        product.Title.Contains(model.SearchTerm) ||
-                                                        category.Title.Contains(model.SearchTerm)
-                                                    )
+                                                   category.DeletedAt.HasValue == false
                                               select new ProductDetail
                                               {
                                                   Id = product.Id,

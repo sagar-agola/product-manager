@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { GridDataResult, PageChangeEvent, PagerSettings } from "@progress/kendo-angular-grid";
-import { CompositeFilterDescriptor, FilterDescriptor, SortDescriptor } from "@progress/kendo-data-query";
+import { CompositeFilterDescriptor, SortDescriptor } from "@progress/kendo-data-query";
 import { Observable } from "rxjs";
-import { CommonHelpersService } from 'src/app/common/services/common-helpers.service';
 import { CategoryService } from '../../category/category.service';
-import { CategoryDetail } from '../../category/models/category-detail.model';
-import { GetAllProductsRequestModel } from '../models/get-all-products-request.model';
+import { KendoColumnType } from '../../custom-kendo-components/models/kendo-column-type.enum';
+import { KendoColumn } from '../../custom-kendo-components/models/kendo-column.model';
 import { ProductService } from '../product.service';
 
 @Component({
@@ -18,7 +17,6 @@ export class ProductsKendoGridComponent implements OnInit {
   gridItems: Observable<GridDataResult>;
   pageSize: number = 5;
   skip: number = 0;
-  searchTerm: string = "";
   sortDescriptor: SortDescriptor[] = [
     {
       field: 'id',
@@ -29,42 +27,53 @@ export class ProductsKendoGridComponent implements OnInit {
     pageSizes: [ 5, 10, 25]
   };
   filter: CompositeFilterDescriptor;
-  categories: CategoryDetail[] = [];
-  columns: any[] = [
+  columns: KendoColumn[] = [
     {
       propertyName: "Title",
       displayName: "Title",
-      searchable: true,
+      field: "title",
+      isHidden: false,
       orderable: true,
-      search: ""
+      searchable: true,
+      search: "",
+      type: KendoColumnType.String
+    },
+    {
+      propertyName: "SubTitle",
+      displayName: "Subtitle",
+      field: "subTitle",
+      isHidden: false,
+      orderable: false,
+      searchable: false,
+      search: "",
+      type: KendoColumnType.String
     },
     {
       propertyName: "CategoryId",
       displayName: "Category",
-      searchable: true,
+      field: "category",
+      isHidden: false,
       orderable: true,
-      search: ""
-    },
+      searchable: true,
+      search: "",
+      type: KendoColumnType.Dropdown,
+      dropdownAdditionalInfo:  {
+        dataPromise: () => {
+          return this._categoryService.GetAll();
+        },
+        displayField: "title",
+        idField: "id"
+      }
+    }
   ];
 
   constructor(
     private _productService: ProductService,
-    private _categoryService: CategoryService,
-    private _commonHelpers: CommonHelpersService
+    private _categoryService: CategoryService
   ) { }
 
   ngOnInit(): void {
-    this.loadCategories();
     this.loadGridItems();
-  }
-
-  loadCategories(): void {
-    this.categories = [];
-    this._categoryService.GetAll().subscribe(response => {
-      if (response && response.length > 0) {
-        this.categories = response;
-      }
-    });
   }
 
   loadGridItems(): void {
@@ -72,7 +81,6 @@ export class ProductsKendoGridComponent implements OnInit {
       skip: this.skip,
       pageSize: this.pageSize,
       sort: this.sortDescriptor,
-      searchTerm: this.searchTerm,
       columns: this.columns,
     };
     this.gridItems = this._productService.GetKendoData(request);
@@ -90,27 +98,12 @@ export class ProductsKendoGridComponent implements OnInit {
     this.loadGridItems();
   }
 
-  onDropdownFilterChange(event: any): void {
-    console.log([ ...this.columns ]);
-
-    for (let i = 0; i < this.columns.length; i++) {
-      if (this.columns[i].propertyName == event.propertyName) {
-        this.columns[i].search = event.search;
+  onFilterChange(event: KendoColumn): void {
+    this.columns.forEach(column => {
+      if (column.propertyName == event.propertyName) {
+        column.search = event.search;
       }
-    }
-    console.log([ ...this.columns ]);
-
-    this.loadGridItems();
-  }
-
-  onFilterChange(event: CompositeFilterDescriptor): void {
-    if (event && event.filters && event.filters.length > 0) {
-      this.columns.forEach(column => {
-        if (column.propertyName == this._commonHelpers.ToPascaleCase((event.filters[0] as FilterDescriptor).field as string)) {
-          column.search = (event.filters[0] as FilterDescriptor).value;
-        }
-      });
-    }
+    });
 
     this.loadGridItems();
   }

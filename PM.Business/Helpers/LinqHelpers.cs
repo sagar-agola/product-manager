@@ -57,7 +57,8 @@ namespace PM.Business.Helpers
             }
             else
             {
-                lambda = NotExqualLambda<T>(parameter);
+                // get false lambda
+                lambda = GetStaticLambda<T>(parameter, 1, 2);
             }
 
             return lambda;
@@ -76,41 +77,32 @@ namespace PM.Business.Helpers
 
         private static Expression<Func<T, bool>> IntSearch<T>(Expression property, ParameterExpression parameter, string value)
         {
-            ConstantExpression argument = Expression.Constant(Convert.ToInt32(value), typeof(int));
-            Expression equalExp = Expression.Equal(property, argument);
-            Expression<Func<T, bool>> lambda = Expression.Lambda<Func<T, bool>>(equalExp, parameter);
+            bool isValidInt = int.TryParse(value, out int searchValue);
 
-            return lambda;
-        }
-
-        private static MethodCallExpression GenerateToStringMethodCall(Type type, Expression property, string format = null)
-        {
-            MethodCallExpression dateToString;
-
-            if (format == null)
+            if (isValidInt == false)
             {
-                MethodInfo methodToString1 = type.GetMethod("ToString", Type.EmptyTypes);
-                dateToString = Expression.Call(property, methodToString1);
-            }
-            else
-            {
-                ConstantExpression p1 = Expression.Constant(format, typeof(string));
-                MethodInfo methodToString2 = type.GetMethod("ToString", new[] { typeof(string) });
-                Expression toStringExpression = Expression.Call(property, methodToString2, p1);
-                dateToString = Expression.Call(toStringExpression, "ToUpper", null, null);
+                // get true lambda
+                return GetStaticLambda<T>(parameter, 1, 1);
             }
 
-            return dateToString;
+            return Expression.Lambda<Func<T, bool>>(
+                Expression.Equal(
+                    property,
+                    Expression.Constant(searchValue, typeof(int))
+                ),
+                parameter
+            );
         }
 
-        private static Expression<Func<T, bool>> NotExqualLambda<T>(ParameterExpression parameter)
+        private static Expression<Func<T, bool>> GetStaticLambda<T>(ParameterExpression parameter, int value1, int value2)
         {
-            ConstantExpression argument1 = Expression.Constant(1, typeof(int));
-            ConstantExpression argument2 = Expression.Constant(2, typeof(int));
-            Expression equalExp = Expression.Equal(argument1, argument2);
-            Expression<Func<T, bool>> lambda = Expression.Lambda<Func<T, bool>>(equalExp, parameter);
-
-            return lambda;
+            return Expression.Lambda<Func<T, bool>>(
+                Expression.Equal(
+                    Expression.Constant(value1, typeof(int)),
+                    Expression.Constant(value2, typeof(int))
+                ),
+                parameter
+            );
         }
     }
 }

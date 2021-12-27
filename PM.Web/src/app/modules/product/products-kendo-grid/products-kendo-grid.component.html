@@ -1,5 +1,4 @@
 <div class="container mt-4">
-    <input type="text" class="form-control mb-2" placeholder="Start typing anything to search..." [(ngModel)]="searchTerm" (input)="loadGridItems()" />
     <kendo-grid
         [data]="gridItems | async"
         [pageSize]="pageSize"
@@ -10,27 +9,35 @@
         [filterable]="true"
         [filter]="filter"
         (pageChange)="onPageChange($event)"
-        (sortChange)="onSortChange($event)"
-        (filterChange)="onFilterChange($event)">
-        <kendo-grid-column
-            field="id" title="ID">
-        </kendo-grid-column>
-        <kendo-grid-column
-            field="title" title="Product Title" filter="text">
-        </kendo-grid-column>
-        <kendo-grid-column
-            field="category" title="Category">
-            <ng-template kendoGridFilterCellTemplate let-filter>
-                <app-kendo-dropdown-filter
-                    [column]="columns[1]"
-                    [data]="categories"
-                    textField="title"
-                    valueField="id"
-                    searchField="CategoryId"
-                    title="Category"
-                    (onFilterChange)="onDropdownFilterChange($event)">
-                </app-kendo-dropdown-filter>
-              </ng-template>
-        </kendo-grid-column>
+        (sortChange)="onSortChange($event)">
+
+        <ng-container *ngFor="let column of columns">
+            <kendo-grid-column
+                [field]="column.field"
+                [title]="column.displayName"
+                [hidden]="column.isHidden"
+                [filterable]="column.searchable"
+                [sortable]="column.orderable">
+                <ng-template kendoGridFilterCellTemplate let-filter *ngIf="column.searchable">
+                    <ng-container *ngIf="column.type == 1 || column.type == 2">
+                        <app-kendo-text-filter
+                            [column]="column"
+                            title="Title"
+                            (onFilterChange)="onFilterChange($event)">
+                        </app-kendo-text-filter>
+                    </ng-container>
+                    <ng-container *ngIf="column.type == 3">
+                        <app-kendo-dropdown-filter
+                            [column]="column"
+                            [dataPromise]="column.dropdownAdditionalInfo.dataPromise()"
+                            [textField]="column.dropdownAdditionalInfo.displayField"
+                            [valueField]="column.dropdownAdditionalInfo.idField"
+                            [title]="column.displayName"
+                            (onFilterChange)="onFilterChange($event)">
+                        </app-kendo-dropdown-filter>
+                    </ng-container>
+                </ng-template>
+            </kendo-grid-column>
+        </ng-container>
     </kendo-grid>
 </div>

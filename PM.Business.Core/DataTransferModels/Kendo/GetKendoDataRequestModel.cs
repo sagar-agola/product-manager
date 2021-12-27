@@ -27,9 +27,7 @@ namespace PM.Business.Core.DataTransferModels.Kendo
     public class KendoColumn
     {
         public string PropertyName { get; set; }
-        public string DisplayName { get; set; }
         public bool Searchable { get; set; }
-        public bool Orderable { get; set; }
         public object Search { get; set; }
     }
 }
