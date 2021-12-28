@@ -6,20 +6,27 @@ import { KendoTextFilterComponent } from './kendo-text-filter/kendo-text-filter.
 import { FormsModule } from '@angular/forms';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { ButtonsModule } from '@progress/kendo-angular-buttons';
+import { KendoTableGridComponent } from './kendo-table-grid/kendo-table-grid.component';
+import { GridModule } from '@progress/kendo-angular-grid';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
     KendoDropdownFilterComponent,
-    KendoTextFilterComponent
+    KendoTextFilterComponent,
+    KendoTableGridComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     DropDownsModule,
     InputsModule,
-    ButtonsModule
+    ButtonsModule,
+    GridModule,
+    MatButtonModule
   ],
   exports: [
+    KendoTableGridComponent,
     KendoDropdownFilterComponent,
     KendoTextFilterComponent
   ]

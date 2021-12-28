@@ -7,6 +7,7 @@ import { PaginatedResponse } from 'src/app/common/models/paginated-response.mode
 import { BaseService } from 'src/app/common/services/base.service';
 import { NotificationService } from 'src/app/common/services/notification.service';
 import { environment } from 'src/environments/environment';
+import { KendoTableGridRequest } from '../custom-kendo-components/models/kendo-table-grid-request.model';
 import { GetAllProductsRequestModel } from './models/get-all-products-request.model';
 import { ProductDetail } from './models/product-detail.model';
 
@@ -29,7 +30,7 @@ export class ProductService extends BaseService {
     return this.post<PaginatedResponse<ProductDetail>>(this._basePath, model);
   }
 
-  GetKendoData(model: any): Observable<GridDataResult> {
+  GetKendoData(model: KendoTableGridRequest): Observable<GridDataResult> {
     return this.post<GridDataResult>(`${this._basePath}/kendo-grid`, model);
   }
 

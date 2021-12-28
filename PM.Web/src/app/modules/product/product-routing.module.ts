@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
+import { ProductKendoGridV2Component } from './product-kendo-grid-v2/product-kendo-grid-v2.component';
 import { ProductListComponent } from './product-list/product-list.component';
 import { ProductViewComponent } from './product-view/product-view.component';
 import { ProductsKendoGridComponent } from './products-kendo-grid/products-kendo-grid.component';
@@ -25,6 +26,10 @@ const routes: Routes = [
   {
     path: 'kendo',
     component: ProductsKendoGridComponent
+  },
+  {
+    path: 'kendo-v2',
+    component: ProductKendoGridV2Component
   }
 ];
 
