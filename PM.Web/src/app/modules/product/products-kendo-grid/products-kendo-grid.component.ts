@@ -18,6 +18,7 @@ export class ProductsKendoGridComponent implements OnInit {
   tableDefinition: KendoTableDefinition = {
     dataSource: (model: KendoTableGridRequest) => this._productService.GetKendoData(model),
     emptyTableText: "There are no products",
+    gridHeaderText: "Products",
     columns: [
       {
         propertyName: "Title",

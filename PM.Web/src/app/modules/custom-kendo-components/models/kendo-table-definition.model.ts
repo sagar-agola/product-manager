@@ -11,6 +11,7 @@ export class KendoTableDefinition {
     columns: KendoColumn[];
     buttons: KendoButton<DataItem>[];
     emptyTableText: string;
+    gridHeaderText: string;
     defaultSort: SortDescriptor;
     toolbar?: {
         left?: KendoToolbarItem[],
