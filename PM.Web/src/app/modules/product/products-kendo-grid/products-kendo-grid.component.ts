@@ -34,6 +34,7 @@ export class ProductsKendoGridComponent implements OnInit {
         propertyName: "CategoryId",
         displayName: "Category",
         field: "category",
+        width: 200,
         isHidden: false,
         orderable: true,
         searchable: true,
@@ -59,11 +60,37 @@ export class ProductsKendoGridComponent implements OnInit {
         propertyName: "SalePrice",
         displayName: "Price",
         field: "salePrice",
+        width: 140,
         isHidden: false,
         orderable: true,
         searchable: true,
         search: "",
         type: KendoColumnType.Currency
+      },
+      {
+        propertyName: "Quentity",
+        displayName: "Quentity",
+        field: "quentity",
+        width: 120,
+        isHidden: false,
+        orderable: true,
+        searchable: true,
+        search: "",
+        type: KendoColumnType.Numeric
+      },
+      {
+        propertyName: "IsActive",
+        displayName: "Is Active",
+        field: "isActive",
+        width: 100,
+        isHidden: false,
+        orderable: true,
+        searchable: true,
+        search: "",
+        type: KendoColumnType.Boolean,
+        checkboxAdditionalInfo: {
+          callBack: (data: DataItem) => console.log(data)
+        }
       }
     ],
     buttons: [
@@ -75,7 +102,7 @@ export class ProductsKendoGridComponent implements OnInit {
       },
       {
         title: "View",
-        icon: "fa fa-eye",
+        icon: "fa fa-info-circle",
         skin: KendoButtonSkin.Primary,
         callBack: (data: DataItem) => console.log(data)
       },
