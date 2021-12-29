@@ -9,6 +9,7 @@ import { ButtonsModule } from '@progress/kendo-angular-buttons';
 import { KendoTableGridComponent } from './kendo-table-grid/kendo-table-grid.component';
 import { GridModule } from '@progress/kendo-angular-grid';
 import { MatButtonModule } from '@angular/material/button';
+import { TooltipModule } from '@progress/kendo-angular-tooltip';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { MatButtonModule } from '@angular/material/button';
     InputsModule,
     ButtonsModule,
     GridModule,
+    TooltipModule,
     MatButtonModule
   ],
   exports: [

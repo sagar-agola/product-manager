@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { GridDataResult, PageChangeEvent, PagerSettings } from '@progress/kendo-angular-grid';
 import { CompositeFilterDescriptor, SortDescriptor } from '@progress/kendo-data-query';
 import { Observable } from 'rxjs';
 import { KendoColumn } from '../models/kendo-column.model';
 import { KendoTableDefinition } from '../models/kendo-table-definition.model';
 import { KendoTableGridRequest } from '../models/kendo-table-grid-request.model';
+import { TooltipDirective } from "@progress/kendo-angular-tooltip";
 
 @Component({
   selector: 'app-kendo-table-grid',
@@ -13,6 +14,7 @@ import { KendoTableGridRequest } from '../models/kendo-table-grid-request.model'
 })
 export class KendoTableGridComponent implements OnInit {
 
+  @ViewChild(TooltipDirective) tooltipDir: TooltipDirective;
   @Input() tableDefinition: KendoTableDefinition;
 
   gridItems: Observable<GridDataResult>;
@@ -55,7 +57,6 @@ export class KendoTableGridComponent implements OnInit {
   }
 
   onFilterChange(event: KendoColumn): void {
-
     // on search reset pagination
     this.skip = 0;
 
@@ -66,6 +67,18 @@ export class KendoTableGridComponent implements OnInit {
     });
 
     this.loadGridItems();
+  }
+
+  showTooltip(e: MouseEvent): void {
+    const element = e.target as HTMLElement;
+    if (
+      (element.nodeName === "TD" || element.nodeName === "TH") &&
+      element.offsetWidth < element.scrollWidth
+    ) {
+      this.tooltipDir.toggle(element);
+    } else {
+      this.tooltipDir.hide();
+    }
   }
 
 }

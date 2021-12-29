@@ -5,6 +5,7 @@ import { KendoButtonSkin } from '../../custom-kendo-components/models/kendo-butt
 import { KendoColumnType } from '../../custom-kendo-components/models/kendo-column-type.enum';
 import { KendoTableDefinition } from '../../custom-kendo-components/models/kendo-table-definition.model';
 import { KendoTableGridRequest } from '../../custom-kendo-components/models/kendo-table-grid-request.model';
+import { KendoToolbarTypeEnum } from '../../custom-kendo-components/models/kendo-toolbar-item.model';
 import { ProductService } from '../product.service';
 
 @Component({
@@ -29,16 +30,6 @@ export class ProductKendoGridV2Component implements OnInit {
         type: KendoColumnType.String
       },
       {
-        propertyName: "SubTitle",
-        displayName: "Subtitle",
-        field: "subTitle",
-        isHidden: false,
-        orderable: false,
-        searchable: false,
-        search: "",
-        type: KendoColumnType.String
-      },
-      {
         propertyName: "CategoryId",
         displayName: "Category",
         field: "category",
@@ -48,15 +39,39 @@ export class ProductKendoGridV2Component implements OnInit {
         search: "",
         type: KendoColumnType.Dropdown,
         dropdownAdditionalInfo:  {
-          dataPromise: () => {
-            return this._categoryService.GetAll();
-          },
+          dataPromise: () => this._categoryService.GetAll(),
           displayField: "title",
           idField: "id"
         }
+      },
+      {
+        propertyName: "SubTitle",
+        displayName: "Subtitle",
+        field: "subTitle",
+        isHidden: false,
+        orderable: true,
+        searchable: true,
+        search: "",
+        type: KendoColumnType.String
+      },
+      {
+        propertyName: "SalePrice",
+        displayName: "Price",
+        field: "salePrice",
+        isHidden: false,
+        orderable: true,
+        searchable: true,
+        search: "",
+        type: KendoColumnType.Currency
       }
     ],
     buttons: [
+      {
+        title: "Edit",
+        icon: "fa fa-edit",
+        skin: KendoButtonSkin.Primary,
+        callBack: (data: DataItem) => console.log(data)
+      },
       {
         title: "View",
         icon: "fa fa-eye",
@@ -70,6 +85,19 @@ export class ProductKendoGridV2Component implements OnInit {
         callBack: (data: DataItem) => console.log(data)
       }
     ],
+    toolbar: {
+      right: [
+        {
+          type: KendoToolbarTypeEnum.Button,
+          buttonConfiguration: {
+            title: "Create",
+            icon: "fa fa-plus",
+            skin: KendoButtonSkin.Primary,
+            callBack: () => { console.log("Add button clicked") }
+          }
+        }
+      ]
+    },
     defaultSort: {
       field: "Title",
       dir: "desc"

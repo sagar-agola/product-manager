@@ -1,11 +1,9 @@
-import { DataItem } from "@progress/kendo-angular-grid";
-
-export class KendoButton {
+export class KendoButton<T> {
     title: string;
     icon?: string;
     skin?: KendoButtonSkin;
     ngIfCallBack?: () => boolean;
-    callBack: (data: DataItem) => void;
+    callBack: (data: T) => void;
 }
 
 export enum KendoButtonSkin {

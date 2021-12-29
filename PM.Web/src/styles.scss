@@ -77,6 +77,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     width: 100% !important;
 }
 
+.k-grid .k-grid-content td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .mr-2 {
     margin-right: 8px !important;
 }
