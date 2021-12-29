@@ -6,6 +6,7 @@ import { KendoColumn } from '../models/kendo-column.model';
 import { KendoTableDefinition } from '../models/kendo-table-definition.model';
 import { KendoTableGridRequest } from '../models/kendo-table-grid-request.model';
 import { TooltipDirective } from "@progress/kendo-angular-tooltip";
+import { AppConsts } from 'src/app/common/app-consts';
 
 @Component({
   selector: 'app-kendo-table-grid',
@@ -17,6 +18,7 @@ export class KendoTableGridComponent implements OnInit {
   @ViewChild(TooltipDirective) tooltipDir: TooltipDirective;
   @Input() tableDefinition: KendoTableDefinition;
 
+  appConsts = AppConsts;
   gridItems: Observable<GridDataResult>;
   skip: number = 0;
   defaultPageSize: number = 5;

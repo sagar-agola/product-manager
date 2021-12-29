@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { KendoColumn } from '../models/kendo-column.model';
 
 @Component({
@@ -6,7 +6,7 @@ import { KendoColumn } from '../models/kendo-column.model';
   templateUrl: './kendo-boolean-filter.component.html',
   styleUrls: ['./kendo-boolean-filter.component.scss']
 })
-export class KendoBooleanFilterComponent implements OnInit {
+export class KendoBooleanFilterComponent {
 
   @Input() column: KendoColumn;
   @Output() onFilterChange: EventEmitter<KendoColumn> = new EventEmitter<KendoColumn>();
@@ -20,9 +20,6 @@ export class KendoBooleanFilterComponent implements OnInit {
   ];
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
   onChange(): void {
     if (!this.selectedValue || !this.selectedValue.value) {

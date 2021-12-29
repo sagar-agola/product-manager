@@ -7,6 +7,10 @@
     border-color: #cecece;
 }
 
+.k-picker-wrap {
+    border-color: #cecece !important;
+}
+
 .k-grid {
     border-color: #cecece;
 
@@ -15,4 +19,8 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+}
+
+kendo-datepicker {
+    width: 100% !important;
 }

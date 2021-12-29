@@ -3,5 +3,6 @@ export enum KendoColumnType {
     Numeric = 2,
     Dropdown = 3,
     Currency = 4,
-    Boolean = 5
+    Boolean = 5,
+    Date = 6
 }

@@ -77,6 +77,16 @@ namespace PM.Business.Helpers
 
                 lambda = StringSearch<T>(ternary, parameter, value);
             }
+            else if (fieldType == typeof(DateTime))
+            {
+                lambda = Expression.Lambda<Func<T, bool>>(
+                    Expression.Equal(
+                        property,
+                        Expression.Constant(Convert.ToDateTime(value), typeof(DateTime))
+                    ),
+                    parameter
+                );
+            }
             else
             {
                 // get false lambda

@@ -72,6 +72,16 @@ export class ProductsKendoGridComponent implements OnInit {
         type: KendoColumnType.Currency
       },
       {
+        propertyName: "ManufactoredAt",
+        displayName: "Manufactored Date",
+        field: "manufactoredAt",
+        isHidden: false,
+        orderable: true,
+        searchable: true,
+        search: "",
+        type: KendoColumnType.Date
+      },
+      {
         propertyName: "Quentity",
         displayName: "Quentity",
         field: "quentity",

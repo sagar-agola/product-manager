@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { KendoColumn } from '../models/kendo-column.model';
 
 @Component({
@@ -6,7 +6,7 @@ import { KendoColumn } from '../models/kendo-column.model';
   template: '<kendo-textbox [(ngModel)]="searchText" [clearButton]="true" (valueChange)="onChange()"></kendo-textbox>',
   styleUrls: ['./kendo-text-filter.component.scss']
 })
-export class KendoTextFilterComponent implements OnInit {
+export class KendoTextFilterComponent {
 
   @Input() title: string;
   @Input() column: KendoColumn;
@@ -17,12 +17,9 @@ export class KendoTextFilterComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
-
   onChange(): void {
     this.column.search = this.searchText;
-    this.onFilterChange.emit(this.column)
+    this.onFilterChange.emit(this.column);
   }
 
 }

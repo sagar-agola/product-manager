@@ -93,6 +93,10 @@
                         </div>
                     </ng-template>
 
+                    <ng-template kendoGridCellTemplate let-dataItem *ngIf="column.type == 6">
+                        {{ dataItem[column.field] | date : appConsts.dateFormat}}
+                    </ng-template>
+
                     <!-- Column Filters -->
                     <ng-template kendoGridFilterCellTemplate let-filter *ngIf="column.searchable">
                         <ng-container *ngIf="column.type == 1 || column.type == 2 || column.type == 4">
@@ -117,6 +121,12 @@
                                 [column]="column"
                                 (onFilterChange)="onFilterChange($event)">
                             </app-kendo-boolean-filter>
+                        </ng-container>
+                        <ng-container *ngIf="column.type == 6">
+                            <app-kendo-date-filter
+                                [column]="column"
+                                (onFilterChange)="onFilterChange($event)">
+                            </app-kendo-date-filter>
                         </ng-container>
                     </ng-template>
                 </kendo-grid-column>

@@ -13,13 +13,16 @@ import { TooltipModule } from '@progress/kendo-angular-tooltip';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { KendoBooleanFilterComponent } from './kendo-boolean-filter/kendo-boolean-filter.component';
+import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
+import { KendoDateFilterComponent } from './kendo-date-filter/kendo-date-filter.component';
 
 @NgModule({
   declarations: [
     KendoDropdownFilterComponent,
     KendoTextFilterComponent,
     KendoTableGridComponent,
-    KendoBooleanFilterComponent
+    KendoBooleanFilterComponent,
+    KendoDateFilterComponent
   ],
   imports: [
     CommonModule,
@@ -29,6 +32,7 @@ import { KendoBooleanFilterComponent } from './kendo-boolean-filter/kendo-boolea
     ButtonsModule,
     GridModule,
     TooltipModule,
+    DateInputsModule,
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule
