@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { DataItem } from '@progress/kendo-angular-grid';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { CategoryService } from '../../category/category.service';
+import { ConfirmDialogComponent, ConfirmDialogModel } from '../../common-components/confirm-dialog/confirm-dialog.component';
 import { KendoButtonSkin } from '../../custom-kendo-components/models/kendo-button.model';
 import { KendoColumnType } from '../../custom-kendo-components/models/kendo-column-type.enum';
 import { KendoTableDefinition } from '../../custom-kendo-components/models/kendo-table-definition.model';
@@ -89,7 +93,9 @@ export class ProductsKendoGridComponent implements OnInit {
         search: "",
         type: KendoColumnType.Boolean,
         checkboxAdditionalInfo: {
-          callBack: (data: DataItem) => console.log(data)
+          callBack: (data: DataItem) => {
+            this._productService.ToggleActive(data["id"]).subscribe(() => {});
+          }
         }
       }
     ],
@@ -98,19 +104,19 @@ export class ProductsKendoGridComponent implements OnInit {
         title: "Edit",
         icon: "fa fa-edit",
         skin: KendoButtonSkin.Primary,
-        callBack: (data: DataItem) => console.log(data)
+        callBack: (data: DataItem) => this.router.navigate([ "/products/edit/", data["id"] ])
       },
       {
         title: "View",
         icon: "fa fa-info-circle",
         skin: KendoButtonSkin.Primary,
-        callBack: (data: DataItem) => console.log(data)
+        callBack: (data: DataItem) => this.router.navigate([ "/products/view/", data["id"] ])
       },
       {
         title: "Delete",
         icon: "fa fa-trash",
         skin: KendoButtonSkin.Danger,
-        callBack: (data: DataItem) => console.log(data)
+        callBack: (data: DataItem) => this.delete(data["id"])
       }
     ],
     toolbar: {
@@ -121,7 +127,7 @@ export class ProductsKendoGridComponent implements OnInit {
             title: "Create",
             icon: "fa fa-plus",
             skin: KendoButtonSkin.Primary,
-            callBack: () => { console.log("Add button clicked") }
+            callBack: () => this.router.navigate([ "/products/create/" ])
           }
         }
       ]
@@ -133,11 +139,37 @@ export class ProductsKendoGridComponent implements OnInit {
   };
 
   constructor(
+    private router: Router,
+    private spinner: NgxSpinnerService,
+    private dialog: MatDialog,
     private _productService: ProductService,
     private _categoryService: CategoryService
   ) { }
 
   ngOnInit(): void {
+  }
+
+  delete(id: any): void {
+    const message = `Are you sure you want to delete this Product?`;
+
+    const dialogData = new ConfirmDialogModel("Confirm Action", message);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      maxWidth: "400px",
+      data: dialogData,
+      position: {
+        top: "80px"
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((isConfirmed: boolean) => {
+      if (isConfirmed) {
+        this.spinner.show();
+        this._productService.Delete(id).subscribe(() => {
+          this.spinner.hide();
+          // todo - refresh grid
+        });
+      }
+    });
   }
 
 }
