@@ -36,7 +36,7 @@ namespace PM.Business.Helpers
             baseData = baseData.Where(predicates);
 
             string sortField = request.Sort != null && request.Sort.Count > 0 ? request.Sort[0].Field.ToPascaleCase() : "Id";
-            bool isAsc = request.Sort != null && request.Sort.Count > 0 && request.Sort[0].Dir == "asc";
+            bool isAsc = request.Sort != null && request.Sort.Count > 0 && (request.Sort[0].Dir == "asc" || string.IsNullOrEmpty(request.Sort[0].Dir));
 
             return new KendoResponseModel<T>
             {

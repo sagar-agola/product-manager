@@ -16,13 +16,6 @@ namespace PM.Business.Core.DataTransferModels.Kendo
         public string Dir { get; set; }
     }
 
-    public class KendoFilter
-    {
-        public string Field { get; set; }
-        public string Value { get; set; }
-        public string Operator { get; set; }
-    }
-
     public class KendoColumn
     {
         public string PropertyName { get; set; }
