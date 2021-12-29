@@ -11,6 +11,7 @@ import { GridModule } from '@progress/kendo-angular-grid';
 import { MatButtonModule } from '@angular/material/button';
 import { TooltipModule } from '@progress/kendo-angular-tooltip';
 import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { MatCardModule } from '@angular/material/card';
     GridModule,
     TooltipModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    MatCheckboxModule
   ],
   exports: [
     KendoTableGridComponent,

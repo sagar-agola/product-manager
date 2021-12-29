@@ -53,6 +53,8 @@
         [tooltipTemplate]="template"
         filter=".k-grid td"
         (mouseover)="showTooltip($event)">
+
+        <!-- Grid -->
         <kendo-grid
             [data]="gridItems | async"
             [skip]="skip"
@@ -62,6 +64,7 @@
             [sort]="sortOptions"
             [filterable]="true"
             [filter]="filter"
+            [resizable]="true"
             (pageChange)="onPageChange($event)"
             (sortChange)="onSortChange($event)">
 
@@ -71,11 +74,23 @@
                     [title]="column.displayName"
                     [hidden]="column.isHidden"
                     [filterable]="column.searchable"
-                    [sortable]="column.orderable">
+                    [sortable]="column.orderable"
+                    [width]="column.width">
+
+                    <!-- Header template -->
+                    <ng-template kendoGridHeaderTemplate>
+                        <b>{{ column.displayName }}</b>
+                    </ng-template>
 
                     <!-- custom cell template -->
                     <ng-template kendoGridCellTemplate let-dataItem *ngIf="column.type == 4">
-                        {{ dataItem.salePrice | currency : 'INR' }}
+                        {{ dataItem[column.field] | currency : 'INR' }}
+                    </ng-template>
+
+                    <ng-template kendoGridCellTemplate let-dataItem *ngIf="column.type == 5">
+                        <div class="text-center">
+                            <mat-checkbox color="primary" [checked]="dataItem[column.field]" [disabled]="!column.checkboxAdditionalInfo" (change)="column.checkboxAdditionalInfo.callBack(dataItem)"></mat-checkbox>
+                        </div>
                     </ng-template>
 
                     <!-- Column Filters -->
@@ -104,16 +119,16 @@
             <!-- Buttons column -->
             <kendo-grid-column *ngIf="tableDefinition.buttons.length > 0">
                 <ng-template kendoGridCellTemplate let-dataItem>
-                    <div class="text-center">
+                    <div kendoTooltip filter="button" class="text-center">
                         <ng-container *ngFor="let button of tableDefinition.buttons; let i = index">
                             <button
                                 mat-raised-button
-                                color="{{ button.skin ? button.skin : 'primary' }}"
                                 *ngIf="!button.ngIfCallBack || button.ngIfCallBack()"
-                                (click)="button.callBack(dataItem)"
-                                [ngClass]="{ 'mr-2' : i + 1 < tableDefinition.buttons.length}">
-                                <i *ngIf="button.icon" class="{{ button.icon }} mr-2"></i>
-                                {{ button.title }}
+                                color="{{ button.skin ? button.skin : 'primary' }}"
+                                [title]="button.title"
+                                [ngClass]="{ 'mr-2' : i + 1 < tableDefinition.buttons.length }"
+                                (click)="button.callBack(dataItem)">
+                                <i *ngIf="button.icon" class="{{ button.icon }}"></i>
                             </button>
                         </ng-container>
                     </div>

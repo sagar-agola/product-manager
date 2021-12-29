@@ -1,5 +1,5 @@
 export class KendoButton<T> {
-    title: string;
+    title?: string;
     icon?: string;
     skin?: KendoButtonSkin;
     ngIfCallBack?: () => boolean;
