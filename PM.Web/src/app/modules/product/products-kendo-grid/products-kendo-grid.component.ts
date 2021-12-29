@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { GridDataResult, PageChangeEvent, PagerSettings } from "@progress/kendo-angular-grid";
-import { CompositeFilterDescriptor, SortDescriptor } from "@progress/kendo-data-query";
-import { Observable } from "rxjs";
+import { DataItem } from '@progress/kendo-angular-grid';
 import { CategoryService } from '../../category/category.service';
+import { KendoButtonSkin } from '../../custom-kendo-components/models/kendo-button.model';
 import { KendoColumnType } from '../../custom-kendo-components/models/kendo-column-type.enum';
-import { KendoColumn } from '../../custom-kendo-components/models/kendo-column.model';
+import { KendoTableDefinition } from '../../custom-kendo-components/models/kendo-table-definition.model';
+import { KendoTableGridRequest } from '../../custom-kendo-components/models/kendo-table-grid-request.model';
+import { KendoToolbarTypeEnum } from '../../custom-kendo-components/models/kendo-toolbar-item.model';
 import { ProductService } from '../product.service';
 
 @Component({
@@ -14,58 +15,94 @@ import { ProductService } from '../product.service';
 })
 export class ProductsKendoGridComponent implements OnInit {
 
-  gridItems: Observable<GridDataResult>;
-  pageSize: number = 5;
-  skip: number = 0;
-  sortDescriptor: SortDescriptor[] = [
-    {
-      field: 'id',
-      dir: 'desc'
-    }
-  ];
-  pageOptions: PagerSettings = {
-    pageSizes: [ 5, 10, 25]
-  };
-  filter: CompositeFilterDescriptor;
-  columns: KendoColumn[] = [
-    {
-      propertyName: "Title",
-      displayName: "Title",
-      field: "title",
-      isHidden: false,
-      orderable: true,
-      searchable: true,
-      search: "",
-      type: KendoColumnType.String
-    },
-    {
-      propertyName: "SubTitle",
-      displayName: "Subtitle",
-      field: "subTitle",
-      isHidden: false,
-      orderable: false,
-      searchable: false,
-      search: "",
-      type: KendoColumnType.String
-    },
-    {
-      propertyName: "CategoryId",
-      displayName: "Category",
-      field: "category",
-      isHidden: false,
-      orderable: true,
-      searchable: true,
-      search: "",
-      type: KendoColumnType.Dropdown,
-      dropdownAdditionalInfo:  {
-        dataPromise: () => {
-          return this._categoryService.GetAll();
-        },
-        displayField: "title",
-        idField: "id"
+  tableDefinition: KendoTableDefinition = {
+    dataSource: (model: KendoTableGridRequest) => this._productService.GetKendoData(model),
+    emptyTableText: "There are no products",
+    columns: [
+      {
+        propertyName: "Title",
+        displayName: "Title",
+        field: "title",
+        isHidden: false,
+        orderable: true,
+        searchable: true,
+        search: "",
+        type: KendoColumnType.String
+      },
+      {
+        propertyName: "CategoryId",
+        displayName: "Category",
+        field: "category",
+        isHidden: false,
+        orderable: true,
+        searchable: true,
+        search: "",
+        type: KendoColumnType.Dropdown,
+        dropdownAdditionalInfo:  {
+          dataPromise: () => this._categoryService.GetAll(),
+          displayField: "title",
+          idField: "id"
+        }
+      },
+      {
+        propertyName: "SubTitle",
+        displayName: "Subtitle",
+        field: "subTitle",
+        isHidden: false,
+        orderable: true,
+        searchable: true,
+        search: "",
+        type: KendoColumnType.String
+      },
+      {
+        propertyName: "SalePrice",
+        displayName: "Price",
+        field: "salePrice",
+        isHidden: false,
+        orderable: true,
+        searchable: true,
+        search: "",
+        type: KendoColumnType.Currency
       }
-    }
-  ];
+    ],
+    buttons: [
+      {
+        title: "Edit",
+        icon: "fa fa-edit",
+        skin: KendoButtonSkin.Primary,
+        callBack: (data: DataItem) => console.log(data)
+      },
+      {
+        title: "View",
+        icon: "fa fa-eye",
+        skin: KendoButtonSkin.Primary,
+        callBack: (data: DataItem) => console.log(data)
+      },
+      {
+        title: "Delete",
+        icon: "fa fa-trash",
+        skin: KendoButtonSkin.Danger,
+        callBack: (data: DataItem) => console.log(data)
+      }
+    ],
+    toolbar: {
+      right: [
+        {
+          type: KendoToolbarTypeEnum.Button,
+          buttonConfiguration: {
+            title: "Create",
+            icon: "fa fa-plus",
+            skin: KendoButtonSkin.Primary,
+            callBack: () => { console.log("Add button clicked") }
+          }
+        }
+      ]
+    },
+    defaultSort: {
+      field: "Title",
+      dir: "desc"
+    },
+  };
 
   constructor(
     private _productService: ProductService,
@@ -73,39 +110,6 @@ export class ProductsKendoGridComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadGridItems();
-  }
-
-  loadGridItems(): void {
-    const request: any = {
-      skip: this.skip,
-      pageSize: this.pageSize,
-      sort: this.sortDescriptor,
-      columns: this.columns,
-    };
-    this.gridItems = this._productService.GetKendoData(request);
-  }
-
-  onPageChange(event: PageChangeEvent): void {
-    this.skip = event.skip;
-    this.pageSize = event.take;
-
-    this.loadGridItems();
-  }
-
-  onSortChange(descriptor: SortDescriptor[]): void {
-    this.sortDescriptor = descriptor;
-    this.loadGridItems();
-  }
-
-  onFilterChange(event: KendoColumn): void {
-    this.columns.forEach(column => {
-      if (column.propertyName == event.propertyName) {
-        column.search = event.search;
-      }
-    });
-
-    this.loadGridItems();
   }
 
 }

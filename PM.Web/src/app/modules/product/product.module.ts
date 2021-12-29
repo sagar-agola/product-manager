@@ -10,7 +10,6 @@ import { CommonComponentsModule } from '../common-components/common-components.m
 import { ProductsKendoGridComponent } from './products-kendo-grid/products-kendo-grid.component';
 import { GridModule } from '@progress/kendo-angular-grid';
 import { CustomKendoComponentsModule } from '../custom-kendo-components/custom-kendo-components.module';
-import { ProductKendoGridV2Component } from './product-kendo-grid-v2/product-kendo-grid-v2.component';
 
 @NgModule({
   declarations: [
@@ -18,8 +17,7 @@ import { ProductKendoGridV2Component } from './product-kendo-grid-v2/product-ken
     ProductDetailComponent,
     ProductViewComponent,
     ProductItemComponent,
-    ProductsKendoGridComponent,
-    ProductKendoGridV2Component
+    ProductsKendoGridComponent
   ],
   imports: [
     SharedModule,
