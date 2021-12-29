@@ -55,6 +55,11 @@ namespace PM.Business.Helpers
             {
                 lambda = IntSearch<T>(property, parameter, value);
             }
+            else if (fieldType == typeof(decimal))
+            {
+                MethodCallExpression intToString = GenerateToStringMethodCall(typeof(decimal), property);
+                lambda = StringSearch<T>(intToString, parameter, value);
+            }
             else
             {
                 // get false lambda
@@ -92,6 +97,26 @@ namespace PM.Business.Helpers
                 ),
                 parameter
             );
+        }
+
+        private static MethodCallExpression GenerateToStringMethodCall(Type type, Expression property, string format = null)
+        {
+            MethodCallExpression dateToString;
+
+            if (format == null)
+            {
+                MethodInfo methodToString1 = type.GetMethod("ToString", Type.EmptyTypes);
+                dateToString = Expression.Call(property, methodToString1);
+            }
+            else
+            {
+                ConstantExpression p1 = Expression.Constant(format, typeof(string));
+                MethodInfo methodToString2 = type.GetMethod("ToString", new[] { typeof(string) });
+                Expression toStringExpression = Expression.Call(property, methodToString2, p1);
+                dateToString = Expression.Call(toStringExpression, "ToUpper", null, null);
+            }
+
+            return dateToString;
         }
 
         private static Expression<Func<T, bool>> GetStaticLambda<T>(ParameterExpression parameter, int value1, int value2)
