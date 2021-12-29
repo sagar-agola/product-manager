@@ -12,12 +12,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { TooltipModule } from '@progress/kendo-angular-tooltip';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { KendoBooleanFilterComponent } from './kendo-boolean-filter/kendo-boolean-filter.component';
 
 @NgModule({
   declarations: [
     KendoDropdownFilterComponent,
     KendoTextFilterComponent,
-    KendoTableGridComponent
+    KendoTableGridComponent,
+    KendoBooleanFilterComponent
   ],
   imports: [
     CommonModule,

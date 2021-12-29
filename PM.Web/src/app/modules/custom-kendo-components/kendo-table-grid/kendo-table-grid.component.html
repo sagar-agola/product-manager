@@ -112,6 +112,12 @@
                                 (onFilterChange)="onFilterChange($event)">
                             </app-kendo-dropdown-filter>
                         </ng-container>
+                        <ng-container *ngIf="column.type == 5">
+                            <app-kendo-boolean-filter
+                                [column]="column"
+                                (onFilterChange)="onFilterChange($event)">
+                            </app-kendo-boolean-filter>
+                        </ng-container>
                     </ng-template>
                 </kendo-grid-column>
             </ng-container>

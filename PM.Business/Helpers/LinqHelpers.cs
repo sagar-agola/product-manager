@@ -60,6 +60,23 @@ namespace PM.Business.Helpers
                 MethodCallExpression intToString = GenerateToStringMethodCall(typeof(decimal), property);
                 lambda = StringSearch<T>(intToString, parameter, value);
             }
+            else if (fieldType == typeof(bool))
+            {
+                if (value.ToLower() == "true")
+                {
+                    value = "yes";
+                }
+                else if (value.ToLower() == "false")
+                {
+                    value = "no";
+                }
+
+                ConstantExpression yesString = Expression.Constant("yes", typeof(string));
+                ConstantExpression noString = Expression.Constant("no", typeof(string));
+                ConditionalExpression ternary = Expression.Condition(property, yesString, noString);
+
+                lambda = StringSearch<T>(ternary, parameter, value);
+            }
             else
             {
                 // get false lambda
