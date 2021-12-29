@@ -1,11 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { GridDataResult } from '@progress/kendo-angular-grid';
 import { Observable } from 'rxjs';
 import { PaginatedResponse } from 'src/app/common/models/paginated-response.model';
 import { BaseService } from 'src/app/common/services/base.service';
 import { NotificationService } from 'src/app/common/services/notification.service';
 import { environment } from 'src/environments/environment';
+import { KendoTableGridRequest } from '../custom-kendo-components/models/kendo-table-grid-request.model';
 import { CategoryDetail } from './models/category-detail.model';
 
 @Injectable({
@@ -25,6 +27,10 @@ export class CategoryService extends BaseService {
 
   GetAll(): Observable<CategoryDetail[]> {
     return this.get<CategoryDetail[]>(this._basePath);
+  }
+
+  GetKendoData(model: KendoTableGridRequest): Observable<GridDataResult> {
+    return this.post<GridDataResult>(`${this._basePath}/kendo-grid`, model);
   }
 
   Save(model: CategoryDetail): Observable<any> {

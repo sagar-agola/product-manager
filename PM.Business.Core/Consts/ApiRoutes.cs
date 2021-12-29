@@ -56,6 +56,11 @@
             public const string GetAll = _base;
 
             /// <summary>
+            /// api/categories/kendo-grid
+            /// </summary>
+            public const string GetKendoData = _base + "kendo-grid";
+
+            /// <summary>
             /// api/categories
             /// </summary>
             public const string Save = _base;

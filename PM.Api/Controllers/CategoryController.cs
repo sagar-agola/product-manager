@@ -4,6 +4,7 @@ using PM.Business.Contracts;
 using PM.Business.Core.Consts;
 using PM.Business.Core.DataTransferModels;
 using PM.Business.Core.DataTransferModels.Category;
+using PM.Business.Core.DataTransferModels.Kendo;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -24,6 +25,13 @@ namespace PM.Api.Controllers
         {
             ExecutionResult<List<CategoryDetail>> result = await _categoryRepository.GetAll();
             return FromExecutionResult(result);
+        }
+
+        [HttpPost(ApiRoutes.Category.GetKendoData)]
+        public async Task<IActionResult> GetKendoData(GetKendoDataRequestModel model)
+        {
+            KendoResponseModel<CategoryDetail> response = await _categoryRepository.GetKendoData(model);
+            return Ok(response);
         }
 
         [HttpPost(ApiRoutes.Category.Save)]

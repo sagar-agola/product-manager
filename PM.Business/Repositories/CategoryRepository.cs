@@ -3,6 +3,8 @@ using PM.Business.Contracts;
 using PM.Business.Core.Consts;
 using PM.Business.Core.DataTransferModels;
 using PM.Business.Core.DataTransferModels.Category;
+using PM.Business.Core.DataTransferModels.Kendo;
+using PM.Business.Helpers;
 using PM.Database.DataContext;
 using PM.Database.Models;
 using System;
@@ -15,10 +17,12 @@ namespace PM.Business.Repositories
     public class CategoryRepository : ICategoryRepository
     {
         private readonly ProductManagerDbContext _context;
+        private readonly GridDataTableHelpers _gridDataTableHelpers;
 
-        public CategoryRepository(ProductManagerDbContext context)
+        public CategoryRepository(ProductManagerDbContext context, GridDataTableHelpers gridDataTableHelpers)
         {
             _context = context;
+            _gridDataTableHelpers = gridDataTableHelpers;
         }
 
         #region Get All
@@ -36,6 +40,25 @@ namespace PM.Business.Repositories
                 }).ToListAsync();
 
             return new ExecutionResult<List<CategoryDetail>>(categories);
+        }
+
+        #endregion
+
+        #region Get Kendo Data
+
+        public async Task<KendoResponseModel<CategoryDetail>> GetKendoData(GetKendoDataRequestModel model)
+        {
+            IQueryable<CategoryDetail> query = _context.Categories
+                .Where(c => c.DeletedAt.HasValue == false)
+                .Select(c => new CategoryDetail
+                {
+                    Id = c.Id,
+                    Title = c.Title,
+                    IsActive = c.IsActive,
+                    CreatedAt = c.CreatedAt
+                });
+
+            return await _gridDataTableHelpers.FilterByDataTableRequest(query, model);
         }
 
         #endregion
