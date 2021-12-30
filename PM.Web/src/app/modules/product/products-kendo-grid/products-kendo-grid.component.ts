@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { DataItem } from '@progress/kendo-angular-grid';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CategoryService } from '../../category/category.service';
 import { ConfirmDialogComponent, ConfirmDialogModel } from '../../common-components/confirm-dialog/confirm-dialog.component';
+import { KendoTableGridComponent } from '../../custom-kendo-components/kendo-table-grid/kendo-table-grid.component';
 import { KendoButtonSkin } from '../../custom-kendo-components/models/kendo-button.model';
 import { KendoColumnType } from '../../custom-kendo-components/models/kendo-column-type.enum';
 import { KendoTableDefinition } from '../../custom-kendo-components/models/kendo-table-definition.model';
@@ -18,6 +19,8 @@ import { ProductService } from '../product.service';
   styleUrls: ['./products-kendo-grid.component.scss']
 })
 export class ProductsKendoGridComponent implements OnInit {
+
+  @ViewChild('grid') grid: KendoTableGridComponent;
 
   tableDefinition: KendoTableDefinition = {
     dataSource: (model: KendoTableGridRequest) => this._productService.GetKendoData(model),
@@ -105,6 +108,7 @@ export class ProductsKendoGridComponent implements OnInit {
         checkboxAdditionalInfo: {
           callBack: (data: DataItem) => {
             this._productService.ToggleActive(data["id"]).subscribe(() => {});
+            this.grid.loadGridItems();
           }
         }
       }
@@ -176,7 +180,7 @@ export class ProductsKendoGridComponent implements OnInit {
         this.spinner.show();
         this._productService.Delete(id).subscribe(() => {
           this.spinner.hide();
-          // todo - refresh grid
+          this.grid.loadGridItems();
         });
       }
     });
