@@ -4,7 +4,17 @@
             <input type="text" placeholder="Category Title" [(ngModel)]="createCategoryTitle" class="form-control" />
         </div>
         <div class="mx-2"></div>
-        <button mat-raised-button color="primary" (click)="create()">Create</button>
+        <button mat-raised-button color="primary" (click)="create()">
+            <mat-icon>add</mat-icon>
+            <span class="mx-1"></span>
+            Create
+        </button>
+        <div class="mx-2"></div>
+        <button mat-raised-button color="primary" [routerLink]="[ '/categories/kendo/' ]">
+            <mat-icon>table_chart</mat-icon>
+            <span class="mx-1"></span>
+            Kendo Grid
+        </button>
     </div>
     <table class="mat-elevation-z8">
         <thead>
