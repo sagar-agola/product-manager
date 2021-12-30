@@ -22,5 +22,16 @@ namespace PM.Business.Core.DataTransferModels.Kendo
         public string PropertyName { get; set; }
         public bool Searchable { get; set; }
         public object Search { get; set; }
+        public ColumnTypeEnum Type { get; set; }
+    }
+
+    public enum ColumnTypeEnum
+    {
+        String = 1,
+        Numeric = 2,
+        Dropdown = 3,
+        Currency = 4,
+        Boolean = 5,
+        Date = 6
     }
 }

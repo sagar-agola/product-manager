@@ -31,7 +31,7 @@ namespace PM.Business.Helpers
                 {
                     if (column.Searchable)
                     {
-                        Expression<Func<T, bool>> lambda = LinqHelpers.DataGridWhereField<T>(column.PropertyName, request.SearchTerm, 1, 2);
+                        Expression<Func<T, bool>> lambda = LinqHelpers.DataGridWhereField<T>(column, request.SearchTerm, 1, 2);
                         searchPredicate.Or(lambda);
                     }
                 }
@@ -46,7 +46,7 @@ namespace PM.Business.Helpers
             {
                 if (column.Searchable && column.Search != null && column.Search.ToString().IsEmptyString() == false)
                 {
-                    Expression<Func<T, bool>> lambda = LinqHelpers.DataGridWhereField<T>(column.PropertyName, column.Search.ToString(), 1, 1);
+                    Expression<Func<T, bool>> lambda = LinqHelpers.DataGridWhereField<T>(column, column.Search.ToString(), 1, 1);
                     columnPredicate.And(lambda);
                 }
             }

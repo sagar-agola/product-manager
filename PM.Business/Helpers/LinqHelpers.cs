@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PM.Business.Core.DataTransferModels.Kendo;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -40,69 +41,64 @@ namespace PM.Business.Helpers
             return orderedQuery;
         }
 
-        public static Expression<Func<T, bool>> DataGridWhereField<T>(string field, string value, int defaultConpareValue1, int defaultConpareValue2)
+        //public static Expression<Func<T, bool>> DataGridWhereField<T>(string field, string value, int defaultConpareValue1, int defaultConpareValue2)
+        public static Expression<Func<T, bool>> DataGridWhereField<T>(KendoColumn column, string value, int defaultConpareValue1, int defaultConpareValue2)
         {
             ParameterExpression parameter = Expression.Parameter(typeof(T), "p");
-            MemberExpression property = Expression.Property(parameter, field);
-            Type fieldType = property.Type;
-            Expression<Func<T, bool>> lambda;
+            MemberExpression property = Expression.Property(parameter, column.PropertyName);
 
-            if (fieldType == typeof(string))
+            switch (column.Type)
             {
-                lambda = StringSearch<T>(property, parameter, value);
-            }
-            else if (fieldType == typeof(int))
-            {
-                lambda = IntSearch<T>(property, parameter, value, defaultConpareValue1, defaultConpareValue2);
-            }
-            else if (fieldType == typeof(decimal))
-            {
-                MethodCallExpression intToString = GenerateToStringMethodCall(typeof(decimal), property);
-                lambda = StringSearch<T>(intToString, parameter, value);
-            }
-            else if (fieldType == typeof(bool))
-            {
-                if (value.ToLower() == "true")
-                {
-                    value = "yes";
-                }
-                else if (value.ToLower() == "false")
-                {
-                    value = "no";
-                }
+                case ColumnTypeEnum.String:
+                    return StringSearch<T>(property, parameter, value);
 
-                ConstantExpression yesString = Expression.Constant("yes", typeof(string));
-                ConstantExpression noString = Expression.Constant("no", typeof(string));
-                ConditionalExpression ternary = Expression.Condition(property, yesString, noString);
+                case ColumnTypeEnum.Numeric:
+                    MethodCallExpression intToString = GenerateToStringMethodCall(typeof(int), property);
+                    return StringSearch<T>(intToString, parameter, value);
 
-                lambda = StringSearch<T>(ternary, parameter, value);
-            }
-            else if (fieldType == typeof(DateTime))
-            {
-                bool isValidDate = DateTime.TryParse(value, out DateTime date);
+                case ColumnTypeEnum.Dropdown:
+                    return DropdownSearch<T>(property, parameter, value, defaultConpareValue1, defaultConpareValue2);
 
-                if (isValidDate == false)
-                {
-                    lambda = GetStaticLambda<T>(parameter, defaultConpareValue1, defaultConpareValue2);
-                }
-                else
-                {
-                    lambda = Expression.Lambda<Func<T, bool>>(
+                case ColumnTypeEnum.Currency:
+                    MethodCallExpression decimalToString = GenerateToStringMethodCall(typeof(decimal), property);
+                    return StringSearch<T>(decimalToString, parameter, value);
+
+                case ColumnTypeEnum.Boolean:
+                    if (value.ToLower() == "true")
+                    {
+                        column.Search = "yes";
+                    }
+                    else if (value.ToLower() == "false")
+                    {
+                        column.Search = "no";
+                    }
+
+                    ConstantExpression yesString = Expression.Constant("yes", typeof(string));
+                    ConstantExpression noString = Expression.Constant("no", typeof(string));
+                    ConditionalExpression ternary = Expression.Condition(property, yesString, noString);
+
+                    return StringSearch<T>(ternary, parameter, value);
+
+                case ColumnTypeEnum.Date:
+                    bool isValidDate = DateTime.TryParse(value, out DateTime date);
+
+                    if (isValidDate == false)
+                    {
+                        return GetStaticLambda<T>(parameter, defaultConpareValue1, defaultConpareValue2);
+                    }
+
+                    return Expression.Lambda<Func<T, bool>>(
                         Expression.Equal(
                             property,
                             Expression.Constant(date, typeof(DateTime))
                         ),
                         parameter
                     );
-                }
-            }
-            else
-            {
-                // get false lambda
-                lambda = GetStaticLambda<T>(parameter, 1, 2);
-            }
 
-            return lambda;
+                default:
+                    // get false lambda
+                    return GetStaticLambda<T>(parameter, 1, 2);
+            }
         }
 
         private static Expression<Func<T, bool>> StringSearch<T>(Expression property, ParameterExpression parameter, string value)
@@ -116,7 +112,7 @@ namespace PM.Business.Helpers
             return lambda;
         }
 
-        private static Expression<Func<T, bool>> IntSearch<T>(Expression property, ParameterExpression parameter, string value, int defaultConpareValue1, int defaultConpareValue2)
+        private static Expression<Func<T, bool>> DropdownSearch<T>(Expression property, ParameterExpression parameter, string value, int defaultConpareValue1, int defaultConpareValue2)
         {
             bool isValidInt = int.TryParse(value, out int searchValue);
 
