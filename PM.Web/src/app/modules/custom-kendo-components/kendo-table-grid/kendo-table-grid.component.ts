@@ -20,6 +20,7 @@ export class KendoTableGridComponent implements OnInit {
 
   appConsts = AppConsts;
   gridItems: Observable<GridDataResult>;
+  searchTerm: string = "";
   skip: number = 0;
   defaultPageSize: number = 5;
   pageOptions: PagerSettings = {
@@ -39,6 +40,7 @@ export class KendoTableGridComponent implements OnInit {
     let request: KendoTableGridRequest = {
       skip: this.skip,
       pageSize: this.defaultPageSize,
+      searchTerm: this.searchTerm,
       sort: this.sortOptions,
       columns: this.tableDefinition.columns
     };

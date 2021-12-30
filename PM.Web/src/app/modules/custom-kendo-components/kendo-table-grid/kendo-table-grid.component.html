@@ -24,7 +24,10 @@
             </div>
 
             <!-- right toolbar -->
-            <div>
+            <div class="d-flex">
+                <div class="mx-2 my-auto">
+                    <kendo-textbox class="general-search" [(ngModel)]="searchTerm" [clearButton]="true" (valueChange)="loadGridItems()" placeholder="Start typing to search..."></kendo-textbox>
+                </div>
                 <div *ngIf="tableDefinition.toolbar.right" class="d-flex">
                     <div *ngFor="let item of tableDefinition.toolbar.right; let i = index">
                         <button
@@ -68,6 +71,7 @@
             (pageChange)="onPageChange($event)"
             (sortChange)="onSortChange($event)">
 
+            <!-- Columns -->
             <ng-container *ngFor="let column of tableDefinition.columns">
                 <kendo-grid-column
                     [field]="column.field"

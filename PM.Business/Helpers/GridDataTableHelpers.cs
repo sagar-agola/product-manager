@@ -22,18 +22,42 @@ namespace PM.Business.Helpers
                 };
             }
 
-            ExpressionStarter<T> predicates = PredicateBuilder.New<T>(true);
+            #region General Search
 
+            ExpressionStarter<T> searchPredicate = PredicateBuilder.New<T>(true);
+            if (!string.IsNullOrWhiteSpace(request.SearchTerm))
+            {
+                foreach (KendoColumn column in request.Columns)
+                {
+                    if (column.Searchable)
+                    {
+                        Expression<Func<T, bool>> lambda = LinqHelpers.DataGridWhereField<T>(column.PropertyName, request.SearchTerm, 1, 2);
+                        searchPredicate.Or(lambda);
+                    }
+                }
+            }
+
+            #endregion
+
+            #region Column Search
+
+            ExpressionStarter<T> columnPredicate = PredicateBuilder.New<T>(true);
             foreach (KendoColumn column in request.Columns)
             {
                 if (column.Searchable && column.Search != null && column.Search.ToString().IsEmptyString() == false)
                 {
-                    Expression<Func<T, bool>> lambda = LinqHelpers.DataGridWhereField<T>(column.PropertyName, column.Search.ToString());
-                    predicates.And(lambda);
+                    Expression<Func<T, bool>> lambda = LinqHelpers.DataGridWhereField<T>(column.PropertyName, column.Search.ToString(), 1, 1);
+                    columnPredicate.And(lambda);
                 }
             }
 
-            baseData = baseData.Where(predicates);
+            #endregion
+
+            ExpressionStarter<T> finalPredicate = PredicateBuilder.New<T>(true);
+            finalPredicate.And(searchPredicate);
+            finalPredicate.And(columnPredicate);
+
+            baseData = baseData.Where(finalPredicate);
 
             string sortField = request.Sort != null && request.Sort.Count > 0 ? request.Sort[0].Field.ToPascaleCase() : "Id";
             bool isAsc = request.Sort != null && request.Sort.Count > 0 && (request.Sort[0].Dir == "asc" || string.IsNullOrEmpty(request.Sort[0].Dir));

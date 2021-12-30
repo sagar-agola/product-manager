@@ -40,7 +40,7 @@ namespace PM.Business.Helpers
             return orderedQuery;
         }
 
-        public static Expression<Func<T, bool>> DataGridWhereField<T>(string field, string value)
+        public static Expression<Func<T, bool>> DataGridWhereField<T>(string field, string value, int defaultConpareValue1, int defaultConpareValue2)
         {
             ParameterExpression parameter = Expression.Parameter(typeof(T), "p");
             MemberExpression property = Expression.Property(parameter, field);
@@ -53,7 +53,7 @@ namespace PM.Business.Helpers
             }
             else if (fieldType == typeof(int))
             {
-                lambda = IntSearch<T>(property, parameter, value);
+                lambda = IntSearch<T>(property, parameter, value, defaultConpareValue1, defaultConpareValue2);
             }
             else if (fieldType == typeof(decimal))
             {
@@ -79,13 +79,22 @@ namespace PM.Business.Helpers
             }
             else if (fieldType == typeof(DateTime))
             {
-                lambda = Expression.Lambda<Func<T, bool>>(
-                    Expression.Equal(
-                        property,
-                        Expression.Constant(Convert.ToDateTime(value), typeof(DateTime))
-                    ),
-                    parameter
-                );
+                bool isValidDate = DateTime.TryParse(value, out DateTime date);
+
+                if (isValidDate == false)
+                {
+                    lambda = GetStaticLambda<T>(parameter, defaultConpareValue1, defaultConpareValue2);
+                }
+                else
+                {
+                    lambda = Expression.Lambda<Func<T, bool>>(
+                        Expression.Equal(
+                            property,
+                            Expression.Constant(date, typeof(DateTime))
+                        ),
+                        parameter
+                    );
+                }
             }
             else
             {
@@ -107,14 +116,14 @@ namespace PM.Business.Helpers
             return lambda;
         }
 
-        private static Expression<Func<T, bool>> IntSearch<T>(Expression property, ParameterExpression parameter, string value)
+        private static Expression<Func<T, bool>> IntSearch<T>(Expression property, ParameterExpression parameter, string value, int defaultConpareValue1, int defaultConpareValue2)
         {
             bool isValidInt = int.TryParse(value, out int searchValue);
 
             if (isValidInt == false)
             {
                 // get true lambda
-                return GetStaticLambda<T>(parameter, 1, 1);
+                return GetStaticLambda<T>(parameter, defaultConpareValue1, defaultConpareValue2);
             }
 
             return Expression.Lambda<Func<T, bool>>(

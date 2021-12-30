@@ -6,6 +6,7 @@ namespace PM.Business.Core.DataTransferModels.Kendo
     {
         public int Skip { get; set; }
         public int PageSize { get; set; }
+        public string SearchTerm { get; set; }
         public List<SortItem> Sort { get; set; }
         public List<KendoColumn> Columns { get; set; }
     }
