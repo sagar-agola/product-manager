@@ -162,25 +162,5 @@ namespace PM.Business.Repositories
         }
 
         #endregion
-
-        #region Toggle Active
-
-        public async Task<ExecutionResult> ToggleActive(int id)
-        {
-            Module module = await _context.Modules.FirstOrDefaultAsync(m => m.Id == id && m.DeletedAt.HasValue == false);
-
-            if (module == null)
-            {
-                return new ExecutionResult(new ErrorInfo(string.Format(MessageHelper.NotFound, "Module")));
-            }
-
-            module.IsActive = !module.IsActive;
-
-            await _context.SaveChangesAsync();
-
-            return new ExecutionResult(new InfoMessage(string.Format(MessageHelper.SuccessMessage, "Module", module.IsActive ? "activated" : "deactivated")));
-        }
-
-        #endregion
     }
 }

@@ -119,11 +119,6 @@
             /// api/modules/{id}
             /// </summary>
             public const string Delete = _base + "{id}";
-
-            /// <summary>
-            /// api/modules/toggle-active/{id}
-            /// </summary>
-            public const string ToggleActive = _base + "toggle-active/{id}";
         }
     }
 }
