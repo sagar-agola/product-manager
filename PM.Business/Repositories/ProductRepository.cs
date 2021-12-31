@@ -74,6 +74,7 @@ namespace PM.Business.Repositories
 
         public async Task<KendoResponseModel<ProductDetail>> GetKendoData(GetKendoDataRequestModel model)
         {
+            await Task.Delay(2000);
             IQueryable<ProductDetail> query = from category in _context.Categories
                                               from product in _context.Products.Where(p => p.CategoryId == category.Id)
                                               where

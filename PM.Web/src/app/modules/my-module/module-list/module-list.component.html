@@ -1,0 +1,61 @@
+<div class="container mt-3">
+    <div class="d-flex justify-content-end">
+        <input type="text" class="form-control" placeholder="Start typing to search..." [(ngModel)]="searchTerm" style="max-width: 450px; min-width: 350px;" (input)="getAllModules()" />
+        <button mat-raised-button color="primary" style="margin-left: 25px;" (click)="setCreateMode()">
+            <mat-icon>add</mat-icon> Create New Module
+        </button>
+    </div>
+    <div class="mx-auto my-3" style="max-width: 450px;" *ngIf="createModel.id >= 0">
+        <div class="card">
+            <div class="card-header">
+                Create New Module
+            </div>
+            <div class="card-body">
+                <form #createModuleForm="ngForm" (submit)="save()">
+                    <div class="mb-3">
+                        <label for="title" class="control-label required">Title</label>
+                        <input type="text" class="form-control" required #title="ngModel" name="title" [(ngModel)]="createModel.title" />
+                        <div class="validation-block" *ngIf="title.errors && title.errors.required && (title.touched || createModuleForm.submitted)">
+                            Title is required.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="icon" class="control-label required">Icon</label>
+                        <input type="text" class="form-control" required #icon="ngModel" name="icon" [(ngModel)]="createModel.icon" />
+                        <div class="validation-block" *ngIf="icon.errors && icon.errors.required && (icon.touched || createModuleForm.submitted)">
+                            Icon is required.
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" mat-raised-button color="primary">Create</button>
+                        <span class="mx-2"></span>
+                        <button type="button" mat-raised-button (click)="hideDetailForm()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row my-3">
+        <div class="col-3 col-sm-4 col-md-3" *ngFor="let module of modules">
+            <div class="module-card" [routerLink]="[ '/modules/', module.id ]">
+                <div class="row">
+                    <div class="col-5 text-center">
+                        <i class="{{ module.icon }} fa-3x"></i>
+                    </div>
+                    <div class="col-7">
+                        <h2>{{ module.title }}</h2>
+                        <div>
+                            <label>Created On</label>
+                            {{ module.createdAt | date : dateFormat }}
+                        </div>
+                        <div>
+                            <i *ngIf="module.isActive == false" class="text-danger"><b>Inactive</b></i>
+                            <i *ngIf="module.isActive" class="text-success"><b>Active</b></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

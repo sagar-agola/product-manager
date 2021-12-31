@@ -16,6 +16,11 @@ const routes: Routes = [
     canActivate: [ AuthGuard ]
   },
   {
+    path: 'modules',
+    loadChildren: () => import("src/app/modules/my-module/my-module.module").then(m => m.MyModuleModule),
+    canActivate: [ AuthGuard ]
+  },
+  {
     path: 'static-data',
     loadChildren: () => import("src/app/modules/static-data/static-data.module").then(m => m.StaticDataModule)
   },

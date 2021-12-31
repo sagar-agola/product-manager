@@ -1,0 +1,43 @@
+<div class="container mt-3">
+    <div class="card mx-auto" style="max-width: 450px;">
+        <div class="card-header">
+            <b>Edit Module Details</b>
+        </div>
+        <div class="card-body">
+            <form #editModuleForm="ngForm" (submit)="save()">
+                <div class="mb-3">
+                    <label for="title" class="control-label required">Title</label>
+                    <input type="text" class="form-control" required #title="ngModel" name="title" [(ngModel)]="moduleDetail.title" />
+                    <div class="validation-block" *ngIf="title.errors && title.errors.required && (title.touched || editModuleForm.submitted)">
+                        Title is required.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="icon" class="control-label required">Icon</label>
+                    <input type="text" class="form-control" required #icon="ngModel" name="icon" [(ngModel)]="moduleDetail.icon" />
+                    <div class="validation-block" *ngIf="icon.errors && icon.errors.required && (icon.touched || editModuleForm.submitted)">
+                        Icon is required.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="control-label">
+                        Is Active
+                    </label>
+                    <div>
+                        <mat-slide-toggle
+                            color="primary"
+                            [checked]="moduleDetail.isActive"
+                            (change)="moduleDetail.isActive = !moduleDetail.isActive">
+                        </mat-slide-toggle>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" mat-raised-button color="primary">Edit</button>
+                    <span class="mx-2"></span>
+                    <button type="button" mat-raised-button (click)="cancel()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -6,15 +6,14 @@ import { Observable } from 'rxjs';
 import { BaseService } from 'src/app/common/services/base.service';
 import { NotificationService } from 'src/app/common/services/notification.service';
 import { environment } from 'src/environments/environment';
+import { ModuleDetail } from '../category/models/module-detail.model';
 import { KendoTableGridRequest } from '../custom-kendo-components/models/kendo-table-grid-request.model';
-import { CategoryDetail } from './models/category-detail.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CategoryService extends BaseService {
-
-  private _basePath: string = `${environment.apiUrl}/api/categories`;
+export class MyModuleService extends BaseService {
+  private _basePath: string = `${environment.apiUrl}/api/modules`;
 
   constructor(
     http: HttpClient,
@@ -24,15 +23,15 @@ export class CategoryService extends BaseService {
     super(http, router, notificationService);
   }
 
-  GetAll(): Observable<CategoryDetail[]> {
-    return this.get<CategoryDetail[]>(this._basePath);
+  GetAll(searchTerm: string): Observable<ModuleDetail[]> {
+    return this.get<ModuleDetail[]>(`${this._basePath}?searchTerm=${searchTerm}`);
   }
 
-  GetKendoData(model: KendoTableGridRequest): Observable<GridDataResult> {
-    return this.post<GridDataResult>(`${this._basePath}/kendo-grid`, model);
+  Get(id: number): Observable<ModuleDetail> {
+    return this.get<ModuleDetail>(`${this._basePath}/${id}`);
   }
 
-  Save(model: CategoryDetail): Observable<any> {
+  Save(model: ModuleDetail): Observable<any> {
     return this.post(this._basePath, model);
   }
 

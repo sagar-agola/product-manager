@@ -95,5 +95,35 @@
             /// </summary>
             public const string ConfirmEmail = _base + "confirm-email";
         }
+
+        public static class Module
+        {
+            private const string _base = _root + "modules/";
+
+            /// <summary>
+            /// api/modules
+            /// </summary>
+            public const string GetAll = _base;
+
+            /// <summary>
+            /// api/modules/{id}
+            /// </summary>
+            public const string Get = _base + "{id}";
+
+            /// <summary>
+            /// api/modules
+            /// </summary>
+            public const string Save = _base;
+
+            /// <summary>
+            /// api/modules/{id}
+            /// </summary>
+            public const string Delete = _base + "{id}";
+
+            /// <summary>
+            /// api/modules/toggle-active/{id}
+            /// </summary>
+            public const string ToggleActive = _base + "toggle-active/{id}";
+        }
     }
 }

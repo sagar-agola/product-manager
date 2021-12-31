@@ -12,5 +12,6 @@ namespace PM.Database.DataContext
         public DbSet<Product> Products { get; set; }
         public DbSet<ExceptionLog> ExceptionLogs { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Module> Modules { get; set; }
     }
 }
