@@ -155,6 +155,12 @@
                 </ng-template>
             </kendo-grid-column>
 
+            <ng-container *ngIf="tableDefinition.expandTemplate">
+                <div *kendoGridDetailTemplate="let dataItem">
+                    <ng-template [ngTemplateOutlet]="tableDefinition.expandTemplate" [ngTemplateOutletContext]="{ data: dataItem }"></ng-template>
+                </div>
+            </ng-container>
+
             <!-- Empty table text -->
             <ng-template kendoGridNoRecordsTemplate>
                 {{ tableDefinition.emptyTableText }}

@@ -1,3 +1,83 @@
-<div class="mx-3 mt-4">
+<div class="mx-3 mt-4" *ngIf="shouldLoadGrid">
     <app-kendo-table-grid #grid [tableDefinition]="tableDefinition"></app-kendo-table-grid>
 </div>
+
+<ng-template #productExpandTemplate let-data="data">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">
+                <b>{{ data.title }}</b>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="d-flex justify-content-between">
+                <div style="text-align: justify; white-space: normal; width: 45%;">
+                    {{ data.description }}
+                </div>
+                <div>
+                    <div class="row mb-2">
+                        <div class="col-6">
+                            <div>
+                                <b>Retail Price</b>
+                            </div>
+                            <div>
+                                {{ data.retailPrice | currency : 'INR' }}
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div>
+                                <b>Sale Price</b>
+                            </div>
+                            <div>
+                                {{ data.salePrice | currency : 'INR' }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <div>
+                            <b>Category</b>
+                        </div>
+                        <div>
+                            {{ data.category }}
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <div>
+                            <b>Quentity</b>
+                        </div>
+                        <div>
+                            {{ data.quentity }}
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <div>
+                            <b>Manufactored Date</b>
+                        </div>
+                        <div>
+                            {{ data.manufactoredAt | date }}
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <div>
+                            <b>Is Active</b>
+                        </div>
+                        <div>
+                            <mat-slide-toggle
+                                color="primary"
+                                [checked]="data.isActive"
+                                disabled>
+                            </mat-slide-toggle>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center" *ngIf="data.imageUrl">
+                    <img src="{{ baseApiUrl }}/{{ data.imageUrl }}" alt="Product Image" class="img-thumbnail" />
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

@@ -6,6 +6,7 @@ import { KendoColumn } from "./kendo-column.model";
 import { KendoTableGridRequest } from "./kendo-table-grid-request.model";
 import { KendoToolbarItem } from "./kendo-toolbar-item.model";
 import { DataItem } from "@progress/kendo-angular-grid";
+import { TemplateRef } from "@angular/core";
 
 export class KendoTableDefinition {
     columns: KendoColumn[];
@@ -17,5 +18,6 @@ export class KendoTableDefinition {
         left?: KendoToolbarItem[],
         right?: KendoToolbarItem[]
     };
+    expandTemplate?: TemplateRef<any>;
     dataSource: (request: KendoTableGridRequest) => Observable<GridDataResult>;
 }

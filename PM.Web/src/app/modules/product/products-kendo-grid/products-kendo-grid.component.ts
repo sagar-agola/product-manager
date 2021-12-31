@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { DataItem } from '@progress/kendo-angular-grid';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { environment } from 'src/environments/environment';
 import { CategoryService } from '../../category/category.service';
 import { ConfirmDialogComponent, ConfirmDialogModel } from '../../common-components/confirm-dialog/confirm-dialog.component';
 import { KendoTableGridComponent } from '../../custom-kendo-components/kendo-table-grid/kendo-table-grid.component';
@@ -18,10 +19,13 @@ import { ProductService } from '../product.service';
   templateUrl: './products-kendo-grid.component.html',
   styleUrls: ['./products-kendo-grid.component.scss']
 })
-export class ProductsKendoGridComponent implements OnInit {
+export class ProductsKendoGridComponent implements OnInit, AfterViewInit {
 
   @ViewChild('grid') grid: KendoTableGridComponent;
+  @ViewChild('productExpandTemplate', { read: TemplateRef }) productExpandTemplate: TemplateRef<any> 
 
+  shouldLoadGrid: boolean = false;
+  baseApiUrl:  string = environment.apiUrl;
   tableDefinition: KendoTableDefinition = {
     dataSource: (model: KendoTableGridRequest) => this._productService.GetKendoData(model),
     emptyTableText: "There are no products",
@@ -154,6 +158,7 @@ export class ProductsKendoGridComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private cdr: ChangeDetectorRef,
     private spinner: NgxSpinnerService,
     private dialog: MatDialog,
     private _productService: ProductService,
@@ -161,6 +166,12 @@ export class ProductsKendoGridComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit(): void {
+    this.tableDefinition.expandTemplate = this.productExpandTemplate;
+    this.shouldLoadGrid = true;
+    this.cdr.detectChanges();
   }
 
   delete(id: any): void {
