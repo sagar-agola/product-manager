@@ -1,0 +1,49 @@
+<div class="container">
+    <div class="d-flex my-3">
+        <div class="flex-grow-1" style="margin-right: 25px;">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <input type="text" class="form-control" [(ngModel)]="requestBody.title" (input)="getProducts()" placeholder="Start typing to search..." />    
+                </div>
+                <div class="col-12 col-md-6">
+                    <ng-select
+                        [items]="categories"
+                        placeholder="Filter by Product Category"
+                        bindLabel="title" 
+                        bindValue="id"
+                        [(ngModel)]="requestBody.categoryId"
+                        (change)="getProducts()">
+                    </ng-select>
+                </div>
+            </div>            
+        </div>
+        
+        <button mat-raised-button color="primary" [routerLink]="[ '/products/create/' ]" style="margin-right: 25px;">
+            <mat-icon>add</mat-icon> Create New Product
+        </button>
+
+        <button mat-raised-button color="primary" [routerLink]="[ '/products/kendo/' ]">
+            <mat-icon>table_chart</mat-icon> Kendo Grid
+        </button>
+    </div>
+    <mat-card class="mb-3 p-0">
+        <mat-paginator
+            [length]="paginationInfo.totalRecords"
+            [pageSize]="paginationInfo.pageSize"
+            [pageSizeOptions]="pageSizeOptions"
+            (page)="pageChanged($event)">
+        </mat-paginator>
+    </mat-card>
+    <div class="row">
+        <div class="col-12 col-sm-6 col-md-4 mb-4" *ngFor="let product of products">
+            <app-product-item [product]="product" (onDeleteProduct)="deleteProduct($event)" (onToggleActiveProduct)="getProducts()"></app-product-item>
+        </div>
+        <div class="col-12" *ngIf="products.length == 0">
+            <mat-card>
+                <mat-card-content class="text-center text-muted">
+                    No product found in Inventory.
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>

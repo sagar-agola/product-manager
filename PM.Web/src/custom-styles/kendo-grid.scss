@@ -1,0 +1,26 @@
+.k-textbox {
+    width: 100% !important;
+    border-color: #cecece;
+}
+
+.k-dropdown-wrap {
+    border-color: #cecece;
+}
+
+.k-picker-wrap {
+    border-color: #cecece !important;
+}
+
+.k-grid {
+    border-color: #cecece;
+
+    .k-grid-content td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+kendo-datepicker {
+    width: 100% !important;
+}

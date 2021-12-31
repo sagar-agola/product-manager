@@ -1,0 +1,12 @@
+<div class="dropdown-container">
+    <kendo-dropdownlist
+        [data]="dropdownItems"
+        [textField]="textField"
+        [valueField]="valueField"
+        [(ngModel)]="selectedValue"
+        (valueChange)="onChange()">
+    </kendo-dropdownlist>
+    <span *ngIf="selectedValue[valueField]" role="button" class="k-clear-value" title="Clear" aria-label="Clear" (click)="selectedValue = defaultItem; onChange();">
+        <span class="k-icon k-i-close-circle"></span>
+    </span>
+</div>

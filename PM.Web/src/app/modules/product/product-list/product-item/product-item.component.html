@@ -1,0 +1,63 @@
+<mat-card>
+    <mat-card-title-group>
+        <mat-card-title class="mb-3">{{ product.title }}</mat-card-title>
+        <mat-card-subtitle>
+            <div class="mb-4">{{ product.subTitle }}</div>
+            <div class="text-muted">
+                <div>
+                    <b>Category</b>
+                </div>
+                <div>
+                    {{ product.category }}
+                </div>
+            </div>
+        </mat-card-subtitle>
+        <img mat-card-lg-image src="{{ baseApiUrl }}/{{ product.imageUrl }}" alt="Product Image" class="img-thumbnail" style="margin-left: 10px;" />
+    </mat-card-title-group>
+    <mat-card-content>
+        <div class="row mt-2">
+            <div class="col-5" style="text-align: justify;">
+                {{ product.description }}
+            </div>
+            <div class="col-7">
+                <div class="mb-2">
+                    <div>
+                        <b>Price</b>
+                    </div>
+                    <div>
+                        {{ product.salePrice | currency : 'INR' }}
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <div>
+                        <b>Available Quentity</b>
+                    </div>
+                    <div>
+                        {{ product.quentity }}
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <div>
+                        <mat-slide-toggle
+                            color="primary"
+                            [checked]="product.isActive"
+                            (change)="toggleActive()">
+                            <b>Is Active</b>
+                        </mat-slide-toggle>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions align="end">
+        <button mat-raised-button color="primary" [routerLink]="['/products/edit', product.id ]" style="margin-right: 0;">
+            Edit
+        </button>
+        <button mat-raised-button color="primary" [routerLink]="['/products/view', product.id ]">
+            View
+        </button>
+        <button mat-raised-button color="warn" (click)="deleteProduct(product.id)">
+            Delete
+        </button>
+    </mat-card-actions>
+</mat-card>

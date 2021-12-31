@@ -1,42 +1,18 @@
-<table>
-    <tr>
-        <td>
-            <label for="name">Name</label>
-        </td>
-        <td>
-            <input type="text" name="name" [(ngModel)]="user.name">
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2"></td>
-    </tr>
-    <tr>
-        <td>
-            <label for="role">Role</label>
-        </td>
-        <td>
-            <input type="text" name="role" [(ngModel)]="user.role">
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2"></td>
-    </tr>
-    <tr>
-        <td>
-            <label for="technology">Technology</label>
-        </td>
-        <td>
-            <input type="text" name="technology" [(ngModel)]="user.technology">
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2"></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>
-            <button (click)="save()">Submit</button>
-            <button [routerLink]="[ '/static-data' ]" routerLinkActive="router-link-active" >Cancel</button>
-        </td>
-    </tr>
-</table>
+<div class="container mt-5">
+    <div class="mb-3">
+        <label for="name" class="mb-1">Name</label>
+        <input type="text" name="name" [(ngModel)]="user.name" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="role" class="mb-1">Role</label>
+        <input type="text" name="role" [(ngModel)]="user.role" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="technology" class="mb-1">Technology</label>
+        <input type="text" name="technology" [(ngModel)]="user.technology" class="form-control">
+    </div>
+    <div class="text-center">
+        <button mat-raised-button color="primary" style="margin-right: 12px;" (click)="save()">Submit</button>
+        <button mat-raised-button [routerLink]="[ '/static-data' ]" routerLinkActive="router-link-active" >Cancel</button>
+    </div>
+</div>

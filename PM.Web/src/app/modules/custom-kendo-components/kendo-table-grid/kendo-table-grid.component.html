@@ -1,0 +1,173 @@
+<div class="grid-container">
+    <ng-template let-gridItems [ngTemplateOutletContext]="{ $implicit: gridItems | async }" [ngTemplateOutlet]="t" #t>
+        <!-- toolbar -->
+        <div class="mb-2" *ngIf="tableDefinition.toolbar">
+            <div class="d-flex justify-content-between flex-wrap">
+
+                <!-- left toolbar -->
+                <div>
+                    <h2 class="my-auto mr-2">
+                        <b>{{ tableDefinition.gridHeaderText }}</b>
+                    </h2>
+                    <div *ngIf="tableDefinition.toolbar.left" class="d-flex">
+                        <div *ngFor="let item of tableDefinition.toolbar.left; let i = index">
+                            <button
+                                *ngIf="item.type == 'button' && item.buttonConfiguration"
+                                mat-raised-button
+                                color="{{ item.buttonConfiguration.skin ? item.buttonConfiguration.skin : 'primary' }}"
+                                (click)="item.buttonConfiguration.callBack()"
+                                [ngClass]="{ 'mr-2' : i + 1 < tableDefinition.toolbar.left.length}">
+                                <i *ngIf="item.buttonConfiguration.icon" class="{{ item.buttonConfiguration.icon }} mr-2"></i>
+                                {{ item.buttonConfiguration.title }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- right toolbar -->
+                <div class="d-flex">
+                    <!-- General Search -->
+                    <kendo-textbox class="general-search" [(ngModel)]="searchTerm" [clearButton]="true" (valueChange)="loadGridItems()" placeholder="Start typing to search..."></kendo-textbox>
+                    
+                    <div *ngIf="tableDefinition.toolbar.right" class="d-flex">
+                        <div *ngFor="let item of tableDefinition.toolbar.right; let i = index">
+                            <button
+                                *ngIf="item.type == 'button' && item.buttonConfiguration"
+                                mat-raised-button
+                                color="{{ item.buttonConfiguration.skin ? item.buttonConfiguration.skin : 'primary' }}"
+                                (click)="item.buttonConfiguration.callBack()"
+                                [ngClass]="{ 'mr-2' : i + 1 < tableDefinition.toolbar.right.length}">
+                                <i *ngIf="item.buttonConfiguration.icon" class="{{ item.buttonConfiguration.icon }} mr-2"></i>
+                                {{ item.buttonConfiguration.title }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- tooltip -->
+        <ng-template #template let-anchor>
+            <span>{{ anchor.nativeElement.innerText }}</span>
+        </ng-template>
+        
+        <div
+            kendoTooltip
+            showOn="none"
+            [tooltipTemplate]="template"
+            filter=".k-grid td"
+            (mouseover)="showTooltip($event)">
+
+            <!-- Grid -->
+            <kendo-grid
+                [data]="gridItems"
+                [skip]="skip"
+                [pageSize]="defaultPageSize"
+                [pageable]="pageOptions"
+                [sortable]="true"
+                [sort]="sortOptions"
+                [filterable]="true"
+                [filter]="filter"
+                [resizable]="true"
+                (pageChange)="onPageChange($event)"
+                (sortChange)="onSortChange($event)">
+
+                <!-- Columns -->
+                <ng-container *ngFor="let column of tableDefinition.columns">
+                    <kendo-grid-column
+                        [field]="column.field"
+                        [title]="column.displayName"
+                        [hidden]="column.isHidden"
+                        [filterable]="column.searchable"
+                        [sortable]="column.orderable"
+                        [width]="column.width">
+
+                        <!-- Header template -->
+                        <ng-template kendoGridHeaderTemplate>
+                            <b>{{ column.displayName }}</b>
+                        </ng-template>
+
+                        <!-- custom cell template -->
+                        <ng-template kendoGridCellTemplate let-dataItem *ngIf="column.type == 4">
+                            {{ dataItem[column.field] | currency : 'INR' }}
+                        </ng-template>
+
+                        <ng-template kendoGridCellTemplate let-dataItem *ngIf="column.type == 5">
+                            <div class="text-center">
+                                <mat-checkbox color="primary" [checked]="dataItem[column.field]" [disabled]="!column.checkboxAdditionalInfo" (change)="column.checkboxAdditionalInfo.callBack(dataItem)"></mat-checkbox>
+                            </div>
+                        </ng-template>
+
+                        <ng-template kendoGridCellTemplate let-dataItem *ngIf="column.type == 6">
+                            {{ dataItem[column.field] | date : appConsts.dateFormat }}
+                        </ng-template>
+
+                        <!-- Column Filters -->
+                        <ng-template kendoGridFilterCellTemplate let-filter *ngIf="column.searchable">
+                            <ng-container *ngIf="column.type == 1 || column.type == 2 || column.type == 4">
+                                <app-kendo-text-filter
+                                    [column]="column"
+                                    title="Title"
+                                    (onFilterChange)="onFilterChange($event)">
+                                </app-kendo-text-filter>
+                            </ng-container>
+                            <ng-container *ngIf="column.type == 3">
+                                <app-kendo-dropdown-filter
+                                    [column]="column"
+                                    [dataPromise]="column.dropdownAdditionalInfo.dataPromise()"
+                                    [textField]="column.dropdownAdditionalInfo.displayField"
+                                    [valueField]="column.dropdownAdditionalInfo.idField"
+                                    [title]="column.displayName"
+                                    (onFilterChange)="onFilterChange($event)">
+                                </app-kendo-dropdown-filter>
+                            </ng-container>
+                            <ng-container *ngIf="column.type == 5">
+                                <app-kendo-boolean-filter
+                                    [column]="column"
+                                    (onFilterChange)="onFilterChange($event)">
+                                </app-kendo-boolean-filter>
+                            </ng-container>
+                            <ng-container *ngIf="column.type == 6">
+                                <app-kendo-date-filter
+                                    [column]="column"
+                                    (onFilterChange)="onFilterChange($event)">
+                                </app-kendo-date-filter>
+                            </ng-container>
+                        </ng-template>
+                    </kendo-grid-column>
+                </ng-container>
+
+                <!-- Buttons column -->
+                <kendo-grid-column *ngIf="tableDefinition.buttons.length > 0">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <div kendoTooltip filter="button" class="text-center">
+                            <ng-container *ngFor="let button of tableDefinition.buttons; let i = index">
+                                <button
+                                    mat-raised-button
+                                    *ngIf="!button.ngIfCallBack || button.ngIfCallBack()"
+                                    color="{{ button.skin ? button.skin : 'primary' }}"
+                                    [title]="button.title"
+                                    [ngClass]="{ 'mr-2' : i + 1 < tableDefinition.buttons.length }"
+                                    (click)="button.callBack(dataItem)">
+                                    <i *ngIf="button.icon" class="{{ button.icon }}"></i>
+                                </button>
+                            </ng-container>
+                        </div>
+                    </ng-template>
+                </kendo-grid-column>
+
+                <ng-container *ngIf="tableDefinition.expandTemplate">
+                    <div *kendoGridDetailTemplate="let dataItem">
+                        <ng-template [ngTemplateOutlet]="tableDefinition.expandTemplate" [ngTemplateOutletContext]="{ data: dataItem }"></ng-template>
+                    </div>
+                </ng-container>
+
+                <!-- Empty table text -->
+                <ng-template kendoGridNoRecordsTemplate>
+                    {{ tableDefinition.emptyTableText }}
+                </ng-template>
+            </kendo-grid>
+        </div>
+        <div *ngIf="gridItems == null" class="k-i-loading"></div>
+    </ng-template>
+</div>

@@ -9,6 +9,7 @@
 
 # VS Publish Profiles
 PublishProfiles/
+*/wwwroot/Images/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

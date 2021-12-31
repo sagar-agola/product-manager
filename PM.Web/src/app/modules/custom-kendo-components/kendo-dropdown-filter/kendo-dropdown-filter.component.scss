@@ -1,0 +1,16 @@
+.dropdown-container {
+    position: relative;
+
+    .k-input {
+        padding-right: 20px !important;
+    }
+
+    .k-clear-value {
+        position: absolute;
+        right: 20px;
+    }
+}
+
+.k-dropdown {
+    width: 100% !important;
+}
