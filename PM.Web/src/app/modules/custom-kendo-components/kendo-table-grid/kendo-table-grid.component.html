@@ -25,9 +25,9 @@
 
             <!-- right toolbar -->
             <div class="d-flex">
-                <div class="mx-2 my-auto">
-                    <kendo-textbox class="general-search" [(ngModel)]="searchTerm" [clearButton]="true" (valueChange)="loadGridItems()" placeholder="Start typing to search..."></kendo-textbox>
-                </div>
+                <!-- General Search -->
+                <kendo-textbox class="general-search" [(ngModel)]="searchTerm" [clearButton]="true" (valueChange)="loadGridItems()" placeholder="Start typing to search..."></kendo-textbox>
+                
                 <div *ngIf="tableDefinition.toolbar.right" class="d-flex">
                     <div *ngFor="let item of tableDefinition.toolbar.right; let i = index">
                         <button
@@ -98,7 +98,7 @@
                     </ng-template>
 
                     <ng-template kendoGridCellTemplate let-dataItem *ngIf="column.type == 6">
-                        {{ dataItem[column.field] | date : appConsts.dateFormat}}
+                        {{ dataItem[column.field] | date : appConsts.dateFormat }}
                     </ng-template>
 
                     <!-- Column Filters -->
