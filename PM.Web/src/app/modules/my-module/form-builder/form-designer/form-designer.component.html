@@ -16,15 +16,31 @@
                         [cdkDropListData]="row.columns"
                         [cdkDropListConnectedTo]="connectedTo"
                         (cdkDropListDropped)="dropOnRow($event)">
-                        <div class="flex-grow-1 mx-2 my-1" *ngFor="let column of row.columns" cdkDrag>
-                            <div class="element-container">
-                                <ng-container *ngIf="column.type == elementType.Text">
+                        <div
+                            *ngFor="let column of row.columns"
+                            cdkDrag
+                            class="flex-grow-1 mx-2 my-1">
+                            <div
+                                class="element-container"
+                                (click)="selectElement(column)"
+                                [ngClass]="{ 'selected' : sharedData.selectedElement && column.id == sharedData.selectedElement.id }">
+
+                                <div class="d-flex justify-content-between mb-1">
                                     <label>{{ column.label }}</label>
+                                    <button
+                                        *ngIf="sharedData.selectedElement && column.id == sharedData.selectedElement.id"
+                                        class="btn btn-sm btn-danger"
+                                        style="font-size: 11px; padding: .15rem .25rem;"
+                                        (click)="deleteElement(column.id)">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+
+                                <ng-container *ngIf="column.type == elementType.Text">
                                     <input type="text" class="form-control" />
                                 </ng-container>
 
                                 <ng-container *ngIf="column.type == elementType.Numeric">
-                                    <label>{{ column.label }}</label>
                                     <input type="number" class="form-control" />
                                 </ng-container>
                             </div>
@@ -47,18 +63,22 @@
                     Available Headers
                 </div>
                 <div class="card-body">
-                    <div class="text-muted">Click on element to add to form</div>
                     <div
                         [id]="availableElementsListId"
                         cdkDropList
                         [cdkDropListData]="sharedData.availableFormElements"
                         [cdkDropListConnectedTo]="connectedTo">
-                        <div class="card my-2" cdkDrag *ngFor="let item of sharedData.availableFormElements">
+                        <div
+                            *ngFor="let item of sharedData.availableFormElements"
+                            cdkDrag
+                            class="card my-2"
+                            style="cursor: grab;">
                             <div class="card-body">
                                 {{ item.title }}
                             </div>
                         </div>
                     </div>
+                    <small class="text-muted mt-2">Double Click or Dran and Drop element to add to form</small>
                 </div>
             </div>
         </div>

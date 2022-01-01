@@ -5,6 +5,7 @@ import { TextFormElement } from '../models/element-types/text-form-element.model
 import { FormElementTypeEnum } from '../models/form-element-type.enum';
 import { FormElement } from '../models/form-element.model';
 import { FormBuilderDataService } from '../services/form-builder-data.service';
+import { Guid } from 'guid-typescript';
 
 @Component({
   selector: 'app-form-designer',
@@ -63,6 +64,8 @@ export class FormDesignerComponent implements OnInit {
       if (deleteIndex != -1) {
         this.sharedData.designData.splice(deleteIndex, 1);
       }
+
+      this.sharedData.selectedElement = event.container.data[event.currentIndex];
     }
   }
 
@@ -71,8 +74,9 @@ export class FormDesignerComponent implements OnInit {
    * @param event Cdk Drop event information
    */
   dropOnNewRow(event: CdkDragDrop<FormElement[]>) {
-    let currentColumn: FormElement = event.previousContainer.data[event.previousIndex];
     let deleteIndex: number = -1;
+    let element: FormElement = event.previousContainer.data[event.previousIndex];
+    element.id = Guid.create();
 
     this.connectedTo.push('row' + this.rowCounter);
     
@@ -80,7 +84,7 @@ export class FormDesignerComponent implements OnInit {
     // in case of new element drop no column will be deleted
     this.sharedData.designData.forEach(row => {
       row.columns.forEach(column => {
-        if (column == currentColumn) {
+        if (column == element) {
           deleteIndex = row.columns.indexOf(column);
         }
       });
@@ -98,12 +102,13 @@ export class FormDesignerComponent implements OnInit {
     this.sharedData.designData.push({
       id: 'row' + this.rowCounter,
       columns: [
-        { ...currentColumn }
+        { ...element }
       ]
     });
 
     this.rowCounter++;
     this.resetConnectedToArray();
+    this.sharedData.selectedElement = { ...element };
   }
 
   resetConnectedToArray(): void {
@@ -118,7 +123,15 @@ export class FormDesignerComponent implements OnInit {
     }
   }
 
+  selectElement(element: FormElement): void {
+    this.sharedData.selectedElement = this.sharedData.selectedElement && this.sharedData.selectedElement.id == element.id
+      ? null
+      : { ...element };
+  }
+
   insertElement(element: FormElement, rowId: string): void {
+    element.id = Guid.create();
+
     switch (element.type) {
       case FormElementTypeEnum.Text:
         this.insertTextElement(element, rowId);
@@ -133,14 +146,32 @@ export class FormDesignerComponent implements OnInit {
     this.sharedData.designData.forEach(row => {
       if (row.id == rowId) {
         row.columns.push({ ...element });
+        this.sharedData.selectedElement = { ...element };
       }
     });
   }
 
-  insertNumericElement(element: TextFormElement, rowId: string): void {
+  insertNumericElement(element: NumericFormElement, rowId: string): void {
     this.sharedData.designData.forEach(row => {
       if (row.id == rowId) {
         row.columns.push({ ...element });
+        this.sharedData.selectedElement = { ...element };
+      }
+    });
+  }
+
+  deleteElement(id: Guid): void {
+    this.sharedData.designData.forEach(row => {
+      let index: number = -1;
+      for (let i = 0; i < row.columns.length; i++) {
+        if (row.columns[i].id == id) {
+          index = i;
+          break;
+        }
+      }
+
+      if (index > -1) {
+        row.columns.splice(index, 1);
       }
     });
   }

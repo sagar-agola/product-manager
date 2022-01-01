@@ -17,13 +17,14 @@
 }
 
 .element-container {
-    padding: 0;
+    padding: .4rem;
+    border: 1px solid transparent;
     transition: .03s ease-in all;
 
-    &:hover {
+    &:hover,
+    &.selected {
         cursor: grab;
-        padding: .4rem;
-        border: 1px solid rgba(0, 0, 0, 0.125);
+        border-color: rgba(0, 0, 0, 0.125);
         box-shadow: 0 0 7px #ccc;
     }
 }
