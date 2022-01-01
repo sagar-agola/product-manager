@@ -1,1 +1,66 @@
-<p>form-designer works!</p>
+<div class="container mt-3">
+    <div class="row" cdkDropListGroup>
+        <div class="col-8">
+            <div class="card">
+                <div class="card-header">
+                    Form
+                </div>
+                <div class="card-body">
+                    <div
+                        *ngFor="let row of sharedData.designData"
+                        id="{{ row.id }}"
+                        class="d-flex"
+                        style="margin-left: -.5rem; margin-right: -.5rem;"
+                        cdkDropList
+                        cdkDropListOrientation="horizontal"
+                        [cdkDropListData]="row.columns"
+                        [cdkDropListConnectedTo]="connectedTo"
+                        (cdkDropListDropped)="dropOnRow($event)">
+                        <div class="flex-grow-1 mx-2 my-1" *ngFor="let column of row.columns" cdkDrag>
+                            <div class="element-container">
+                                <ng-container *ngIf="column.type == elementType.Text">
+                                    <label>{{ column.label }}</label>
+                                    <input type="text" class="form-control" />
+                                </ng-container>
+
+                                <ng-container *ngIf="column.type == elementType.Numeric">
+                                    <label>{{ column.label }}</label>
+                                    <input type="number" class="form-control" />
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        [id]="dropRowId"
+                        class="row-drop-zone"
+                        cdkDropList
+                        [cdkDropListData]="[]"
+                        (cdkDropListDropped)="dropOnNewRow($event)">
+                        Drop element here to add new row
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header">
+                    Available Headers
+                </div>
+                <div class="card-body">
+                    <div class="text-muted">Click on element to add to form</div>
+                    <div
+                        [id]="availableElementsListId"
+                        cdkDropList
+                        [cdkDropListData]="sharedData.availableFormElements"
+                        [cdkDropListConnectedTo]="connectedTo">
+                        <div class="card my-2" cdkDrag *ngFor="let item of sharedData.availableFormElements">
+                            <div class="card-body">
+                                {{ item.title }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
