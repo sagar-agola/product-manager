@@ -1,16 +1,25 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { ModuleDetailComponent } from './module-detail/module-detail.component';
-import { ModuleListComponent } from './module-list/module-list.component';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { ModuleDetailComponent } from "./module-detail/module-detail.component";
+import { ModuleListComponent } from "./module-list/module-list.component";
 
 const routes: Routes = [
   {
-    path: '',
+    path: "",
     component: ModuleListComponent
   },
   {
-    path: ':id',
-    component: ModuleDetailComponent
+    path: ":id",
+    children: [
+      {
+        path: "",
+        component: ModuleDetailComponent
+      },
+      {
+        path: "forms",
+        loadChildren: () => import("src/app/modules/my-module/form-builder/form-builder.module").then(m => m.FormBuilderModule)
+      }
+    ]
   }
 ];
 
