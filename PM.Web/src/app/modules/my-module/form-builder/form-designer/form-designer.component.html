@@ -1,9 +1,10 @@
-<div class="container mt-3">
+<div class="container-xl mt-3">
     <div class="row" cdkDropListGroup>
         <div class="col-8">
             <div class="card">
                 <div class="card-header">
                     Form
+                    <button mat-raised-button style="visibility: hidden;">x</button>
                 </div>
                 <div class="card-body">
                     <div
@@ -26,7 +27,7 @@
                                 [ngClass]="{ 'selected' : sharedData.selectedElement && column.id == sharedData.selectedElement.id }">
 
                                 <div class="d-flex justify-content-between mb-1">
-                                    <label>{{ column.label }}</label>
+                                    <label [ngClass]="{ 'required' : column.isRequired}">{{ column.label }}</label>
                                     <button
                                         *ngIf="sharedData.selectedElement && column.id == sharedData.selectedElement.id"
                                         class="btn btn-sm btn-danger"
@@ -60,25 +61,89 @@
         <div class="col-4">
             <div class="card">
                 <div class="card-header">
-                    Available Headers
+                    <div class="d-flex justify-content-end">
+                        <button mat-raised-button color="primary">Save and Finish</button>
+                        <span class="mx-1"></span>
+                        <button mat-raised-button color="primary">Save</button>
+                        <span class="mx-1"></span>
+                        <button mat-raised-button>Cancel</button>
+                    </div>
                 </div>
                 <div class="card-body">
-                    <div
-                        [id]="availableElementsListId"
-                        cdkDropList
-                        [cdkDropListData]="sharedData.availableFormElements"
-                        [cdkDropListConnectedTo]="connectedTo">
-                        <div
-                            *ngFor="let item of sharedData.availableFormElements"
-                            cdkDrag
-                            class="card my-2"
-                            style="cursor: grab;">
-                            <div class="card-body">
-                                {{ item.title }}
-                            </div>
-                        </div>
-                    </div>
-                    <small class="text-muted mt-2">Double Click or Dran and Drop element to add to form</small>
+                    <kendo-tabstrip (tabSelect)="onConfigurationTabChange($event)">
+                        <kendo-tabstrip-tab title="Elements" [selected]="true">
+                            <ng-template kendoTabContent>
+                                <div
+                                    [id]="availableElementsListId"
+                                    cdkDropList
+                                    [cdkDropListData]="sharedData.availableFormElements"
+                                    [cdkDropListConnectedTo]="connectedTo">
+                                    <div
+                                        *ngFor="let item of sharedData.availableFormElements"
+                                        cdkDrag
+                                        class="card my-2"
+                                        style="cursor: grab;">
+                                        <div class="card-body">
+                                            {{ item.title }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <small class="text-muted mt-2">Double Click or Dran and Drop element to add to form</small>
+                            </ng-template>
+                        </kendo-tabstrip-tab>
+                        <kendo-tabstrip-tab title="Properties">
+                            <ng-template kendoTabContent>
+                                <div class="text-center text-muted my-2" *ngIf="!selectedElement">
+                                    Select an element to begin
+                                </div>
+                                <ng-container *ngIf="selectedElement">
+                                    <div class="mt-2 mb-3">
+                                        <b>Properties</b> of {{ selectedElement.label }} ({{ elementType[selectedElement.type] }})
+                                    </div>
+                                    <div class="form-field-set">
+                                        <label>Form Label</label>
+                                        <input type="text" class="form-control" [(ngModel)]="selectedElement.label" />
+                                    </div>
+                                    <div class="form-field-set">
+                                        <label>Is Required</label>
+                                        <mat-checkbox color="primary" [(ngModel)]="selectedElement.isRequired"></mat-checkbox>
+                                    </div>
+
+                                    <ng-container *ngIf="selectedElement.type == elementType.Text">
+                                        <div class="form-field-set">
+                                            <label>Min Length</label>
+                                            <input type="text" class="form-control" [(ngModel)]="selectedElement['minLength']" />
+                                        </div>
+                                        <div class="form-field-set">
+                                            <label>Max Length</label>
+                                            <input type="text" class="form-control" [(ngModel)]="selectedElement['maxLength']" />
+                                        </div>
+                                    </ng-container>
+
+                                    <ng-container *ngIf="selectedElement.type == elementType.Numeric">
+                                        <div class="form-field-set">
+                                            <label>Min Value</label>
+                                            <input type="text" class="form-control" [(ngModel)]="selectedElement['min']" />
+                                        </div>
+                                        <div class="form-field-set">
+                                            <label>Max Value</label>
+                                            <input type="text" class="form-control" [(ngModel)]="selectedElement['max']" />
+                                        </div>
+                                    </ng-container>
+                                    <div class="text-center">
+                                        <button mat-raised-button color="primary" (click)="saveElementProperty()">Save</button>
+                                        <span class="mx-1"></span>
+                                        <button mat-raised-button (click)="selectedElement = null; sharedData.selectedElement = null;">Cancel</button>
+                                    </div>
+                                </ng-container>
+                            </ng-template>
+                        </kendo-tabstrip-tab>
+                        <kendo-tabstrip-tab title="Form Properties">
+                            <ng-template kendoTabContent>
+                                configuration
+                            </ng-template>
+                        </kendo-tabstrip-tab>
+                    </kendo-tabstrip>
                 </div>
             </div>
         </div>

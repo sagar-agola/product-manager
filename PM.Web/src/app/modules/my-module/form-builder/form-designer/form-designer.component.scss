@@ -19,13 +19,29 @@
 .element-container {
     padding: .4rem;
     border: 1px solid transparent;
+    border-radius: 4px;
     transition: .03s ease-in all;
 
     &:hover,
     &.selected {
         cursor: grab;
-        border-color: rgba(0, 0, 0, 0.125);
-        box-shadow: 0 0 7px #ccc;
+        border-color: rgba($color: #673AB7, $alpha: 0.2);
+        background-color: rgba($color: #673AB7, $alpha: 0.05);;
+    }
+}
+
+.form-field-set {
+    margin-bottom: 12px;
+    display: flex;
+    
+    :nth-child(1) {
+        min-width: 100px;
+        margin-right: .6rem;
+        align-self: center;
+    }
+
+    :nth-child(2) {
+        flex-grow: 1;
     }
 }
 

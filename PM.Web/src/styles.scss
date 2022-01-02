@@ -68,6 +68,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     font-size: 12px;
 }
 
+.required:after {
+    color: #B80000;
+    content: ' *';
+    display: inline;
+}
+
 .input-group-text {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
