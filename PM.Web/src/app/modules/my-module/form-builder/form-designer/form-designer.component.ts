@@ -24,7 +24,7 @@ export class FormDesignerComponent implements OnInit {
   dropRowId: string = "drop-row";
   availableElementsListId: string = "available-elements"
   elementType = FormElementTypeEnum;
-  selectedElement: FormElement = null;
+  selectedElement?: FormElement = null;
 
   constructor(
     public sharedData: FormBuilderDataService
@@ -181,10 +181,13 @@ export class FormDesignerComponent implements OnInit {
         row.columns.splice(index, 1);
       }
     });
+
+    this.sharedData.selectedElement = null;
+    this.selectedElement = null;
   }
 
   onConfigurationTabChange(event: SelectEvent): void {
-    if (event.index == 1) {
+    if (event.index == 1 && this.sharedData.selectedElement) {
       this.selectedElement = { ...this.sharedData.selectedElement };
     }
     else {
@@ -194,6 +197,7 @@ export class FormDesignerComponent implements OnInit {
 
   saveElementProperty(): void {
     this.sharedData.selectedElement = { ...this.selectedElement };
+    this.selectedElement = { ...this.sharedData.selectedElement };
     this.sharedData.designData.forEach(row => {
       for (let i = 0; i < row.columns.length; i++) {
         if (row.columns[i].id == this.sharedData.selectedElement.id) {
@@ -202,9 +206,6 @@ export class FormDesignerComponent implements OnInit {
         }
       }
     });
-
-    this.selectedElement = null;
-    this.sharedData.selectedElement = null;
   }
 
 }

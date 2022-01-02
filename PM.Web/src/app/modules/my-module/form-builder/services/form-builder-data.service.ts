@@ -5,6 +5,7 @@ import { FormDesignRow } from '../models/form-design-row.model';
 import { FormElementTypeEnum } from '../models/form-element-type.enum';
 import { FormElement } from '../models/form-element.model';
 import { Guid } from 'guid-typescript';
+import { FormMetaData } from '../models/form-meta-data.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,9 @@ export class FormBuilderDataService {
   availableFormElements: FormElement[] = [];
   designData: FormDesignRow[] = [];
   selectedElement?: FormElement = null;
+  formMetaData: FormMetaData = {
+    title: "Form 1"
+  };
 
   constructor() {
     this.activate();

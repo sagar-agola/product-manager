@@ -140,7 +140,10 @@
                         </kendo-tabstrip-tab>
                         <kendo-tabstrip-tab title="Form Properties">
                             <ng-template kendoTabContent>
-                                configuration
+                                <div class="form-field-set">
+                                    <label for="form-title" class="required">Form Title</label>
+                                    <input type="text" class="form-control" [(ngModel)]="sharedData.formMetaData.title">
+                                </div>
                             </ng-template>
                         </kendo-tabstrip-tab>
                     </kendo-tabstrip>
