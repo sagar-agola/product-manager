@@ -3,7 +3,7 @@
         <div class="col-8">
             <div class="card">
                 <div class="card-header">
-                    Form
+                    {{ sharedData.formMetaData.title }}
                     <button mat-raised-button style="visibility: hidden;">x</button>
                 </div>
                 <div class="card-body">
@@ -93,47 +93,47 @@
                         </kendo-tabstrip-tab>
                         <kendo-tabstrip-tab title="Properties">
                             <ng-template kendoTabContent>
-                                <div class="text-center text-muted my-2" *ngIf="!selectedElement">
+                                <div class="text-center text-muted my-2" *ngIf="!sharedData.selectedElement">
                                     Select an element to begin
                                 </div>
-                                <ng-container *ngIf="selectedElement">
+                                <ng-container *ngIf="sharedData.selectedElement">
                                     <div class="mt-2 mb-3">
-                                        <b>Properties</b> of {{ selectedElement.label }} ({{ elementType[selectedElement.type] }})
+                                        <b>Properties</b> of {{ sharedData.selectedElement.label }} ({{ elementType[sharedData.selectedElement.type] }})
                                     </div>
                                     <div class="form-field-set">
                                         <label>Form Label</label>
-                                        <input type="text" class="form-control" [(ngModel)]="selectedElement.label" />
+                                        <input type="text" class="form-control" [(ngModel)]="sharedData.selectedElement.label" />
                                     </div>
                                     <div class="form-field-set">
                                         <label>Is Required</label>
-                                        <mat-checkbox color="primary" [(ngModel)]="selectedElement.isRequired"></mat-checkbox>
+                                        <mat-checkbox color="primary" [(ngModel)]="sharedData.selectedElement.isRequired"></mat-checkbox>
                                     </div>
 
-                                    <ng-container *ngIf="selectedElement.type == elementType.Text">
+                                    <ng-container *ngIf="sharedData.selectedElement.type == elementType.Text">
                                         <div class="form-field-set">
                                             <label>Min Length</label>
-                                            <input type="text" class="form-control" [(ngModel)]="selectedElement['minLength']" />
+                                            <input type="text" class="form-control" [(ngModel)]="sharedData.selectedElement['minLength']" />
                                         </div>
                                         <div class="form-field-set">
                                             <label>Max Length</label>
-                                            <input type="text" class="form-control" [(ngModel)]="selectedElement['maxLength']" />
+                                            <input type="text" class="form-control" [(ngModel)]="sharedData.selectedElement['maxLength']" />
                                         </div>
                                     </ng-container>
 
-                                    <ng-container *ngIf="selectedElement.type == elementType.Numeric">
+                                    <ng-container *ngIf="sharedData.selectedElement.type == elementType.Numeric">
                                         <div class="form-field-set">
                                             <label>Min Value</label>
-                                            <input type="text" class="form-control" [(ngModel)]="selectedElement['min']" />
+                                            <input type="text" class="form-control" [(ngModel)]="sharedData.selectedElement['min']" />
                                         </div>
                                         <div class="form-field-set">
                                             <label>Max Value</label>
-                                            <input type="text" class="form-control" [(ngModel)]="selectedElement['max']" />
+                                            <input type="text" class="form-control" [(ngModel)]="sharedData.selectedElement['max']" />
                                         </div>
                                     </ng-container>
                                     <div class="text-center">
                                         <button mat-raised-button color="primary" (click)="saveElementProperty()">Save</button>
                                         <span class="mx-1"></span>
-                                        <button mat-raised-button (click)="selectedElement = null; sharedData.selectedElement = null;">Cancel</button>
+                                        <button mat-raised-button (click)="sharedData.selectedElement = null">Cancel</button>
                                     </div>
                                 </ng-container>
                             </ng-template>

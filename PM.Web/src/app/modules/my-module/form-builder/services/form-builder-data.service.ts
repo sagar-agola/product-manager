@@ -45,4 +45,12 @@ export class FormBuilderDataService {
       numericElement
     ];
   }
+
+  Initialize(): void {
+    this.designData = [];
+    this.selectedElement = null;
+    this.formMetaData = {
+      title: "Form 1"
+    };
+  }
 }

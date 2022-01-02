@@ -24,13 +24,13 @@ export class FormDesignerComponent implements OnInit {
   dropRowId: string = "drop-row";
   availableElementsListId: string = "available-elements"
   elementType = FormElementTypeEnum;
-  selectedElement?: FormElement = null;
 
   constructor(
     public sharedData: FormBuilderDataService
   ) { }
 
   ngOnInit(): void {
+    this.sharedData.Initialize();
   }
 
   /**
@@ -68,7 +68,6 @@ export class FormDesignerComponent implements OnInit {
       }
 
       this.sharedData.selectedElement = event.container.data[event.currentIndex];
-      this.selectedElement = { ...this.sharedData.selectedElement };
     }
   }
 
@@ -112,7 +111,6 @@ export class FormDesignerComponent implements OnInit {
     this.rowCounter++;
     this.resetConnectedToArray();
     this.sharedData.selectedElement = { ...element };
-    this.selectedElement = { ...element };
   }
 
   resetConnectedToArray(): void {
@@ -131,7 +129,6 @@ export class FormDesignerComponent implements OnInit {
     this.sharedData.selectedElement = this.sharedData.selectedElement && this.sharedData.selectedElement.id == element.id
       ? null
       : { ...element };
-    this.selectedElement = { ...this.sharedData.selectedElement };
   }
 
   insertElement(element: FormElement, rowId: string): void {
@@ -152,7 +149,6 @@ export class FormDesignerComponent implements OnInit {
       if (row.id == rowId) {
         row.columns.push({ ...element });
         this.sharedData.selectedElement = { ...element };
-        this.selectedElement = { ...element };
       }
     });
   }
@@ -162,7 +158,6 @@ export class FormDesignerComponent implements OnInit {
       if (row.id == rowId) {
         row.columns.push({ ...element });
         this.sharedData.selectedElement = { ...element };
-        this.selectedElement = { ...element };
       }
     });
   }
@@ -183,21 +178,12 @@ export class FormDesignerComponent implements OnInit {
     });
 
     this.sharedData.selectedElement = null;
-    this.selectedElement = null;
   }
 
   onConfigurationTabChange(event: SelectEvent): void {
-    if (event.index == 1 && this.sharedData.selectedElement) {
-      this.selectedElement = { ...this.sharedData.selectedElement };
-    }
-    else {
-      this.selectedElement = null;
-    }
   }
 
   saveElementProperty(): void {
-    this.sharedData.selectedElement = { ...this.selectedElement };
-    this.selectedElement = { ...this.sharedData.selectedElement };
     this.sharedData.designData.forEach(row => {
       for (let i = 0; i < row.columns.length; i++) {
         if (row.columns[i].id == this.sharedData.selectedElement.id) {
