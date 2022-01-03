@@ -5,13 +5,13 @@ import { Observable } from 'rxjs';
 import { BaseService } from 'src/app/common/services/base.service';
 import { NotificationService } from 'src/app/common/services/notification.service';
 import { environment } from 'src/environments/environment';
-import { ModuleDetail } from '../category/models/module-detail.model';
+import { FormDesignDetail } from '../models/form-design-detail.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MyModuleService extends BaseService {
-  private _basePath: string = `${environment.apiUrl}/api/modules`;
+export class FOrmDesignService extends BaseService {
+  private _basePath: string = `${environment.apiUrl}/api/form-designs`;
 
   constructor(
     http: HttpClient,
@@ -21,15 +21,15 @@ export class MyModuleService extends BaseService {
     super(http, router, notificationService);
   }
 
-  GetAll(searchTerm: string): Observable<ModuleDetail[]> {
-    return this.get<ModuleDetail[]>(`${this._basePath}?searchTerm=${searchTerm}`);
+  GetAll(moduleId: number, searchTerm: string = ""): Observable<FormDesignDetail[]> {
+    return this.get<FormDesignDetail[]>(`${this._basePath}/${moduleId}?searchTerm=${searchTerm}`);
   }
 
-  Get(id: number): Observable<ModuleDetail> {
-    return this.get<ModuleDetail>(`${this._basePath}/${id}`);
+  Get(id: number): Observable<FormDesignDetail> {
+    return this.get<FormDesignDetail>(`${this._basePath}/${id}`);
   }
 
-  Save(model: ModuleDetail): Observable<any> {
+  Save(model: FormDesignDetail): Observable<any> {
     return this.post(this._basePath, model);
   }
 

@@ -1,45 +1,104 @@
 <div class="container mt-3">
-    <div class="card mx-auto" style="max-width: 450px;">
-        <div class="card-header">
-            <b>Edit Module Details</b>
+    <div class="row">
+        <div class="col-5">
+            <div class="card">
+                <div class="card-header">
+                    <b>Edit Module Details</b>
+                    <button mat-raised-button style="visibility: hidden;">x</button>
+                </div>
+                <div class="card-body">
+                    <form #editModuleForm="ngForm" (submit)="save()">
+                        <div class="mb-3">
+                            <label for="title" class="control-label required">Title</label>
+                            <input type="text" class="form-control" required #title="ngModel" name="title" [(ngModel)]="moduleDetail.title" />
+                            <div class="validation-block" *ngIf="title.errors && title.errors.required && (title.touched || editModuleForm.submitted)">
+                                Title is required.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="icon" class="control-label required">Icon</label>
+                            <input type="text" class="form-control" required #icon="ngModel" name="icon" [(ngModel)]="moduleDetail.icon" />
+                            <div class="validation-block" *ngIf="icon.errors && icon.errors.required && (icon.touched || editModuleForm.submitted)">
+                                Icon is required.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="control-label">
+                                Is Active
+                            </label>
+                            <div>
+                                <mat-slide-toggle
+                                    color="primary"
+                                    [checked]="moduleDetail.isActive"
+                                    (change)="moduleDetail.isActive = !moduleDetail.isActive">
+                                </mat-slide-toggle>
+                            </div>
+                        </div>
+        
+                        <div class="text-center">
+                            <button type="submit" mat-raised-button color="primary">Edit</button>
+                            <span class="mx-2"></span>
+                            <button type="button" mat-raised-button (click)="cancel()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-            <form #editModuleForm="ngForm" (submit)="save()">
-                <div class="mb-3">
-                    <label for="title" class="control-label required">Title</label>
-                    <input type="text" class="form-control" required #title="ngModel" name="title" [(ngModel)]="moduleDetail.title" />
-                    <div class="validation-block" *ngIf="title.errors && title.errors.required && (title.touched || editModuleForm.submitted)">
-                        Title is required.
+        <div class="col-7">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between">
+                        <div class="my-auto">
+                            <b>Forms</b>
+                        </div>
+                        <div class="d-flex">
+                            <input
+                                type="text"
+                                class="form-control mr-2"
+                                placeholder="Start typing to search..."
+                                style="min-width: 250px"
+                                (input)="getFormDesigns()"
+                                [(ngModel)]="formDesignSearchTerm" />
+                            <div>
+                                <button type="button" mat-raised-button color="primary" [routerLink]="[ './forms/create' ]">
+                                    Create Form
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="mb-3">
-                    <label for="icon" class="control-label required">Icon</label>
-                    <input type="text" class="form-control" required #icon="ngModel" name="icon" [(ngModel)]="moduleDetail.icon" />
-                    <div class="validation-block" *ngIf="icon.errors && icon.errors.required && (icon.touched || editModuleForm.submitted)">
-                        Icon is required.
-                    </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Title</th>
+                                <th>Created Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="formDesigns.length == 0">
+                                <td colspan="4" class="text-center">There are no forms.</td>
+                            </tr>
+                            <tr *ngFor="let formDesign of formDesigns; let i = index">
+                                <td>{{ i + 1 }}</td>
+                                <td>{{ formDesign.title }}</td>
+                                <td>{{ formDesign.createdAt | date : appConsts.dateFormat }}</td>
+                                <td>
+                                    <button mat-raised-button color="primary">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+                                    <span class="mx-1"></span>
+                                    <button mat-raised-button color="warn">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="mb-3">
-                    <label class="control-label">
-                        Is Active
-                    </label>
-                    <div>
-                        <mat-slide-toggle
-                            color="primary"
-                            [checked]="moduleDetail.isActive"
-                            (change)="moduleDetail.isActive = !moduleDetail.isActive">
-                        </mat-slide-toggle>
-                    </div>
-                </div>
-
-                <div class="text-center">
-                    <button type="button" mat-raised-button color="primary" [routerLink]="[ './forms/create' ]">Create Form</button>
-                    <span class="mx-2"></span>
-                    <button type="submit" mat-raised-button color="primary">Edit</button>
-                    <span class="mx-2"></span>
-                    <button type="button" mat-raised-button (click)="cancel()">Cancel</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>

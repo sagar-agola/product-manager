@@ -5,6 +5,10 @@ import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ModuleDetail } from '../../category/models/module-detail.model';
 import { MyModuleService } from '../my-module.service';
+import { FOrmDesignService } from '../form-builder/services/form-design.service';
+import { Observable } from 'rxjs';
+import { FormDesignDetail } from '../form-builder/models/form-design-detail.model';
+import { AppConsts } from 'src/app/common/app-consts';
 
 @Component({
   selector: 'app-module-detail',
@@ -15,13 +19,17 @@ export class ModuleDetailComponent implements OnInit {
 
   @ViewChild('editModuleForm') editModuleForm: NgForm;
   
+  appConsts = AppConsts;
   moduleDetail: ModuleDetail = {};
+  formDesigns: FormDesignDetail[] = [];
+  formDesignSearchTerm: string = "";
 
   constructor(
     private route: ActivatedRoute,
     private location: Location,
     private spinner: NgxSpinnerService,
-    private _moduleService: MyModuleService
+    private _moduleService: MyModuleService,
+    private _formDesignService: FOrmDesignService
   ) { }
 
   ngOnInit(): void {
@@ -44,8 +52,13 @@ export class ModuleDetailComponent implements OnInit {
     });
   }
 
-  cancel(): void {
-    this.location.back();
+  getFormDesigns(): void {
+    this.formDesigns = [];
+    this._formDesignService.GetAll(this.moduleDetail.id, this.formDesignSearchTerm).subscribe(response => {
+      if (response && response.length > 0) {
+        this.formDesigns = response;
+      }
+    });
   }
 
   save(): void {
@@ -62,6 +75,10 @@ export class ModuleDetailComponent implements OnInit {
         this.cancel();
       }
     });
+  }
+
+  cancel(): void {
+    this.location.back();
   }
 
 }
