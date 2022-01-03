@@ -10,5 +10,6 @@
         public const string EmailAlreadyConfirmed = "Your emai has already been confirmed";
         public const string Invalid = "Invalid {0}";
         public const string ReferenceExists = "You cannot delete {0} as, There is reference in {1}";
+        public const string NotHavePermission = "You don't have permission to this {0}";
     }
 }

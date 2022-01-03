@@ -120,5 +120,30 @@
             /// </summary>
             public const string Delete = _base + "{id}";
         }
+
+        public static class FormDesign
+        {
+            private const string _base = _root + "form-designs/";
+
+            /// <summary>
+            /// api/form-designs/{moduleId}
+            /// </summary>
+            public const string GetAll = _base + "{moduleId}";
+
+            /// <summary>
+            /// api/form-designs/get/{id}
+            /// </summary>
+            public const string Get = _base + "get/{id}";
+
+            /// <summary>
+            /// api/form-designs
+            /// </summary>
+            public const string Save = _base;
+
+            /// <summary>
+            /// api/form-designs/{id}
+            /// </summary>
+            public const string Delete = _base + "{id}";
+        }
     }
 }
