@@ -13,5 +13,6 @@ namespace PM.Database.DataContext
         public DbSet<ExceptionLog> ExceptionLogs { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Module> Modules { get; set; }
+        public DbSet<FormDesign> FormDesigns { get; set; }
     }
 }
