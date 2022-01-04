@@ -60,7 +60,7 @@
                                 (input)="getFormDesigns()"
                                 [(ngModel)]="formDesignSearchTerm" />
                             <div>
-                                <button type="button" mat-raised-button color="primary" [routerLink]="[ './forms/create' ]">
+                                <button type="button" mat-raised-button color="primary" [routerLink]="[ './form-designs/create' ]">
                                     Create Form
                                 </button>
                             </div>
@@ -71,10 +71,10 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th width="10%">#</th>
-                                <th width="40%">Title</th>
+                                <th width="5%">#</th>
+                                <th width="35%">Title</th>
                                 <th width="20%">Created Date</th>
-                                <th width="30%" class="text-center">Actions</th>
+                                <th width="40%" class="text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -86,9 +86,11 @@
                                 <td>{{ formDesign.title }}</td>
                                 <td>{{ formDesign.createdAt | date : appConsts.dateFormat }}</td>
                                 <td class="text-center">
-                                    <button mat-raised-button color="primary" [routerLink]="[ './forms/edit/', formDesign.id ]">Edit</button>
+                                    <button mat-raised-button color="primary" [routerLink]="[ './form-designs/edit/', formDesign.id ]">Edit</button>
                                     <span class="mx-1"></span>
                                     <button mat-raised-button color="warn" (click)="deleteFormDesign(formDesign.id)">Delete</button>
+                                    <span class="mx-1"></span>
+                                    <button mat-raised-button color="primary" [routerLink]="[ './form-fill/', formDesign.id ]">Form Fill</button>
                                 </td>
                             </tr>
                         </tbody>

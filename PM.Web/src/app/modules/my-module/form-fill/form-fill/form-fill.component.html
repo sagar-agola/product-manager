@@ -1,0 +1,26 @@
+<div class="container mt-3">
+    <div class="card">
+        <div class="card-header">Form</div>
+        <div class="card-body">
+            <div *ngFor="let row of designData" class="d-flex" style="margin-left: -.5rem; margin-right: -.5rem;">
+                <div *ngFor="let column of row.columns" class="mx-2 my-1" style="width: auto;">
+
+                    <label class="control-label" [ngClass]="{ 'required' : column.isRequired}">{{ column.label }}</label>
+
+                    <ng-container *ngIf="column.type == elementType.Text">
+                        <input type="text" class="form-control" [maxLength]="column['maxLength']" [minLength]="column['minLength']" />
+                    </ng-container>
+
+                    <ng-container *ngIf="column.type == elementType.Numeric">
+                        <input type="number" class="form-control" [max]="column['max']" [min]="column['min']" />
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-center">
+            <button mat-raised-button color="primary">Save</button>
+            <span class="mx-1"></span>
+            <button mat-raised-button>Cancel</button>
+        </div>
+    </div>
+</div>

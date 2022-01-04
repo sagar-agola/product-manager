@@ -74,6 +74,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     display: inline;
 }
 
+.control-label {
+    margin-bottom: 4px;
+}
+
 .input-group-text {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
