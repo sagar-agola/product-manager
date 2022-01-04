@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './common/shared.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './common/interceptors/auth.interceptor';
+import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { AuthInterceptor } from './common/interceptors/auth.interceptor';
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
-    SharedModule
+    SharedModule,
+    LoadingBarRouterModule
   ],
   providers: [
     {
