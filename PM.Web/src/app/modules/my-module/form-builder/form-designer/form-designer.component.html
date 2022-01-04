@@ -62,11 +62,11 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex justify-content-end">
-                        <button mat-raised-button color="primary">Save and Finish</button>
+                        <!-- <button mat-raised-button color="primary">Save and Finish</button>
+                        <span class="mx-1"></span> -->
+                        <button mat-raised-button color="primary" (click)="save()">Save</button>
                         <span class="mx-1"></span>
-                        <button mat-raised-button color="primary">Save</button>
-                        <span class="mx-1"></span>
-                        <button mat-raised-button>Cancel</button>
+                        <button mat-raised-button (click)="cancel()">Cancel</button>
                     </div>
                 </div>
                 <div class="card-body">

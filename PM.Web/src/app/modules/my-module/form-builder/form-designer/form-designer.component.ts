@@ -7,6 +7,11 @@ import { FormElement } from '../models/form-element.model';
 import { FormBuilderDataService } from '../services/form-builder-data.service';
 import { Guid } from 'guid-typescript';
 import { SelectEvent } from "@progress/kendo-angular-layout";
+import { NgxSpinnerService } from 'ngx-spinner';
+import { FOrmDesignService } from '../services/form-design.service';
+import { FormDesignDetail } from '../models/form-design-detail.model';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-form-designer',
@@ -21,15 +26,25 @@ export class FormDesignerComponent implements OnInit {
   // used to calculate new row id
   rowCounter: number = 1;
 
+  moduleId: number = 0;
   dropRowId: string = "drop-row";
   availableElementsListId: string = "available-elements"
   elementType = FormElementTypeEnum;
 
   constructor(
+    private route: ActivatedRoute,
+    private location: Location,
+    private spinner: NgxSpinnerService,
+    private _formDesignService: FOrmDesignService,
     public sharedData: FormBuilderDataService
   ) { }
 
   ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      if (params.id) {
+        this.moduleId = Number(params.id);
+      }
+    });
     this.sharedData.Initialize();
   }
 
@@ -192,6 +207,27 @@ export class FormDesignerComponent implements OnInit {
         }
       }
     });
+  }
+
+  save(): void {
+    const model: FormDesignDetail = {
+      title: this.sharedData.formMetaData.title,
+      designData: JSON.stringify(this.sharedData.designData),
+      moduleId: this.moduleId
+    };
+
+    this.spinner.show();
+    this._formDesignService.Save(model).subscribe(response => {
+      this.spinner.hide();
+
+      if (response) {
+        this.cancel();
+      }
+    })
+  }
+
+  cancel(): void {
+    this.location.back();
   }
 
 }

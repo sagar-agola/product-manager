@@ -9,6 +9,8 @@ import { FOrmDesignService } from '../form-builder/services/form-design.service'
 import { Observable } from 'rxjs';
 import { FormDesignDetail } from '../form-builder/models/form-design-detail.model';
 import { AppConsts } from 'src/app/common/app-consts';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent, ConfirmDialogModel } from '../../common-components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-module-detail',
@@ -28,6 +30,7 @@ export class ModuleDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private spinner: NgxSpinnerService,
+    private dialog: MatDialog,
     private _moduleService: MyModuleService,
     private _formDesignService: FOrmDesignService
   ) { }
@@ -37,6 +40,7 @@ export class ModuleDetailComponent implements OnInit {
       if (params.id && isNaN(params.id) == false) {
         this.moduleDetail.id = Number(params.id);
         this.getModuleDetails();
+        this.getFormDesigns();
       }
     });
   }
@@ -57,6 +61,29 @@ export class ModuleDetailComponent implements OnInit {
     this._formDesignService.GetAll(this.moduleDetail.id, this.formDesignSearchTerm).subscribe(response => {
       if (response && response.length > 0) {
         this.formDesigns = response;
+      }
+    });
+  }
+
+  deleteFormDesign(id: number): void {
+    const message = `Are you sure you want to delete this Form?`;
+
+    const dialogData = new ConfirmDialogModel("Confirm Action", message);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      maxWidth: "400px",
+      data: dialogData,
+      position: {
+        top: "80px"
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((isConfirmed: boolean) => {
+      if (isConfirmed) {
+        this.spinner.show();
+        this._formDesignService.Delete(id).subscribe(() => {
+          this.spinner.hide();
+          this.getFormDesigns();
+        });
       }
     });
   }

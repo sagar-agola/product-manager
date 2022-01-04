@@ -71,10 +71,10 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Title</th>
-                                <th>Created Date</th>
-                                <th>Actions</th>
+                                <th width="10%">#</th>
+                                <th width="40%">Title</th>
+                                <th width="20%">Created Date</th>
+                                <th width="30%" class="text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -85,14 +85,10 @@
                                 <td>{{ i + 1 }}</td>
                                 <td>{{ formDesign.title }}</td>
                                 <td>{{ formDesign.createdAt | date : appConsts.dateFormat }}</td>
-                                <td>
-                                    <button mat-raised-button color="primary">
-                                        <i class="fa fa-edit"></i>
-                                    </button>
+                                <td class="text-center">
+                                    <button mat-raised-button color="primary">Edit</button>
                                     <span class="mx-1"></span>
-                                    <button mat-raised-button color="warn">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
+                                    <button mat-raised-button color="warn" (click)="deleteFormDesign(formDesign.id)">Delete</button>
                                 </td>
                             </tr>
                         </tbody>
