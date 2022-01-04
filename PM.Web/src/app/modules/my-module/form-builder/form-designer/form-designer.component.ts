@@ -23,10 +23,8 @@ export class FormDesignerComponent implements OnInit {
   // id of all rows to specify all row can transfer element to/from eachother
   connectedTo: string[] = [];
 
-  // used to calculate new row id
-  rowCounter: number = 1;
-
   moduleId: number = 0;
+  formDesignId: number = 0;
   dropRowId: string = "drop-row";
   availableElementsListId: string = "available-elements"
   elementType = FormElementTypeEnum;
@@ -41,11 +39,30 @@ export class FormDesignerComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      if (params.id) {
-        this.moduleId = Number(params.id);
+      if (params.moduleId) {
+        this.moduleId = Number(params.moduleId);
+      }
+
+      if (params.formDesignId) {
+        this.formDesignId = Number(params.formDesignId);
+        this.getFormDesignDetails();
+      }
+      else {
+        this.sharedData.Initialize();
       }
     });
-    this.sharedData.Initialize();
+  }
+
+  getFormDesignDetails(): void {
+    this.spinner.show();
+    this._formDesignService.Get(this.formDesignId).subscribe(response => {
+      this.spinner.hide();
+
+      if (response) {
+        this.sharedData.Initialize(response);
+        this.resetConnectedToArray();
+      }
+    });
   }
 
   /**
@@ -95,7 +112,7 @@ export class FormDesignerComponent implements OnInit {
     let element: FormElement = event.previousContainer.data[event.previousIndex];
     element.id = Guid.create();
 
-    this.connectedTo.push('row' + this.rowCounter);
+    this.connectedTo.push('row' + this.sharedData.rowCounter);
     
     // remove current column from design data
     // in case of new element drop no column will be deleted
@@ -117,13 +134,13 @@ export class FormDesignerComponent implements OnInit {
     });
 
     this.sharedData.designData.push({
-      id: 'row' + this.rowCounter,
+      id: 'row' + this.sharedData.rowCounter,
       columns: [
         { ...element }
       ]
     });
 
-    this.rowCounter++;
+    this.sharedData.rowCounter++;
     this.resetConnectedToArray();
     this.sharedData.selectedElement = { ...element };
   }
@@ -135,8 +152,8 @@ export class FormDesignerComponent implements OnInit {
       this.connectedTo.push(row.id);
     };
 
-    if (this.connectedTo.some(c => c == "drop-row") == false) {
-      this.connectedTo.push("");
+    if (this.connectedTo.some(c => c == this.dropRowId) == false) {
+      this.connectedTo.push(this.dropRowId);
     }
   }
 
@@ -178,21 +195,35 @@ export class FormDesignerComponent implements OnInit {
   }
 
   deleteElement(id: Guid): void {
-    this.sharedData.designData.forEach(row => {
-      let index: number = -1;
-      for (let i = 0; i < row.columns.length; i++) {
-        if (row.columns[i].id == id) {
-          index = i;
+
+    let rowIndex: number = -1;
+    let columnIndex: number = -1;
+
+    for (let i = 0; i < this.sharedData.designData.length; i++) {
+      const row = this.sharedData.designData[i];
+
+      for (let j = 0; j < row.columns.length; j++) {
+        const column = row.columns[j];
+        
+        if (column.id == id) {
+          columnIndex = j;
+          rowIndex = i;
           break;
         }
       }
+    }
 
-      if (index > -1) {
-        row.columns.splice(index, 1);
+    if (columnIndex > -1) {
+      this.sharedData.designData[rowIndex].columns.splice(columnIndex, 1);
+
+      if (this.sharedData.designData[rowIndex].columns.length == 0) {
+        this.sharedData.designData.splice(rowIndex, 1);
       }
-    });
+    }
 
     this.sharedData.selectedElement = null;
+    this.sharedData.resetRowIds();
+    this.resetConnectedToArray();
   }
 
   onConfigurationTabChange(event: SelectEvent): void {
@@ -209,8 +240,9 @@ export class FormDesignerComponent implements OnInit {
     });
   }
 
-  save(): void {
+  save(isFinish: boolean): void {
     const model: FormDesignDetail = {
+      id: this.formDesignId,
       title: this.sharedData.formMetaData.title,
       designData: JSON.stringify(this.sharedData.designData),
       moduleId: this.moduleId
@@ -221,7 +253,13 @@ export class FormDesignerComponent implements OnInit {
       this.spinner.hide();
 
       if (response) {
-        this.cancel();
+
+        if (isFinish) {
+          this.cancel();
+        }
+        else {
+          this.getFormDesignDetails();
+        }
       }
     })
   }

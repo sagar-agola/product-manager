@@ -26,7 +26,7 @@ export class FOrmDesignService extends BaseService {
   }
 
   Get(id: number): Observable<FormDesignDetail> {
-    return this.get<FormDesignDetail>(`${this._basePath}/${id}`);
+    return this.get<FormDesignDetail>(`${this._basePath}/get/${id}`);
   }
 
   Save(model: FormDesignDetail): Observable<any> {

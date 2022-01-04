@@ -86,7 +86,7 @@
                                 <td>{{ formDesign.title }}</td>
                                 <td>{{ formDesign.createdAt | date : appConsts.dateFormat }}</td>
                                 <td class="text-center">
-                                    <button mat-raised-button color="primary">Edit</button>
+                                    <button mat-raised-button color="primary" [routerLink]="[ './forms/edit/', formDesign.id ]">Edit</button>
                                     <span class="mx-1"></span>
                                     <button mat-raised-button color="warn" (click)="deleteFormDesign(formDesign.id)">Delete</button>
                                 </td>

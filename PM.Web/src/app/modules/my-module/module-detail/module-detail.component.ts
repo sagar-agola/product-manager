@@ -37,8 +37,8 @@ export class ModuleDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      if (params.id && isNaN(params.id) == false) {
-        this.moduleDetail.id = Number(params.id);
+      if (params.moduleId && isNaN(params.moduleId) == false) {
+        this.moduleDetail.id = Number(params.moduleId);
         this.getModuleDetails();
         this.getFormDesigns();
       }

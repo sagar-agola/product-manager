@@ -6,6 +6,10 @@ const routes: Routes = [
   {
     path: "create",
     component: FormDesignerComponent
+  },
+  {
+    path: "edit/:formDesignId",
+    component: FormDesignerComponent
   }
 ];
 

@@ -137,6 +137,7 @@ namespace PM.Business.Repositories
                 FormDesign formDesign = await _context.FormDesigns.FirstOrDefaultAsync(fd => fd.Id == model.Id);
 
                 formDesign.Title = model.Title;
+                formDesign.DesignData = model.DesignData;
                 formDesign.UpdatedAt = DateTime.UtcNow;
             }
 
@@ -147,7 +148,7 @@ namespace PM.Business.Repositories
                     string.Format(
                         MessageHelper.SuccessMessage,
                         "Form Design",
-                        model.Id == 0 ? "created" : "title updated")
+                        model.Id == 0 ? "created" : "updated")
                     )
                 );
         }

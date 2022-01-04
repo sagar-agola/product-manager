@@ -6,6 +6,7 @@ import { FormElementTypeEnum } from '../models/form-element-type.enum';
 import { FormElement } from '../models/form-element.model';
 import { Guid } from 'guid-typescript';
 import { FormMetaData } from '../models/form-meta-data.model';
+import { FormDesignDetail } from '../models/form-design-detail.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,9 @@ export class FormBuilderDataService {
   formMetaData: FormMetaData = {
     title: "Form 1"
   };
+
+  // used to calculate new row id
+  rowCounter: number = 1;
 
   constructor() {
     this.activate();
@@ -46,11 +50,30 @@ export class FormBuilderDataService {
     ];
   }
 
-  Initialize(): void {
-    this.designData = [];
-    this.selectedElement = null;
-    this.formMetaData = {
-      title: "Form 1"
-    };
+  Initialize(formDesignDetail: FormDesignDetail = null): void {
+    if (formDesignDetail) {
+      this.designData = JSON.parse(formDesignDetail.designData);
+      this.formMetaData.title = formDesignDetail.title;
+      this.selectedElement = null;
+
+      this.rowCounter = 1;
+      this.designData.forEach(row => {
+        row.id = "row" + this.rowCounter++;
+      });
+    }
+    else {
+      this.designData = [];
+      this.selectedElement = null;
+      this.formMetaData = {
+        title: "Form 1"
+      };
+    }
+  }
+
+  resetRowIds(): void {
+    this.rowCounter = 1;
+    this.designData.forEach(row => {
+      row.id = "row" + this.rowCounter++;
+    });
   }
 }

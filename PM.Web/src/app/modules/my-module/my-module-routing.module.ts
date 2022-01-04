@@ -9,7 +9,7 @@ const routes: Routes = [
     component: ModuleListComponent
   },
   {
-    path: ":id",
+    path: ":moduleId",
     children: [
       {
         path: "",
