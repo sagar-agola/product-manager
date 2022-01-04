@@ -31,7 +31,7 @@
                         class="general-search"
                         placeholder="Start typing to search..."
                         [clearButton]="true"
-                        (valueChange)="skip = 0; loadGridItems();"
+                        (valueChange)="onGeneralSearchChanged()"
                         [(ngModel)]="searchTerm"
                         ></kendo-textbox>
                     
