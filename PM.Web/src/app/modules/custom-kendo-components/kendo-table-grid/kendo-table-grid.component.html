@@ -27,7 +27,13 @@
                 <!-- right toolbar -->
                 <div class="d-flex">
                     <!-- General Search -->
-                    <kendo-textbox class="general-search" [(ngModel)]="searchTerm" [clearButton]="true" (valueChange)="loadGridItems()" placeholder="Start typing to search..."></kendo-textbox>
+                    <kendo-textbox
+                        class="general-search"
+                        placeholder="Start typing to search..."
+                        [clearButton]="true"
+                        (valueChange)="skip = 0; loadGridItems();"
+                        [(ngModel)]="searchTerm"
+                        ></kendo-textbox>
                     
                     <div *ngIf="tableDefinition.toolbar.right" class="d-flex">
                         <div *ngFor="let item of tableDefinition.toolbar.right; let i = index">
