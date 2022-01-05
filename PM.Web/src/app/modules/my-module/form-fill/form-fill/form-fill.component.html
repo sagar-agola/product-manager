@@ -3,7 +3,7 @@
         <div class="card-header">Form</div>
         <div class="card-body">
             <div *ngFor="let row of designData" class="d-flex" style="margin-left: -.5rem; margin-right: -.5rem;">
-                <div *ngFor="let column of row.columns" class="mx-2 my-1" style="width: auto;">
+                <div *ngFor="let column of row.columns" class="flex-grow-1 mx-2 my-1" style="flex-basis: 0;">
 
                     <label class="control-label" [ngClass]="{ 'required' : column.isRequired}">{{ column.label }}</label>
 
