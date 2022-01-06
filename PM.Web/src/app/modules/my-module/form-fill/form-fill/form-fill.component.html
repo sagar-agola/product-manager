@@ -8,11 +8,11 @@
                     <label class="control-label" [ngClass]="{ 'required' : column.isRequired}">{{ column.label }}</label>
 
                     <ng-container *ngIf="column.type == elementType.Text">
-                        <input type="text" class="form-control" [maxLength]="column['maxLength']" [minLength]="column['minLength']" />
+                        <input type="text" class="form-control" [(ngModel)]="answer[column.bind]" [maxLength]="column['maxLength']" [minLength]="column['minLength']" />
                     </ng-container>
 
                     <ng-container *ngIf="column.type == elementType.Numeric">
-                        <input type="number" class="form-control" [max]="column['max']" [min]="column['min']" />
+                        <input type="number" class="form-control" [(ngModel)]="answer[column.bind]" [max]="column['max']" [min]="column['min']" />
                     </ng-container>
                 </div>
             </div>

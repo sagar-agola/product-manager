@@ -14,6 +14,7 @@ export class FormFillComponent implements OnInit {
 
   elementType = FormElementTypeEnum;
   designData: FormDesignRow[];
+  answer: any = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -36,7 +37,23 @@ export class FormFillComponent implements OnInit {
 
       if (response) {
         this.designData = JSON.parse(response.designData);
+        this.setDefaultAnswer();
       }
+    });
+  }
+
+  setDefaultAnswer(): void {
+    this.designData.forEach(row => {
+      row.columns.forEach(column => {
+        switch (column.type) {
+          case FormElementTypeEnum.Text:
+            this.answer[column.bind] = "";   
+            break;
+          case FormElementTypeEnum.Numeric:
+            this.answer[column.bind] = "";   
+            break;
+        }
+      });
     });
   }
 

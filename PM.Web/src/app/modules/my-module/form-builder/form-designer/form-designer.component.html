@@ -88,7 +88,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <small class="text-muted mt-2">Double Click or Dran and Drop element to add to form</small>
+                                <small class="text-muted mt-2">Drag and Drop element to add to form</small>
                             </ng-template>
                         </kendo-tabstrip-tab>
                         <kendo-tabstrip-tab title="Properties">
@@ -130,6 +130,11 @@
                                             <input type="text" class="form-control" [(ngModel)]="sharedData.selectedElement['max']" />
                                         </div>
                                     </ng-container>
+
+                                    <div class="form-field-set">
+                                        <label class="required">Bind</label>
+                                        <input type="text" class="form-control" [(ngModel)]="sharedData.selectedElement.bind" disabled />
+                                    </div>
                                     <div class="text-center">
                                         <button mat-raised-button color="primary" (click)="saveElementProperty()">Save</button>
                                         <span class="mx-1"></span>

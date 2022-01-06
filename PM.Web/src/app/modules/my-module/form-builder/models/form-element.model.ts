@@ -7,4 +7,5 @@ export class FormElement {
     type: FormElementTypeEnum;
     label: string;
     isRequired: boolean;
+    bind?: string;
 }

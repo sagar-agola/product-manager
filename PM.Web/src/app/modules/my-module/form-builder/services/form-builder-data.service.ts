@@ -70,10 +70,23 @@ export class FormBuilderDataService {
     }
   }
 
-  resetRowIds(): void {
+  ResetRowIds(): void {
     this.rowCounter = 1;
     this.designData.forEach(row => {
       row.id = "row" + this.rowCounter++;
     });
+  }
+
+  GetElementCountByType(type: FormElementTypeEnum): number {
+    let count: number = 0;
+    this.designData.forEach(row => {
+      row.columns.forEach(column => {
+        if (column.type == type) {
+          count++;
+        }
+      });
+    });
+
+    return count;
   }
 }

@@ -112,7 +112,13 @@ export class FormDesignerComponent implements OnInit {
     let element: FormElement = event.previousContainer.data[event.previousIndex];
     element.id = Guid.create();
 
-    this.connectedTo.push('row' + this.sharedData.rowCounter);
+    const rowId: string = "row" + this.sharedData.rowCounter++;
+    this.connectedTo.push(rowId);
+
+    if (event.previousContainer.id == this.availableElementsListId) {
+      this.insertElement(element, rowId);
+      return;
+    }
     
     // remove current column from design data
     // in case of new element drop no column will be deleted
@@ -134,7 +140,7 @@ export class FormDesignerComponent implements OnInit {
     });
 
     this.sharedData.designData.push({
-      id: 'row' + this.sharedData.rowCounter,
+      id: rowId,
       columns: [
         { ...element }
       ]
@@ -177,21 +183,50 @@ export class FormDesignerComponent implements OnInit {
   }
 
   insertTextElement(element: TextFormElement, rowId: string): void {
+    let numericElementcount: number = this.sharedData.GetElementCountByType(element.type);
+    element.bind = `textElement${numericElementcount + 1}`;
+
+    let isRowFound: boolean = false;
     this.sharedData.designData.forEach(row => {
       if (row.id == rowId) {
         row.columns.push({ ...element });
         this.sharedData.selectedElement = { ...element };
+        isRowFound = true;
       }
     });
+
+    if (isRowFound == false) {
+      this.sharedData.designData.push({
+        id: rowId,
+        columns: [
+          { ...element }
+        ]
+      });
+    }
   }
 
   insertNumericElement(element: NumericFormElement, rowId: string): void {
+
+    let numericElementcount: number = this.sharedData.GetElementCountByType(element.type);
+    element.bind = `numericElement${numericElementcount + 1}`;
+
+    let isRowFound: boolean = false;
     this.sharedData.designData.forEach(row => {
       if (row.id == rowId) {
         row.columns.push({ ...element });
         this.sharedData.selectedElement = { ...element };
+        isRowFound = true;
       }
     });
+
+    if (isRowFound == false) {
+      this.sharedData.designData.push({
+        id: rowId,
+        columns: [
+          { ...element }
+        ]
+      });
+    }
   }
 
   deleteElement(id: Guid): void {
@@ -222,7 +257,7 @@ export class FormDesignerComponent implements OnInit {
     }
 
     this.sharedData.selectedElement = null;
-    this.sharedData.resetRowIds();
+    this.sharedData.ResetRowIds();
     this.resetConnectedToArray();
   }
 
