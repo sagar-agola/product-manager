@@ -18,6 +18,7 @@ namespace PM.Api.ServiceInstallers
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IModuleRepository, ModuleRepository>();
             services.AddScoped<IFormDesignRepository, FormDesignRepository>();
+            services.AddScoped<IFormAnswerRepository, FormAnswerRepository>();
         }
     }
 }

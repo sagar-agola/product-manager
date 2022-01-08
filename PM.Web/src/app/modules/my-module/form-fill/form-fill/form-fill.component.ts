@@ -4,6 +4,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { FormDesignRow } from '../../form-builder/models/form-design-row.model';
 import { FormElementTypeEnum } from '../../form-builder/models/form-element-type.enum';
 import { FOrmDesignService } from '../../form-builder/services/form-design.service';
+import { FormAnswerDetail } from '../models/form-answer-detail.model';
+import { FormAnswerService } from '../services/form-answer.service';
 import { FormFillSharedDataService } from '../services/form-fill-shared-data.service';
 
 @Component({
@@ -20,6 +22,7 @@ export class FormFillComponent implements OnInit {
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService,
     private _formDesignService: FOrmDesignService,
+    private _formAnswerService: FormAnswerService,
     public sharedData: FormFillSharedDataService
   ) { }
 
@@ -61,6 +64,18 @@ export class FormFillComponent implements OnInit {
 
   save(): void {
     this.validateForm();
+
+    if (this.sharedData.errors.length > 0) {
+      return;
+    }
+
+    const model: FormAnswerDetail = {
+      formDesignId: this.sharedData.formDesign.id,
+      answerDataString: JSON.stringify(this.sharedData.answer)
+    };
+
+    this.spinner.show();
+    this._formAnswerService.Save(model).subscribe(() => this.spinner.hide());
   }
 
   validateForm(): void {

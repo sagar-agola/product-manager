@@ -35,6 +35,7 @@ namespace PM.Business.Repositories
                                                     module.UserId == _authService.UserId &&
                                                     module.Id == moduleId &&
                                                     module.DeletedAt.HasValue == false &&
+                                                    formDesign.IsActive &&
                                                     formDesign.DeletedAt.HasValue == false &&
                                                     (string.IsNullOrEmpty(searchTerm) || formDesign.Title.Contains(searchTerm))
                                                   orderby formDesign.Order
@@ -92,7 +93,7 @@ namespace PM.Business.Repositories
 
             if (model.Id == 0)
             {
-                bool isDuplicate = await _context.FormDesigns.AnyAsync(fd => fd.Title == model.Title && fd.ModuleId == model.ModuleId && fd.DeletedAt.HasValue == false);
+                bool isDuplicate = await _context.FormDesigns.AnyAsync(fd => fd.Title == model.Title && fd.ModuleId == model.ModuleId && fd.IsActive && fd.DeletedAt.HasValue == false);
                 if (isDuplicate)
                 {
                     return new ExecutionResult(
@@ -121,7 +122,7 @@ namespace PM.Business.Repositories
             }
             else
             {
-                bool isDuplicate = await _context.FormDesigns.AnyAsync(fd => fd.Id != model.Id && fd.Title == model.Title && fd.ModuleId == model.ModuleId && fd.DeletedAt.HasValue == false);
+                bool isDuplicate = await _context.FormDesigns.AnyAsync(fd => fd.Id != model.Id && fd.Title == model.Title && fd.ModuleId == model.ModuleId && fd.IsActive && fd.DeletedAt.HasValue == false);
                 if (isDuplicate)
                 {
                     return new ExecutionResult(
@@ -134,11 +135,36 @@ namespace PM.Business.Repositories
                         );
                 }
 
-                FormDesign formDesign = await _context.FormDesigns.FirstOrDefaultAsync(fd => fd.Id == model.Id);
+                bool hasFormAnswer = await _context.FormAnswers.AnyAsync(a => a.FormDesignId == model.Id && a.DeletedAt.HasValue == false);
+                FormDesign currentFormDesign = await _context.FormDesigns.FirstOrDefaultAsync(fd => fd.Id == model.Id);
 
-                formDesign.Title = model.Title;
-                formDesign.DesignData = model.DesignData;
-                formDesign.UpdatedAt = DateTime.UtcNow;
+                // create new design data is answer already exists
+                if (hasFormAnswer)
+                {
+                    FormDesign formDesign = new FormDesign
+                    {
+                        Title = model.Title,
+                        DesignData = model.DesignData,
+                        ModuleId = model.ModuleId,
+                        Order = currentFormDesign.Order + 1,
+                        IsActive = true,
+                        CreatedAt = currentFormDesign.CreatedAt,
+                        UpdatedAt = DateTime.UtcNow
+                    };
+
+                    _context.FormDesigns.Add(formDesign);
+
+                    // mark previous design as inactive
+                    currentFormDesign.IsActive = false;
+                    currentFormDesign.UpdatedAt = DateTime.UtcNow;
+                }
+                // update form design if no answer exists for this form design
+                else
+                {
+                    currentFormDesign.Title = model.Title;
+                    currentFormDesign.DesignData = model.DesignData;
+                    currentFormDesign.UpdatedAt = DateTime.UtcNow;
+                }
             }
 
             await _context.SaveChangesAsync();

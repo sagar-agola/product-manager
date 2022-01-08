@@ -145,5 +145,15 @@
             /// </summary>
             public const string Delete = _base + "{id}";
         }
+
+        public static class FormAnswer
+        {
+            private const string _base = _root + "form-answers/";
+
+            /// <summary>
+            /// api/form-answers
+            /// </summary>
+            public const string Save = _base;
+        }
     }
 }
