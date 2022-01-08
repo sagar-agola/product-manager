@@ -9,10 +9,12 @@ import { SharedModule } from './common/shared.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './common/interceptors/auth.interceptor';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    NavbarComponent
   ],
   imports: [
     CommonComponentsModule,

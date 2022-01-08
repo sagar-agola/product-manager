@@ -1,0 +1,21 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <h1>Product Manager</h1>
+        <div style="margin-left: 70px;">
+            <a mat-button [routerLink]="'/products'" routerLinkActive="active"> Products </a>
+            <a mat-button [routerLink]="'/categories'" routerLinkActive="active"> Categories </a>
+            <a mat-button [matMenuTriggerFor]="addMenu">
+                Add
+            </a>
+            <a mat-button [routerLink]="'/modules'" routerLinkActive="active"> Modules </a>
+            <a mat-button [routerLink]="'/static-data'" routerLinkActive="active"> Static Data CRUD </a>
+            <a mat-button (click)="logout()" *ngIf="isLoggedIn"> Log Out</a>
+
+            <!-- Add Menu -->
+            <mat-menu #addMenu="matMenu">
+                <button mat-menu-item>Item 1</button>
+                <button mat-menu-item>Item 2</button>
+            </mat-menu>
+        </div>
+    </mat-toolbar-row>
+</mat-toolbar>
