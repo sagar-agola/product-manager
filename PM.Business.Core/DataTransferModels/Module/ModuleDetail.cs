@@ -14,6 +14,10 @@ namespace PM.Business.Core.DataTransferModels.Module
         [MaxLength(50, ErrorMessage = "Icon text can not be more than 50 characters")]
         public string Icon { get; set; }
 
+        [Required(ErrorMessage = "Module Prefix is required")]
+        [MaxLength(20, ErrorMessage = "Module Prefix can not be more than 20 characters")]
+        public string Prefix { get; set; }
+
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
     }

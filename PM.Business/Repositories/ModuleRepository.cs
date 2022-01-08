@@ -77,29 +77,26 @@ namespace PM.Business.Repositories
         {
             if (model.Id == 0)
             {
-                bool isDuplicate = await _context.Modules.AnyAsync(m => m.Title == model.Title && m.UserId == _authService.UserId && m.DeletedAt.HasValue == false);
-                if (isDuplicate)
+                ExecutionResult validationResult = await ValidateCreateModule(model);
+                if (validationResult.Success == false)
                 {
-                    return new ExecutionResult(
-                        new ErrorInfo(
-                            string.Format(
-                                MessageHelper.ResourceAlreadyExists,
-                                "Module",
-                                $"with \"{ model.Title }\" title")
-                            )
-                        );
+                    return validationResult;
                 }
 
                 Module module = new Module
                 {
                     Title = model.Title,
                     Icon = model.Icon,
+                    Prefix = model.Prefix,
                     UserId = _authService.UserId,
                     CreatedAt = DateTime.UtcNow,
                     IsActive = true
                 };
 
                 _context.Modules.Add(module);
+
+                await _context.SaveChangesAsync();
+                await _context.Database.ExecuteSqlRawAsync("CREATE SEQUENCE [" + string.Format("SEQ_{0}_{1}", _authService.UserId, module.Id) + "] AS [INT] START WITH 1 INCREMENT BY 1;");
             }
             else
             {
@@ -127,9 +124,9 @@ namespace PM.Business.Repositories
                 module.Icon = model.Icon;
                 module.IsActive = model.IsActive;
                 module.UpdatedAt = DateTime.UtcNow;
-            }
 
-            await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
+            }
 
             return new ExecutionResult(
                 new InfoMessage(
@@ -159,6 +156,41 @@ namespace PM.Business.Repositories
             await _context.SaveChangesAsync();
 
             return new ExecutionResult(new InfoMessage(string.Format(MessageHelper.SuccessMessage, "Module", "deleted")));
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private async Task<ExecutionResult> ValidateCreateModule(ModuleDetail model)
+        {
+            bool isDuplicate = await _context.Modules.AnyAsync(m => m.Title == model.Title && m.UserId == _authService.UserId && m.DeletedAt.HasValue == false);
+            if (isDuplicate)
+            {
+                return new ExecutionResult(
+                    new ErrorInfo(
+                        string.Format(
+                            MessageHelper.ResourceAlreadyExists,
+                            "Module",
+                            $"with \"{ model.Title }\" title")
+                        )
+                    );
+            }
+
+            isDuplicate = await _context.Modules.AnyAsync(m => m.Prefix == model.Prefix && m.UserId == _authService.UserId && m.DeletedAt.HasValue == false);
+            if (isDuplicate)
+            {
+                return new ExecutionResult(
+                    new ErrorInfo(
+                        string.Format(
+                            MessageHelper.ResourceAlreadyExists,
+                            "Module",
+                            $"with \"{ model.Prefix }\" Prefix")
+                        )
+                    );
+            }
+
+            return new ExecutionResult();
         }
 
         #endregion

@@ -20,6 +20,13 @@
                         </div>
                     </div>
                     <div class="mb-3">
+                        <label for="prefix" class="control-label required">Prefix</label>
+                        <input type="text" class="form-control" required #prefix="ngModel" name="prefix" [(ngModel)]="createModel.prefix" />
+                        <div class="validation-block" *ngIf="prefix.errors && prefix.errors.required && (prefix.touched || createModuleForm.submitted)">
+                            Prefix is required.
+                        </div>
+                    </div>
+                    <div class="mb-3">
                         <label for="icon" class="control-label required">Icon</label>
                         <input type="text" class="form-control" required #icon="ngModel" name="icon" [(ngModel)]="createModel.icon" />
                         <div class="validation-block" *ngIf="icon.errors && icon.errors.required && (icon.touched || createModuleForm.submitted)">

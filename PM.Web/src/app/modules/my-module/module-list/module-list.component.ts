@@ -16,6 +16,7 @@ export class ModuleListComponent implements OnInit {
   modules: ModuleDetail[] = [];
   createModel: ModuleDetail = {
     title: "",
+    prefix: "",
     icon: ""
   };
 
@@ -40,6 +41,9 @@ export class ModuleListComponent implements OnInit {
       if (response && response.length > 0) {
         this.modules = response;
       }
+      else {
+        this.setCreateMode();
+      }
     });
   }
 
@@ -47,6 +51,7 @@ export class ModuleListComponent implements OnInit {
     this.createModel = {
       id: 0,
       title: "",
+      prefix: "",
       icon: ""
     };
   }
@@ -54,6 +59,7 @@ export class ModuleListComponent implements OnInit {
   hideDetailForm(): void {
     this.createModel = {
       title: "",
+      prefix: "",
       icon: ""
     };
   }
