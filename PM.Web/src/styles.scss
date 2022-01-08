@@ -46,6 +46,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .has-error {
+    label {
+        color: #f44336;
+    }
+
     input,
     textarea {
         color: #f44336;

@@ -1,24 +1,27 @@
 <div class="container mt-3">
     <div class="card">
-        <div class="card-header">Form</div>
+        <div class="card-header">
+            {{ sharedData.formDesign.title }}
+        </div>
         <div class="card-body">
-            <div *ngFor="let row of designData" class="d-flex" style="margin-left: -.5rem; margin-right: -.5rem;">
-                <div *ngFor="let column of row.columns" class="flex-grow-1 mx-2 my-1" style="flex-basis: 0;">
-
-                    <label class="control-label" [ngClass]="{ 'required' : column.isRequired}">{{ column.label }}</label>
-
-                    <ng-container *ngIf="column.type == elementType.Text">
-                        <input type="text" class="form-control" [(ngModel)]="answer[column.bind]" [maxLength]="column['maxLength']" [minLength]="column['minLength']" />
-                    </ng-container>
-
-                    <ng-container *ngIf="column.type == elementType.Numeric">
-                        <input type="number" class="form-control" [(ngModel)]="answer[column.bind]" [max]="column['max']" [min]="column['min']" />
-                    </ng-container>
+            <form>
+                <div *ngFor="let row of designData" class="d-flex" style="margin-left: -.5rem; margin-right: -.5rem;">
+                    <div *ngFor="let column of row.columns" class="flex-grow-1 mx-2 my-1" style="flex-basis: 0;">
+                        <app-form-fill-element [element]="column"></app-form-fill-element>
+                    </div>
                 </div>
+            </form>
+
+            <div class="text-danger mt-3 mb-1" *ngIf="sharedData.errors.length > 0">
+                <ul class="mb-0" style="list-style: none;">
+                    <li *ngFor="let error of sharedData.errors">
+                        <i class="fa fa-times-circle"></i> {{ error.message }}
+                    </li>
+                </ul>
             </div>
         </div>
         <div class="card-footer text-center">
-            <button mat-raised-button color="primary">Save</button>
+            <button mat-raised-button color="primary" (click)="save()">Save</button>
             <span class="mx-1"></span>
             <button mat-raised-button>Cancel</button>
         </div>

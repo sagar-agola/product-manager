@@ -46,10 +46,12 @@
                     <div class="col-7">
                         <h2>{{ module.title }}</h2>
                         <div>
-                            <label>Created On</label>
-                            {{ module.createdAt | date : dateFormat }}
+                            <div>Created On</div>
+                            <div>
+                                {{ module.createdAt | date : dateFormat }}
+                            </div>
                         </div>
-                        <div>
+                        <div class="mt-2">
                             <i *ngIf="module.isActive == false" class="text-danger"><b>Inactive</b></i>
                             <i *ngIf="module.isActive" class="text-success"><b>Active</b></i>
                         </div>

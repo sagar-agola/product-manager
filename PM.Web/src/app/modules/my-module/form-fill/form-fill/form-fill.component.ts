@@ -4,6 +4,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { FormDesignRow } from '../../form-builder/models/form-design-row.model';
 import { FormElementTypeEnum } from '../../form-builder/models/form-element-type.enum';
 import { FOrmDesignService } from '../../form-builder/services/form-design.service';
+import { FormFillSharedDataService } from '../services/form-fill-shared-data.service';
 
 @Component({
   selector: 'app-form-fill',
@@ -14,12 +15,12 @@ export class FormFillComponent implements OnInit {
 
   elementType = FormElementTypeEnum;
   designData: FormDesignRow[];
-  answer: any = {};
 
   constructor(
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService,
-    private _formDesignService: FOrmDesignService
+    private _formDesignService: FOrmDesignService,
+    public sharedData: FormFillSharedDataService
   ) { }
 
   ngOnInit(): void {
@@ -37,6 +38,7 @@ export class FormFillComponent implements OnInit {
 
       if (response) {
         this.designData = JSON.parse(response.designData);
+        this.sharedData.formDesign = response;
         this.setDefaultAnswer();
       }
     });
@@ -47,14 +49,36 @@ export class FormFillComponent implements OnInit {
       row.columns.forEach(column => {
         switch (column.type) {
           case FormElementTypeEnum.Text:
-            this.answer[column.bind] = "";   
+            this.sharedData.answer[column.bind] = "";   
             break;
           case FormElementTypeEnum.Numeric:
-            this.answer[column.bind] = "";   
+            this.sharedData.answer[column.bind] = "";   
             break;
         }
       });
     });
   }
 
+  save(): void {
+    this.validateForm();
+  }
+
+  validateForm(): void {
+    this.sharedData.errors = [];
+
+    this.designData.forEach(row => {
+      row.columns.forEach(column => {
+        switch (column.type) {
+          case FormElementTypeEnum.Text:
+            this.sharedData.ValidateTextElement(column);
+            break;
+          case FormElementTypeEnum.Numeric:
+            this.sharedData.ValidateNumericElement(column);
+            break;
+          default:
+            break;
+        }
+      });
+    });
+  }
 }
