@@ -21,5 +21,6 @@ namespace PM.Database.DataContext
         public DbSet<Module> Modules { get; set; }
         public DbSet<FormDesign> FormDesigns { get; set; }
         public DbSet<FormAnswer> FormAnswers { get; set; }
+        public DbSet<Event> Events { get; set; }
     }
 }
