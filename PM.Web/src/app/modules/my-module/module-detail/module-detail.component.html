@@ -9,11 +9,12 @@
                 <div class="card-body">
                     <form #editModuleForm="ngForm" (submit)="save()">
                         <div class="mb-3">
-                            <label for="title" class="control-label required">Title</label>
-                            <input type="text" class="form-control" required #title="ngModel" name="title" [(ngModel)]="moduleDetail.title" />
-                            <div class="validation-block" *ngIf="title.errors && title.errors.required && (title.touched || editModuleForm.submitted)">
-                                Title is required.
-                            </div>
+                            <label for="title" class="control-label">Title</label>
+                            <input type="text" class="form-control" name="title" [(ngModel)]="moduleDetail.title" disabled />
+                        </div>
+                        <div class="mb-3">
+                            <label for="title" class="control-label">Prefix</label>
+                            <input type="text" class="form-control" name="prefix" [(ngModel)]="moduleDetail.prefix" disabled />
                         </div>
                         <div class="mb-3">
                             <label for="icon" class="control-label required">Icon</label>

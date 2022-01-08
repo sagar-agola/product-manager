@@ -37,6 +37,7 @@ namespace PM.Business.Repositories
                     Id = m.Id,
                     Title = m.Title,
                     Icon = m.Icon,
+                    Prefix = m.Prefix,
                     IsActive = m.IsActive,
                     CreatedAt = m.CreatedAt
                 }).ToListAsync();
@@ -57,6 +58,7 @@ namespace PM.Business.Repositories
                     Id = m.Id,
                     Title = m.Title,
                     Icon = m.Icon,
+                    Prefix = m.Prefix,
                     IsActive = m.IsActive,
                     CreatedAt = m.CreatedAt
                 }).FirstOrDefaultAsync();
@@ -87,7 +89,7 @@ namespace PM.Business.Repositories
                 {
                     Title = model.Title,
                     Icon = model.Icon,
-                    Prefix = model.Prefix,
+                    Prefix = model.Prefix.ToUpper(),
                     UserId = _authService.UserId,
                     CreatedAt = DateTime.UtcNow,
                     IsActive = true
@@ -122,6 +124,7 @@ namespace PM.Business.Repositories
 
                 module.Title = model.Title;
                 module.Icon = model.Icon;
+                module.Prefix = model.Prefix;
                 module.IsActive = model.IsActive;
                 module.UpdatedAt = DateTime.UtcNow;
 
