@@ -151,9 +151,9 @@
             private const string _base = _root + "form-answers/";
 
             /// <summary>
-            /// api/form-answers
+            /// api/form-answers/create
             /// </summary>
-            public const string Save = _base;
+            public const string Create = _base + "create";
         }
     }
 }

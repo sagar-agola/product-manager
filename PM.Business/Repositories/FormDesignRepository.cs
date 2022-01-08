@@ -62,9 +62,10 @@ namespace PM.Business.Repositories
             FormDesignDetail formDesignDetail = await (from module in _context.Modules
                                                        from formDesign in _context.FormDesigns.Where(fd => fd.ModuleId == module.Id)
                                                        where
-                                                         module.UserId == _authService.UserId &&
-                                                         module.DeletedAt.HasValue == false &&
-                                                         formDesign.DeletedAt.HasValue == false
+                                                            formDesign.Id == id &&
+                                                            formDesign.DeletedAt.HasValue == false &&
+                                                            module.UserId == _authService.UserId &&
+                                                            module.DeletedAt.HasValue == false
                                                        select new FormDesignDetail
                                                        {
                                                            Id = formDesign.Id,

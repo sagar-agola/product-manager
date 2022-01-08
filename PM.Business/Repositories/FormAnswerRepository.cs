@@ -19,54 +19,83 @@ namespace PM.Business.Repositories
     {
         private readonly ProductManagerDbContext _context;
         private readonly IAuthService _authService;
+        private readonly IModuleRepository _moduleRepository;
+        private readonly IEventRepository _eventRepository;
 
-        public FormAnswerRepository(ProductManagerDbContext context, IAuthService authService)
+        public FormAnswerRepository(ProductManagerDbContext context,
+                                    IAuthService authService,
+                                    IModuleRepository moduleRepository,
+                                    IEventRepository eventRepository)
         {
             _context = context;
             _authService = authService;
+            _moduleRepository = moduleRepository;
+            _eventRepository = eventRepository;
         }
 
-        #region Save
+        #region Create
 
-        public async Task<ExecutionResult> Save(FormAnswerDetail model)
+        public async Task<ExecutionResult> Create(CreateFormAnswerRequestModel model)
         {
-            bool isFormDesignExists = await (from module in _context.Modules
-                                             from formDesign in _context.FormDesigns.Where(fd => fd.ModuleId == module.Id)
-                                             where
-                                                module.UserId == _authService.UserId &&
-                                                formDesign.Id == model.FormDesignId &&
-                                                module.DeletedAt.HasValue == false &&
-                                                formDesign.DeletedAt.HasValue == false
-                                             select formDesign.Id).AnyAsync();
+            #region Access Check
 
-            if (isFormDesignExists == false)
+            var moduleDetails = await (from module in _context.Modules
+                                       from formDesign in _context.FormDesigns.Where(fd => fd.ModuleId == module.Id)
+                                       where
+                                          module.UserId == _authService.UserId &&
+                                          module.DeletedAt.HasValue == false &&
+                                          formDesign.Id == model.FormDesignId &&
+                                          formDesign.DeletedAt.HasValue == false
+                                       select new
+                                       {
+                                           module.Id,
+                                           module.Title,
+                                           module.Prefix
+                                       }).FirstOrDefaultAsync();
+
+            if (moduleDetails == null)
             {
                 return new ExecutionResult(new ErrorInfo(string.Format(MessageHelper.NotFound, "Form Design")));
             }
 
-            if (model.Id == 0)
+            #endregion
+
+            #region Save Form Answer
+
+            FormAnswer answer = new FormAnswer
             {
-                FormAnswer answer = new FormAnswer
+                FormDesignId = model.FormDesignId,
+                AnswerData = JObject.Parse(model.AnswerDataString),
+                CreatedAt = DateTime.UtcNow,
+                IsActive = true
+            };
+
+            _context.FormAnswers.Add(answer);
+
+            #endregion
+
+            #region Save Event
+
+            if (model.EventId.HasValue == false)
+            {
+                Event eventObj = new Event
                 {
-                    FormDesignId = model.FormDesignId,
-                    AnswerData = JObject.Parse(model.AnswerDataString),
+                    ModuleId = moduleDetails.Id,
+                    UserId = _authService.UserId,
+                    Description = answer.AnswerData.SelectToken("description")?.ToString(),
                     CreatedAt = DateTime.UtcNow,
                     IsActive = true
                 };
 
-                _context.FormAnswers.Add(answer);
-            }
-            else
-            {
-                FormAnswer answer = await _context.FormAnswers.FirstOrDefaultAsync(a => a.Id == model.Id);
-                if (answer == null)
-                {
-                    return new ExecutionResult(new ErrorInfo(string.Format(MessageHelper.NotFound, "Form Answer")));
-                }
+                int nextNumber = await _context.NextValueForSequence(_moduleRepository.GetSequenceName(moduleDetails.Id));
 
-                answer.AnswerData = JObject.Parse(model.AnswerDataString);
-                answer.UpdatedAt = DateTime.UtcNow;
+                eventObj.UniqueId = $"{ moduleDetails.Prefix }-{ nextNumber }";
+                eventObj.ReservedTitle = _eventRepository.GenerateReservedTitle(eventObj, moduleDetails.Title);
+
+                _context.Events.Add(eventObj);
             }
+
+            #endregion
 
             await _context.SaveChangesAsync();
 

@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using PM.Database.Configurations;
 using PM.Database.Models;
+using System.Threading.Tasks;
 
 namespace PM.Database.DataContext
 {
@@ -22,5 +24,17 @@ namespace PM.Database.DataContext
         public DbSet<FormDesign> FormDesigns { get; set; }
         public DbSet<FormAnswer> FormAnswers { get; set; }
         public DbSet<Event> Events { get; set; }
+
+        public async Task<int> NextValueForSequence(string sequence)
+        {
+            SqlParameter result = new SqlParameter("@result", System.Data.SqlDbType.Int)
+            {
+                Direction = System.Data.ParameterDirection.Output
+            };
+
+            await Database.ExecuteSqlRawAsync($"SELECT @result = (NEXT VALUE FOR [{ sequence }])", result);
+
+            return (int)result.Value;
+        }
     }
 }

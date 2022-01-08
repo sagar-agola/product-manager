@@ -6,6 +6,6 @@ namespace PM.Business.Contracts
 {
     public interface IFormAnswerRepository
     {
-        Task<ExecutionResult> Save(FormAnswerDetail model);
+        Task<ExecutionResult> Create(CreateFormAnswerRequestModel model);
     }
 }

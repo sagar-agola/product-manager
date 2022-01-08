@@ -97,7 +97,7 @@ namespace PM.Business.Repositories
                 _context.Modules.Add(module);
 
                 await _context.SaveChangesAsync();
-                await _context.Database.ExecuteSqlRawAsync("CREATE SEQUENCE [" + string.Format("SEQ_{0}_{1}", _authService.UserId, module.Id) + "] AS [INT] START WITH 1 INCREMENT BY 1;");
+                await _context.Database.ExecuteSqlRawAsync($"CREATE SEQUENCE [{ GetSequenceName(module.Id) }] AS [INT] START WITH 1 INCREMENT BY 1;");
             }
             else
             {
@@ -158,6 +158,15 @@ namespace PM.Business.Repositories
             await _context.SaveChangesAsync();
 
             return new ExecutionResult(new InfoMessage(string.Format(MessageHelper.SuccessMessage, "Module", "deleted")));
+        }
+
+        #endregion
+
+        #region Get Sequence Name
+
+        public string GetSequenceName(int moduleId)
+        {
+            return string.Format("SEQ_{0}_{1}", _authService.UserId, moduleId);
         }
 
         #endregion

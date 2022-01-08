@@ -21,7 +21,7 @@ export class FormAnswerService extends BaseService {
     super(http, router, notificationService);
   }
 
-  Save(model: FormAnswerDetail): Observable<void> {
-    return this.post(this._basePath, model);
+  Create(model: FormAnswerDetail): Observable<void> {
+    return this.post(`${this._basePath}/create`, model);
   }
 }

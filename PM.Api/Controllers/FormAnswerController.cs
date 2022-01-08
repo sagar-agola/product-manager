@@ -22,10 +22,10 @@ namespace PM.Api.Controllers
             _formAnswerRepository = formAnswerRepository;
         }
 
-        [HttpPost(ApiRoutes.FormAnswer.Save)]
-        public async Task<IActionResult> Save(FormAnswerDetail model)
+        [HttpPost(ApiRoutes.FormAnswer.Create)]
+        public async Task<IActionResult> Create(CreateFormAnswerRequestModel model)
         {
-            ExecutionResult result = await _formAnswerRepository.Save(model);
+            ExecutionResult result = await _formAnswerRepository.Create(model);
             return FromExecutionResult(result);
         }
     }

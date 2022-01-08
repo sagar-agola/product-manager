@@ -75,7 +75,7 @@ export class FormFillComponent implements OnInit {
     };
 
     this.spinner.show();
-    this._formAnswerService.Save(model).subscribe(() => this.spinner.hide());
+    this._formAnswerService.Create(model).subscribe(() => this.spinner.hide());
   }
 
   validateForm(): void {
