@@ -161,5 +161,15 @@
             /// </summary>
             public const string Create = _base + "create";
         }
+
+        public static class Event
+        {
+            private const string _base = _root + "events/";
+
+            /// <summary>
+            /// api/events/kendo-grid/{moduleId}
+            /// </summary>
+            public const string GetKendoData = _base + "kendo-grid/{moduleId}";
+        }
     }
 }

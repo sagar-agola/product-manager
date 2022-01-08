@@ -37,7 +37,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
       if (response && response.length > 0) {
         this.modules = response.map(item => {
           const prefix: string = [ "a", "e", "i", "o", "u" ].includes(item.title[0].toLowerCase()) ? "an" : "a";
-          item.title = `Add ${prefix} ${item.title}`;
+          item.addTitle = `Add ${prefix} ${item.title}`;
+          item.registersTitle = `${item.title} Register`;
 
           return item;
         });
