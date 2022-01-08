@@ -28,7 +28,7 @@ export class LimitTextToDirective implements Validator {
         if (
             limit > 0 &&
             event.target.value.length >= limit &&
-            [ 8, 46, 37, 38, 39, 40 ].includes(event.keyCode) == false
+            [ 8, 9, 46, 37, 38, 39, 40 ].includes(event.keyCode) == false
         ) {
             event.preventDefault();
         }

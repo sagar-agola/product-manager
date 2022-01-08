@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LimitTextToDirective } from './max-length.directive';
+import { LimitTextToDirective } from './limit-text-to.directive';
 
 @NgModule({
   declarations: [
