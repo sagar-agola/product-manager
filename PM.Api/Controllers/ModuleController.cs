@@ -46,5 +46,12 @@ namespace PM.Api.Controllers
             ExecutionResult result = await _moduleRepository.Delete(id);
             return FromExecutionResult(result);
         }
+
+        [HttpGet(ApiRoutes.Module.NavbarModuleList)]
+        public async Task<IActionResult> GetNavbarModuleList()
+        {
+            ExecutionResult<List<NavbarModuleItem>> result = await _moduleRepository.GetNavbarModuleList();
+            return FromExecutionResult(result);
+        }
     }
 }

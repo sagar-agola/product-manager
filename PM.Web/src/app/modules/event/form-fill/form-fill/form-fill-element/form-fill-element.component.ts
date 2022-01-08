@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormElementTypeEnum } from '../../../form-builder/models/form-element-type.enum';
-import { FormElement } from '../../../form-builder/models/form-element.model';
-import { FormFillSharedDataService } from '../../services/form-fill-shared-data.service';
+import { FormElementTypeEnum } from 'src/app/modules/my-module/form-builder/models/form-element-type.enum';
+import { FormElement } from 'src/app/modules/my-module/form-builder/models/form-element.model';
+import { FormFillSharedDataService } from 'src/app/modules/event/form-fill/services/form-fill-shared-data.service'
 
 @Component({
   selector: 'app-form-fill-element',

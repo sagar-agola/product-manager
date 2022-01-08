@@ -9,13 +9,19 @@
             </a>
             <a mat-button [routerLink]="'/modules'" routerLinkActive="active"> Modules </a>
             <a mat-button [routerLink]="'/static-data'" routerLinkActive="active"> Static Data CRUD </a>
-            <a mat-button (click)="logout()" *ngIf="isLoggedIn"> Log Out</a>
-
-            <!-- Add Menu -->
-            <mat-menu #addMenu="matMenu">
-                <button mat-menu-item>Item 1</button>
-                <button mat-menu-item>Item 2</button>
-            </mat-menu>
         </div>
+        <div style="margin-left: auto; margin-right: 12px;">
+            <a mat-button (click)="logout()" *ngIf="isLoggedIn"> Log Out</a>
+        </div>
+
+        <!-- Add Menu -->
+        <mat-menu #addMenu="matMenu">
+            <button mat-menu-item *ngFor="let module of modules" [routerLink]="[ '/events/forms/', module.formDesignId, 0, 0 ]">
+                <i class="{{ module.icon }} mr-2"></i> {{ module.title }}
+            </button>
+            <button mat-menu-item *ngIf="modules.length == 0" [routerLink]="[ '/modules/' ]">
+                <i class="fa fa-plus mr-2"></i> Create New Module
+            </button>
+        </mat-menu>
     </mat-toolbar-row>
 </mat-toolbar>

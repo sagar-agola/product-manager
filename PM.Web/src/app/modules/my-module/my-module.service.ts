@@ -36,4 +36,9 @@ export class MyModuleService extends BaseService {
   Delete(id: number): Observable<void> {
     return this.delete(`${this._basePath}/${id}`);
   }
+
+  GetNavbarModuleList(): Observable<any[]> {
+    return this.get(`${this._basePath}/list/navbar`);
+  }
+
 }

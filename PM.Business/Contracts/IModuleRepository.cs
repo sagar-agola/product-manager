@@ -12,5 +12,6 @@ namespace PM.Business.Contracts
         Task<ExecutionResult> Save(ModuleDetail model);
         Task<ExecutionResult> Delete(int id);
         string GetSequenceName(int moduleId);
+        Task<ExecutionResult<List<NavbarModuleItem>>> GetNavbarModuleList();
     }
 }

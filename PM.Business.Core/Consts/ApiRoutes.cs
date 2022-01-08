@@ -119,6 +119,12 @@
             /// api/modules/{id}
             /// </summary>
             public const string Delete = _base + "{id}";
+
+            /// <summary>
+            /// api/modules/navbar-module-list
+            /// There is reson behind using this weird route
+            /// </summary>
+            public const string NavbarModuleList =  _base + "list/navbar";
         }
 
         public static class FormDesign

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { FormDesignDetail } from '../../form-builder/models/form-design-detail.model';
-import { FormElement } from '../../form-builder/models/form-element.model';
-import { FormError } from '../models/form-error.model';
+import { FormDesignDetail } from 'src/app/modules/my-module/form-builder/models/form-design-detail.model';
+import { FormElement } from 'src/app/modules/my-module/form-builder/models/form-element.model';
+import { FormError } from 'src/app/modules/event/form-fill/models/form-error.model';
 
 @Injectable({
   providedIn: 'root'

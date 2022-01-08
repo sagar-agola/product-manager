@@ -171,6 +171,33 @@ namespace PM.Business.Repositories
 
         #endregion
 
+        #region Get navbar Module List
+
+        public async Task<ExecutionResult<List<NavbarModuleItem>>> GetNavbarModuleList()
+        {
+            List<NavbarModuleItem> modules = await (from module in _context.Modules
+                                                    from formDesign in _context.FormDesigns.Where(d => d.ModuleId == module.Id)
+                                                    where
+                                                        module.UserId == _authService.UserId &&
+                                                        module.IsActive &&
+                                                        module.DeletedAt.HasValue == false &&
+                                                        formDesign.Order == 1 &&
+                                                        formDesign.IsActive &&
+                                                        formDesign.DeletedAt.HasValue == false
+                                                    orderby module.Title
+                                                    select new NavbarModuleItem
+                                                    {
+                                                        ModuleId = module.Id,
+                                                        FormDesignId = formDesign.Id,
+                                                        Title = module.Title,
+                                                        Icon = module.Icon
+                                                    }).ToListAsync();
+
+            return new ExecutionResult<List<NavbarModuleItem>>(modules);
+        }
+
+        #endregion
+
         #region Private Methods
 
         private async Task<ExecutionResult> ValidateCreateModule(ModuleDetail model)

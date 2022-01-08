@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { FormDesignRow } from '../../form-builder/models/form-design-row.model';
-import { FormElementTypeEnum } from '../../form-builder/models/form-element-type.enum';
-import { FOrmDesignService } from '../../form-builder/services/form-design.service';
+import { FormDesignRow } from 'src/app/modules/my-module/form-builder/models/form-design-row.model';
+import { FormElementTypeEnum } from 'src/app/modules/my-module/form-builder/models/form-element-type.enum';
+import { FOrmDesignService } from 'src/app/modules/my-module/form-builder/services/form-design.service';
 import { FormAnswerDetail } from '../models/form-answer-detail.model';
 import { FormAnswerService } from '../services/form-answer.service';
 import { FormFillSharedDataService } from '../services/form-fill-shared-data.service';
@@ -14,7 +14,6 @@ import { FormFillSharedDataService } from '../services/form-fill-shared-data.ser
   styleUrls: ['./form-fill.component.scss']
 })
 export class FormFillComponent implements OnInit {
-
   elementType = FormElementTypeEnum;
   designData: FormDesignRow[];
 
@@ -96,4 +95,5 @@ export class FormFillComponent implements OnInit {
       });
     });
   }
+  
 }

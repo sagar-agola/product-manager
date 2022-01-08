@@ -18,10 +18,6 @@ const routes: Routes = [
       {
         path: "form-designs",
         loadChildren: () => import("src/app/modules/my-module/form-builder/form-builder.module").then(m => m.FormBuilderModule)
-      },
-      {
-        path: "form-fill",
-        loadChildren: () => import("src/app/modules/my-module/form-fill/form-fill.module").then(m => m.FormFillModule)
       }
     ]
   }

@@ -147,7 +147,7 @@ namespace PM.Business.Repositories
                         Title = model.Title,
                         DesignData = model.DesignData,
                         ModuleId = model.ModuleId,
-                        Order = currentFormDesign.Order + 1,
+                        Order = currentFormDesign.Order,
                         IsActive = true,
                         CreatedAt = currentFormDesign.CreatedAt,
                         UpdatedAt = DateTime.UtcNow
