@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/modules/account/user.service';
 import { MyModuleService } from '../modules/my-module/my-module.service';
+import { NavbarService } from './navbar.service';
 
 @Component({
   selector: 'app-navbar',
@@ -11,25 +12,28 @@ import { MyModuleService } from '../modules/my-module/my-module.service';
 export class NavbarComponent implements OnInit, OnDestroy {
 
   private loggedInSubscription: Subscription;
+  private navbarModuleListRefreshSubscription: Subscription;
 
   isLoggedIn: boolean = false;
   modules: any[] = [];
 
   constructor(
     private _userService: UserService,
-    private _moduleService: MyModuleService
+    private _moduleService: MyModuleService,
+    private _navbarService: NavbarService
   ) { }
 
   ngOnInit(): void {
     const token: string = localStorage.getItem("token");
     this._userService.UpdateLoginStatus(!!token);
-    this._userService.isUserLoggedIn.subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
 
-    this.getModuleList();
+    this.loggedInSubscription = this._userService.isUserLoggedIn.subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
+    this.navbarModuleListRefreshSubscription = this._navbarService.shouldUpdateModuleList.subscribe(() => this.getModuleList());
   }
 
   ngOnDestroy(): void {
     this.loggedInSubscription?.unsubscribe();
+    this.navbarModuleListRefreshSubscription?.unsubscribe();
   }
 
   getModuleList(): void {

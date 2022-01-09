@@ -12,6 +12,7 @@ import { FOrmDesignService } from '../services/form-design.service';
 import { FormDesignDetail } from '../models/form-design-detail.model';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { NavbarService } from 'src/app/navbar/navbar.service';
 
 @Component({
   selector: 'app-form-designer',
@@ -34,6 +35,7 @@ export class FormDesignerComponent implements OnInit {
     private location: Location,
     private spinner: NgxSpinnerService,
     private _formDesignService: FOrmDesignService,
+    private _navbarService: NavbarService,
     public sharedData: FormBuilderDataService
   ) { }
 
@@ -288,6 +290,8 @@ export class FormDesignerComponent implements OnInit {
       this.spinner.hide();
 
       if (response) {
+
+        this._navbarService.updateModuleList();
 
         if (isFinish) {
           this.cancel();

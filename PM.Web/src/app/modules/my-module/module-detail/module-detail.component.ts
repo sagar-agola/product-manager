@@ -11,6 +11,7 @@ import { FormDesignDetail } from '../form-builder/models/form-design-detail.mode
 import { AppConsts } from 'src/app/common/app-consts';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent, ConfirmDialogModel } from '../../common-components/confirm-dialog/confirm-dialog.component';
+import { NavbarService } from 'src/app/navbar/navbar.service';
 
 @Component({
   selector: 'app-module-detail',
@@ -32,7 +33,8 @@ export class ModuleDetailComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private dialog: MatDialog,
     private _moduleService: MyModuleService,
-    private _formDesignService: FOrmDesignService
+    private _formDesignService: FOrmDesignService,
+    private _navbarService: NavbarService
   ) { }
 
   ngOnInit(): void {
@@ -83,6 +85,8 @@ export class ModuleDetailComponent implements OnInit {
         this._formDesignService.Delete(id).subscribe(() => {
           this.spinner.hide();
           this.getFormDesigns();
+          
+          this._navbarService.updateModuleList();
         });
       }
     });
@@ -100,6 +104,8 @@ export class ModuleDetailComponent implements OnInit {
       if (response) {
         this.getModuleDetails();
         this.cancel();
+
+        this._navbarService.updateModuleList();
       }
     });
   }

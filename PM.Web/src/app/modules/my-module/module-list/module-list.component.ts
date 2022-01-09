@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AppConsts } from 'src/app/common/app-consts';
+import { NavbarService } from 'src/app/navbar/navbar.service';
 import { ModuleDetail } from '../../category/models/module-detail.model';
 import { MyModuleService } from '../my-module.service';
 
@@ -25,7 +26,8 @@ export class ModuleListComponent implements OnInit {
 
   constructor(
     private spinner: NgxSpinnerService,
-    private _moduleService: MyModuleService
+    private _moduleService: MyModuleService,
+    private _navbarService: NavbarService
   ) { }
 
   ngOnInit(): void {
@@ -76,6 +78,8 @@ export class ModuleListComponent implements OnInit {
       if (response) {
         this.getAllModules();
         this.hideDetailForm();
+
+        this._navbarService.updateModuleList();
       }
     });
   }
