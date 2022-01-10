@@ -17,7 +17,7 @@ import { NavbarService } from 'src/app/navbar/navbar.service';
 @Component({
   selector: 'app-form-designer',
   templateUrl: './form-designer.component.html',
-  styleUrls: ['./form-designer.component.scss']
+  styleUrls: ['./form-designer-shared-style.scss']
 })
 export class FormDesignerComponent implements OnInit {
 
@@ -264,17 +264,6 @@ export class FormDesignerComponent implements OnInit {
   }
 
   onConfigurationTabChange(event: SelectEvent): void {
-  }
-
-  saveElementProperty(): void {
-    this.sharedData.designData.forEach(row => {
-      for (let i = 0; i < row.columns.length; i++) {
-        if (row.columns[i].id == this.sharedData.selectedElement.id) {
-          row.columns[i] = { ...this.sharedData.selectedElement };
-          break;
-        }
-      }
-    });
   }
 
   save(isFinish: boolean): void {
