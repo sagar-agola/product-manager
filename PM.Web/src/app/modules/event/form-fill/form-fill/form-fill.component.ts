@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -20,6 +21,7 @@ export class FormFillComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService,
+    private location: Location,
     private _formDesignService: FOrmDesignService,
     private _formAnswerService: FormAnswerService,
     public sharedData: FormFillSharedDataService
@@ -75,6 +77,10 @@ export class FormFillComponent implements OnInit {
 
     this.spinner.show();
     this._formAnswerService.Create(model).subscribe(() => this.spinner.hide());
+  }
+
+  cancel(): void {
+    this.location.back();
   }
 
   validateForm(): void {
