@@ -1,12 +1,15 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using PM.Business.Contracts;
 using PM.Business.Core.Consts;
+using PM.Business.Core.DataTransferModels;
 using PM.Business.Core.DataTransferModels.Event;
 using PM.Business.Core.DataTransferModels.Kendo;
 using PM.Business.Helpers;
 using PM.Business.Helpers.Contracts;
 using PM.Database.DataContext;
 using PM.Database.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -49,6 +52,34 @@ namespace PM.Business.Repositories
                                                       };
 
             return await _gridDataTableHelpers.FilterByDataTableRequest(query, register);
+        }
+
+        #endregion
+
+        #region Get Forms Detail
+
+        public async Task<ExecutionResult<List<EventFormDetail>>> GetFormsDetail(int eventId)
+        {
+            List<EventFormDetail> forms = await (from module in _context.Modules
+                                                 from eventObj in _context.Events.Where(e => e.ModuleId == module.Id)
+                                                 from form in _context.FormDesigns.Where(f => f.ModuleId == module.Id)
+                                                 from answer in _context.FormAnswers.Where(a => a.FormDesignId == form.Id).DefaultIfEmpty()
+                                                 where
+                                                    module.UserId == _authService.UserId &&
+                                                    eventObj.UserId == _authService.UserId &&
+                                                    module.DeletedAt.HasValue == false &&
+                                                    eventObj.DeletedAt.HasValue == false &&
+                                                    form.DeletedAt.HasValue == false &&
+                                                    answer.DeletedAt.HasValue == false
+                                                 select new EventFormDetail
+                                                 {
+                                                     FormDesignId = form.Id,
+                                                     Title = form.Title,
+                                                     FormAnswerId = answer == null ? null : (int?)answer.Id,
+                                                     SubmittedAt = answer == null ? null : (DateTime?)answer.CreatedAt
+                                                 }).ToListAsync();
+
+            return new ExecutionResult<List<EventFormDetail>>(forms);
         }
 
         #endregion

@@ -27,4 +27,8 @@ export class EventService extends BaseService {
     return this.post<GridDataResult>(`${this._basePath}/kendo-grid/${moduleId}`, model);
   }
 
+  GetFormsDetail(eventId: number): Observable<any[]> {
+    return this.get(`${this._basePath}/forms-detail/${eventId}`);
+  }
+
 }

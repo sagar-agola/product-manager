@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataItem, GridDataResult } from '@progress/kendo-angular-grid';
 import { Observable } from 'rxjs';
 import { KendoTableGridComponent } from 'src/app/modules/custom-kendo-components/kendo-table-grid/kendo-table-grid.component';
@@ -57,15 +57,8 @@ export class RegisterGridComponent implements OnInit {
     buttons: [
       {
         title: "Dashboard",
-        icon: "fa fa-info-circle",
         skin: KendoButtonSkin.Primary,
-        callBack: (data: DataItem) => console.log(data)
-      },
-      {
-        title: "Delete",
-        icon: "fa fa-trash",
-        skin: KendoButtonSkin.Danger,
-        callBack: (data: DataItem) => console.log(data)
+        callBack: (data: DataItem) => this.router.navigate([ "/events/dashboard", data["id"] ])
       }
     ],
     defaultSort: {
@@ -78,6 +71,7 @@ export class RegisterGridComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private _eventService: EventService
   ) { }
 

@@ -170,6 +170,11 @@
             /// api/events/kendo-grid/{moduleId}
             /// </summary>
             public const string GetKendoData = _base + "kendo-grid/{moduleId}";
+
+            /// <summary>
+            /// api/events/forms-details/{eventId}
+            /// </summary>
+            public const string GetFormsDetail = _base + "forms-detail/{eventId}";
         }
     }
 }

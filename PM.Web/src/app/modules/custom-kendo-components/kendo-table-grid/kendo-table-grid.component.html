@@ -155,7 +155,12 @@
                                     [title]="button.title"
                                     [ngClass]="{ 'mr-2' : i + 1 < tableDefinition.buttons.length }"
                                     (click)="button.callBack(dataItem)">
+
+                                    <!-- by default show icon button -->
                                     <i *ngIf="button.icon" class="{{ button.icon }}"></i>
+
+                                    <!-- show text button only if icon is not specified and title is specified -->
+                                    <span *ngIf="!button.icon && button.title">{{ button.title }}</span>
                                 </button>
                             </ng-container>
                         </div>
