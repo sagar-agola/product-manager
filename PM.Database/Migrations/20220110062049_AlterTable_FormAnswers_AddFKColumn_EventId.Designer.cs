@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PM.Database.DataContext;
 
 namespace PM.Database.Migrations
 {
     [DbContext(typeof(ProductManagerDbContext))]
-    partial class ProductManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220110062049_AlterTable_FormAnswers_AddFKColumn_EventId")]
+    partial class AlterTable_FormAnswers_AddFKColumn_EventId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

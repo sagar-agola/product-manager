@@ -1,4 +1,5 @@
-﻿using PM.Business.Contracts;
+﻿using Newtonsoft.Json.Linq;
+using PM.Business.Contracts;
 using PM.Business.Core.Consts;
 using PM.Business.Core.DataTransferModels.Event;
 using PM.Business.Core.DataTransferModels.Kendo;
@@ -6,6 +7,7 @@ using PM.Business.Helpers;
 using PM.Business.Helpers.Contracts;
 using PM.Database.DataContext;
 using PM.Database.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -57,6 +59,27 @@ namespace PM.Business.Repositories
         {
             // TODO - make this thing dynamic
             return $"{ eventObj.UniqueId }: { moduleTitle } ({ eventObj.CreatedAt.ToString(AppConsts.DateFormat) })";
+        }
+
+        #endregion
+
+        #region Set Reserved Fields
+
+        public void SetReservedFiels(Event eventObj, JObject answer, JArray design)
+        {
+            List<JToken> reservedFields = design.FindTokens("reservedField");
+            foreach (JToken token in reservedFields)
+            {
+                string bind = token.SelectToken("bind").ToString();
+                switch (bind)
+                {
+                    case "Description":
+                        eventObj.Description = answer.SelectToken(bind)?.ToString();
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
         #endregion

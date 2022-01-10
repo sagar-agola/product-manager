@@ -19,16 +19,4 @@ export class CommonHelpersService {
       return `${input[0].toUpperCase()}${input.substring(1)}`;
     }
   }
-
-  CheckHasDuplicateElement(data: any[], property: string): boolean {
-    let hasDuplicate: boolean = false;
-
-    data.forEach(item => {
-      if (hasDuplicate == false) {
-        hasDuplicate = data.some(value => value[property] == item[property]);
-      }
-    });
-
-    return hasDuplicate;
-  }
 }

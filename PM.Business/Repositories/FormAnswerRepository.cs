@@ -1,17 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PM.Business.Contracts;
+using PM.Business.Core.Consts;
 using PM.Business.Core.DataTransferModels;
 using PM.Business.Core.DataTransferModels.FormAnswer;
-using PM.Database.DataContext;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using System.Linq;
 using PM.Business.Helpers.Contracts;
-using PM.Business.Core.Consts;
+using PM.Database.DataContext;
 using PM.Database.Models;
-using Newtonsoft.Json.Linq;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PM.Business.Repositories
 {
@@ -50,7 +49,8 @@ namespace PM.Business.Repositories
                                        {
                                            module.Id,
                                            module.Title,
-                                           module.Prefix
+                                           module.Prefix,
+                                           formDesign.DesignData
                                        }).FirstOrDefaultAsync();
 
             if (moduleDetails == null)
@@ -60,8 +60,6 @@ namespace PM.Business.Repositories
 
             #endregion
 
-            #region Save Form Answer
-
             FormAnswer answer = new FormAnswer
             {
                 FormDesignId = model.FormDesignId,
@@ -70,15 +68,13 @@ namespace PM.Business.Repositories
                 IsActive = true
             };
 
-            _context.FormAnswers.Add(answer);
+            JArray design = JsonConvert.DeserializeObject<JArray>(moduleDetails.DesignData);
+            Event eventObj;
 
-            #endregion
-
-            #region Save Event
-
+            // create event for First Form answer
             if (model.EventId.HasValue == false)
             {
-                Event eventObj = new Event
+                eventObj = new Event
                 {
                     ModuleId = moduleDetails.Id,
                     UserId = _authService.UserId,
@@ -92,10 +88,20 @@ namespace PM.Business.Repositories
                 eventObj.UniqueId = $"{ moduleDetails.Prefix }-{ nextNumber }";
                 eventObj.ReservedTitle = _eventRepository.GenerateReservedTitle(eventObj, moduleDetails.Title);
 
-                _context.Events.Add(eventObj);
+                _eventRepository.SetReservedFiels(eventObj, answer.AnswerData, design);
+
+                answer.Event = eventObj;
+            }
+            else
+            {
+                eventObj = await _context.Events.FirstOrDefaultAsync(e => e.Id == model.EventId);
+
+                _eventRepository.SetReservedFiels(eventObj, answer.AnswerData, design);
+
+                answer.EventId = (int)model.EventId;
             }
 
-            #endregion
+            _context.FormAnswers.Add(answer);
 
             await _context.SaveChangesAsync();
 

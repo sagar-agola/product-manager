@@ -5,7 +5,6 @@ import { FormElement } from '../models/form-element.model';
 import { Guid } from 'guid-typescript';
 import { FormMetaData } from '../models/form-meta-data.model';
 import { FormDesignDetail } from '../models/form-design-detail.model';
-import { CommonHelpersService } from 'src/app/common/services/common-helpers.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,9 +23,7 @@ export class FormBuilderDataService {
   // used to calculate new row id
   rowCounter: number = 1;
 
-  constructor(
-    private _commonHelpers: CommonHelpersService
-  ) {
+  constructor() {
     this.activate();
   }
 
@@ -115,10 +112,22 @@ export class FormBuilderDataService {
 
     console.log(formElements);
 
-    const hasDuplicateBind: boolean = this._commonHelpers.CheckHasDuplicateElement(formElements, "bind");
+    const hasDuplicateBind: boolean = this.CheckHasDuplicateElement(formElements, "bind");
     if (hasDuplicateBind) {
       this.formDesignErros.push("Multiple element has duplicate bind");
     }
+  }
+
+  CheckHasDuplicateElement(data: FormElement[], property: string): boolean {
+    let hasDuplicate: boolean = false;
+
+    data.forEach(item => {
+      if (hasDuplicate == false) {
+        hasDuplicate = data.some(value => value[property] == item[property] && value.bind != item.bind);
+      }
+    });
+
+    return hasDuplicate;
   }
 
 }
