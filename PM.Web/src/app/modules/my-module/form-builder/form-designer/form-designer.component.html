@@ -1,4 +1,11 @@
 <div class="container-xl mt-3">
+    <div class="alert alert-danger mx-auto" *ngIf="sharedData.formDesignErros.length > 0" style="max-width: 450px;">
+        <ul class="mb-0 list-style-none">
+            <li *ngFor="let error of sharedData.formDesignErros">
+                <i class="fa fa-times-circle"></i> {{ error }}
+            </li>
+        </ul>
+    </div>
     <div class="row" cdkDropListGroup>
         <div class="col-8">
             <div class="card">

@@ -28,6 +28,9 @@
             <button mat-menu-item *ngFor="let module of modules" [routerLink]="[ '/events/registers/', module.moduleId ]">
                 <i class="{{ module.icon }} mr-2"></i> {{ module.registersTitle }}
             </button>
+            <button mat-menu-item *ngIf="modules.length == 0" [routerLink]="[ '/modules/' ]">
+                <i class="fa fa-plus mr-2"></i> Create New Module
+            </button>
         </mat-menu>
     </mat-toolbar-row>
 </mat-toolbar>

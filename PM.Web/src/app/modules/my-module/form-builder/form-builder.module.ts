@@ -5,6 +5,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { LayoutModule } from "@progress/kendo-angular-layout";
 import { SharedModule } from 'src/app/common/shared.module';
 import { FormElementPropertiesComponent } from './form-designer/form-element-properties/form-element-properties.component';
+import { DropDownListModule } from '@progress/kendo-angular-dropdowns';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { FormElementPropertiesComponent } from './form-designer/form-element-pro
     SharedModule,
     FormBuilderRoutingModule,
     DragDropModule,
-    LayoutModule
+    LayoutModule,
+    DropDownListModule
   ]
 })
 export class FormBuilderModule { }

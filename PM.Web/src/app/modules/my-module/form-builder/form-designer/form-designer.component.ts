@@ -267,6 +267,11 @@ export class FormDesignerComponent implements OnInit {
   }
 
   save(isFinish: boolean): void {
+    this.sharedData.ValidateFormDesignForSave();
+    if (this.sharedData.formDesignErros.length > 0) {
+      return;
+    }
+
     const model: FormDesignDetail = {
       id: this.formDesignId,
       title: this.sharedData.formMetaData.title,
@@ -289,7 +294,7 @@ export class FormDesignerComponent implements OnInit {
           this.getFormDesignDetails();
         }
       }
-    })
+    });
   }
 
   cancel(): void {

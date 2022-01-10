@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { NumericFormElement } from '../models/element-types/numeric-form-element.module';
-import { TextFormElement } from '../models/element-types/text-form-element.model';
 import { FormDesignRow } from '../models/form-design-row.model';
 import { FormElementTypeEnum } from '../models/form-element-type.enum';
 import { FormElement } from '../models/form-element.model';
 import { Guid } from 'guid-typescript';
 import { FormMetaData } from '../models/form-meta-data.model';
 import { FormDesignDetail } from '../models/form-design-detail.model';
+import { CommonHelpersService } from 'src/app/common/services/common-helpers.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,34 +19,48 @@ export class FormBuilderDataService {
     title: "Form 1"
   };
 
+  formDesignErros: string[] = [];
+
   // used to calculate new row id
   rowCounter: number = 1;
 
-  constructor() {
+  constructor(
+    private _commonHelpers: CommonHelpersService
+  ) {
     this.activate();
   }
 
   private activate(): void {
     this.designData = [];
-    const textElement: TextFormElement = {
-      id: Guid.createEmpty(),
-      title: "Textbox",
-      label: "Text Element",
-      isRequired: false,
-      type: FormElementTypeEnum.Text
-    };
-    const numericElement: NumericFormElement = {
-      id: Guid.createEmpty(),
-      title: "Int Textbox",
-      label: "Numeric Element",
-      isRequired: false,
-      type: FormElementTypeEnum.Numeric,
-    };
-
     this.availableFormElements = [
-      textElement,
-      numericElement
+      this.GetDefaultElementByType(FormElementTypeEnum.Text),
+      this.GetDefaultElementByType(FormElementTypeEnum.Numeric)
     ];
+  }
+
+  GetDefaultElementByType(type: FormElementTypeEnum): FormElement {
+    switch (type) {
+      case FormElementTypeEnum.Text:
+        return {
+          id: Guid.createEmpty(),
+          title: "Textbox",
+          label: "Text Element",
+          isRequired: false,
+          type: FormElementTypeEnum.Text,
+          bind: "textElement1"
+        };
+      case FormElementTypeEnum.Numeric:
+        return {
+          id: Guid.createEmpty(),
+          title: "Int Textbox",
+          label: "Numeric Element",
+          isRequired: false,
+          type: FormElementTypeEnum.Numeric,
+          bind: "numericElement1"
+        }
+      default:
+        return null;
+    }
   }
 
   Initialize(formDesignDetail: FormDesignDetail = null): void {
@@ -89,4 +102,23 @@ export class FormBuilderDataService {
 
     return count;
   }
+
+  ValidateFormDesignForSave(): void {
+    this.formDesignErros = [];
+    let formElements: FormElement[] = [];
+
+    this.designData.forEach(row => {
+      row.columns.forEach(column => {
+        formElements.push({ ...column });
+      });
+    });
+
+    console.log(formElements);
+
+    const hasDuplicateBind: boolean = this._commonHelpers.CheckHasDuplicateElement(formElements, "bind");
+    if (hasDuplicateBind) {
+      this.formDesignErros.push("Multiple element has duplicate bind");
+    }
+  }
+
 }

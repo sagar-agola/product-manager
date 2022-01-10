@@ -37,8 +37,21 @@
     </ng-container>
 
     <div class="form-field-set">
+        <label for="reservedField">Reserved Field</label>
+        <kendo-dropdownlist
+            name="reservedField"
+            id="reservedField"
+            textField="displayName"
+            valueField="bind"
+            [defaultItem]="reservedFieldService.defaultReservedField"
+            [data]="getReservedFieldByType()"
+            (selectionChange)="onReservedFieldChange($event)">
+        </kendo-dropdownlist>
+    </div>
+
+    <div class="form-field-set">
         <label class="required">Bind</label>
-        <input type="text" class="form-control" [(ngModel)]="sharedData.selectedElement.bind" disabled />
+        <input type="text" class="form-control" [(ngModel)]="sharedData.selectedElement.bind" [disabled]="!!sharedData.selectedElement.reservedField" />
     </div>
     <div class="text-center">
         <button mat-raised-button color="primary" (click)="saveElementProperty()">Save</button>
