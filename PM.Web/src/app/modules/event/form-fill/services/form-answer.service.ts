@@ -24,4 +24,8 @@ export class FormAnswerService extends BaseService {
   Create(model: FormAnswerDetail): Observable<void> {
     return this.post(`${this._basePath}/create`, model);
   }
+
+  GetView(formAnswerId: number): Observable<any> {
+    return this.get(`${this._basePath}/view/${formAnswerId}`);
+  }
 }

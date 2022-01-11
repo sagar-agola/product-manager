@@ -4,7 +4,16 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
     {
         path: "forms",
-        loadChildren: () => import("src/app/modules/event/form-fill/form-fill.module").then(m => m.FormFillModule),
+        children: [
+            {
+                path: "",
+                loadChildren: () => import("src/app/modules/event/form-fill/form-fill.module").then(m => m.FormFillModule),
+            },
+            {
+                path: "view",
+                loadChildren: () => import("src/app/modules/event/form-view/form-view.module").then(m => m.FormViewModule),
+            }
+        ]
     },
     {
         path: "registers",

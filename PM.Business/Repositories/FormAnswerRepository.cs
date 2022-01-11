@@ -109,5 +109,51 @@ namespace PM.Business.Repositories
         }
 
         #endregion
+
+        #region Get View
+
+        public async Task<ExecutionResult<FormViewDetailModel>> GetView(int formAnswerId)
+        {
+            var data = await (from module in _context.Modules
+                              from eventObj in _context.Events.Where(e => e.ModuleId == module.Id)
+                              from form in _context.FormDesigns.Where(f => f.ModuleId == module.Id)
+                              from answer in _context.FormAnswers.Where(a => a.FormDesignId == form.Id)
+                              where
+                                 module.UserId == _authService.UserId &&
+                                 eventObj.UserId == _authService.UserId &&
+                                 answer.Id == formAnswerId &&
+                                 module.DeletedAt.HasValue == false &&
+                                 eventObj.DeletedAt.HasValue == false &&
+                                 form.DeletedAt.HasValue == false &&
+                                 answer.DeletedAt.HasValue == false
+                              select new
+                              {
+                                  FormAnswerId = answer.Id,
+                                  FormDesignId = form.Id,
+                                  FormTitle = form.Title,
+                                  AnswerData = answer.AnswerData,
+                                  EventId = answer.EventId,
+                                  DesignData = form.DesignData
+                              }).FirstOrDefaultAsync();
+
+            if (data == null)
+            {
+                return new ExecutionResult<FormViewDetailModel>(new ErrorInfo(string.Format(MessageHelper.NotFound, "Form")));
+            }
+
+            FormViewDetailModel response = new FormViewDetailModel
+            {
+                FormAnswerId = data.FormAnswerId,
+                FormDesignId = data.FormDesignId,
+                EventId = data.EventId,
+                FormTitle = data.FormTitle,
+                AnswerData = JsonConvert.SerializeObject(data.AnswerData),
+                DesignData = data.DesignData
+            };
+
+            return new ExecutionResult<FormViewDetailModel>(response);
+        }
+
+        #endregion
     }
 }

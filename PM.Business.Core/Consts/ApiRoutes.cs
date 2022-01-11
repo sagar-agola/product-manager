@@ -160,6 +160,11 @@
             /// api/form-answers/create
             /// </summary>
             public const string Create = _base + "create";
+
+            /// <summary>
+            /// api/form-answers/view
+            /// </summary>
+            public const string GetView = _base + "view/{formAnswerId}";
         }
 
         public static class Event

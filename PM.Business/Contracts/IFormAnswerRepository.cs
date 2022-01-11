@@ -7,5 +7,6 @@ namespace PM.Business.Contracts
     public interface IFormAnswerRepository
     {
         Task<ExecutionResult> Create(CreateFormAnswerRequestModel model);
+        Task<ExecutionResult<FormViewDetailModel>> GetView(int formAnswerId);
     }
 }

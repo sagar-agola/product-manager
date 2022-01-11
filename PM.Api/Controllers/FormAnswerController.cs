@@ -28,5 +28,12 @@ namespace PM.Api.Controllers
             ExecutionResult result = await _formAnswerRepository.Create(model);
             return FromExecutionResult(result);
         }
+
+        [HttpGet(ApiRoutes.FormAnswer.GetView)]
+        public async Task<IActionResult> GetView(int formAnswerId)
+        {
+            ExecutionResult<FormViewDetailModel> result = await _formAnswerRepository.GetView(formAnswerId);
+            return FromExecutionResult(result);
+        }
     }
 }

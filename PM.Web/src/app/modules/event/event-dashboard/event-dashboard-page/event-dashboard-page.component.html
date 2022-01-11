@@ -4,7 +4,7 @@
             <tr>
                 <th>#</th>
                 <th>Form</th>
-                <th>Subbmitted Date</th>
+                <th>Submitted Date</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -22,7 +22,7 @@
                 </td>
                 <td>
                     <button *ngIf="item.formAnswerId" mat-raised-button color="primary" class="mr-2" [routerLink]="[ '/events/forms/', item.formDesignId, eventId, item.formAnswerId ]">Edit</button>
-                    <button *ngIf="item.formAnswerId" mat-raised-button color="primary" class="mr-2">View</button>
+                    <button *ngIf="item.formAnswerId" mat-raised-button color="primary" class="mr-2" [routerLink]="[ '/events/forms/view', item.formAnswerId ]">View</button>
                     <button *ngIf="!item.formAnswerId" mat-raised-button color="primary" [routerLink]="[ '/events/forms/', item.formDesignId, 0, 0 ]">Fill</button>
                 </td>
             </tr>
