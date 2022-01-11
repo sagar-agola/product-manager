@@ -1,12 +1,16 @@
-<main class="main d-flex" style="height: 100vh;">
+<main class="main d-flex">
     <div class="container">
         <div class="mx-auto mt-5" style="max-width: 500px">
-            <mat-card>
-                <mat-card-title-group>
-                    <mat-card-title>Login</mat-card-title>
-                    <mat-card-subtitle class="mt-2">Sign In to your Account</mat-card-subtitle>
-                </mat-card-title-group>
-                <mat-card-content>
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="mb-1">
+                        <b>Login</b>
+                    </h1>
+                    <small class="text-muted">
+                        Sign In to your Account
+                    </small>
+                </div>
+                <div class="card-body">
                     <form #loginForm="ngForm" (submit)="login()">
                         <div class="mb-3">
                             <div class="input-group">
@@ -39,8 +43,8 @@
                             </div>
                         </div>
                     </form>
-                </mat-card-content>
-            </mat-card>
+                </div>
+            </div>
         </div>
     </div>
 </main>

@@ -1,22 +1,26 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { GridDataResult, PageChangeEvent, PagerSettings } from '@progress/kendo-angular-grid';
 import { CompositeFilterDescriptor, SortDescriptor } from '@progress/kendo-data-query';
-import { Observable } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { KendoColumn } from '../models/kendo-column.model';
 import { KendoTableDefinition } from '../models/kendo-table-definition.model';
 import { KendoTableGridRequest } from '../models/kendo-table-grid-request.model';
 import { TooltipDirective } from "@progress/kendo-angular-tooltip";
 import { AppConsts } from 'src/app/common/app-consts';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-kendo-table-grid',
   templateUrl: './kendo-table-grid.component.html',
   styleUrls: ['./kendo-table-grid.component.scss']
 })
-export class KendoTableGridComponent implements OnInit {
+export class KendoTableGridComponent implements OnInit, OnDestroy {
 
   @ViewChild(TooltipDirective) tooltipDir: TooltipDirective;
   @Input() tableDefinition: KendoTableDefinition;
+
+  private filterChangeSubscription: Subscription;
+  private filterTextChanged: Subject<void> = new Subject<void>();
 
   appConsts = AppConsts;
   gridItems: Observable<GridDataResult>;
@@ -32,8 +36,17 @@ export class KendoTableGridComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.filterChangeSubscription = this.filterTextChanged.pipe(debounceTime(AppConsts.debounceTime)).subscribe(() => {
+      this.skip = 0;
+      this.loadGridItems();
+    });
+
     this.sortOptions = [ this.tableDefinition.defaultSort ];
     this.loadGridItems();
+  }
+
+  ngOnDestroy(): void {
+    this.filterChangeSubscription?.unsubscribe();
   }
 
   loadGridItems(): void {
@@ -58,6 +71,10 @@ export class KendoTableGridComponent implements OnInit {
   onSortChange(descriptor: SortDescriptor[]): void {
     this.sortOptions = descriptor;
     this.loadGridItems();
+  }
+
+  onGeneralSearchChanged(): void {
+    this.filterTextChanged.next();
   }
 
   onFilterChange(event: KendoColumn): void {

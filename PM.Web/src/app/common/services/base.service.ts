@@ -109,17 +109,12 @@ export class BaseService {
   private handleError(response: Response | any) {
     let error: any = response.error;
 
-    if ((response.status == 401 || response.status == 403)) {
-      this._notificationService.showSimpleNotification("You are not authorized to access this route");
-
-      let userService: UserService = new UserService(this._http, this._notificationService, this._router);
-      userService.Logout();
-    }
-    else if (error && error.errors && error.errors.length > 0) {
+    if (error && error.errors && error.errors.length > 0) {
       error.errors.forEach((err: any) => {
         this._notificationService.showSimpleNotification(err.errorMessage);
       });
     }
+    else if (response.status == 401 || response.status == 403) {}
     else {
       this._notificationService.showSimpleNotification('Oops...Something went wrong, please try again or contact support', 5000);
     }

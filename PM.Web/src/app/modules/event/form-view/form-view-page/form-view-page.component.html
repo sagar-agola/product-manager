@@ -1,0 +1,26 @@
+<div class="container mt-3">
+    <div class="card">
+        <div class="card-header">
+            {{ data.formTitle }}
+        </div>
+        <div class="card-body">
+            <form>
+                <div *ngFor="let row of design" class="d-flex" style="margin-left: -.5rem; margin-right: -.5rem;">
+                    <div *ngFor="let column of row.columns" class="flex-grow-1 mx-2 mb-3" style="flex-basis: 0;">
+                        <div>
+                            <label class="control-label">
+                                <b>{{ column.label }}</b>
+                            </label>
+                            <div>
+                                {{ answer[column.bind] }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer text-center">
+            <button mat-raised-button color="primary" (click)="finish()">Finish</button>
+        </div>
+    </div>
+</div>

@@ -16,6 +16,10 @@ namespace PM.Api.ServiceInstallers
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IModuleRepository, ModuleRepository>();
+            services.AddScoped<IFormDesignRepository, FormDesignRepository>();
+            services.AddScoped<IFormAnswerRepository, FormAnswerRepository>();
+            services.AddScoped<IEventRepository, EventRepository>();
         }
     }
 }

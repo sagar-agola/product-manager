@@ -18,6 +18,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
+import { CommonDirectiveModule } from './direcctives/common-directive.module';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   declarations: [],
@@ -25,6 +27,7 @@ import { MatTableModule } from '@angular/material/table';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    CommonDirectiveModule,
     NgxSpinnerModule,
     HttpClientModule,
     NgSelectModule,
@@ -41,12 +44,14 @@ import { MatTableModule } from '@angular/material/table';
     MatDialogModule,
     MatSlideToggleModule,
     MatPaginatorModule,
-    MatTableModule
+    MatTableModule,
+    MatMenuModule
   ],
   exports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    CommonDirectiveModule,
     NgxSpinnerModule,
     HttpClientModule,
     NgSelectModule,
@@ -63,7 +68,8 @@ import { MatTableModule } from '@angular/material/table';
     MatDialogModule,
     MatSlideToggleModule,
     MatPaginatorModule,
-    MatTableModule
+    MatTableModule,
+    MatMenuModule
   ]
 })
 export class SharedModule { }

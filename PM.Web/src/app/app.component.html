@@ -1,29 +1,4 @@
-<mat-toolbar color="primary">
-    <mat-toolbar-row>
-        <h1>Product Manager</h1>
-        <div style="margin-left: 70px;">
-            <a mat-button [routerLink]="'/products'" routerLinkActive="active"> Products </a>
-            <a mat-button [routerLink]="'/categories'" routerLinkActive="active"> Categories </a>
-            <a mat-button [routerLink]="'/static-data'" routerLinkActive="active"> Static Data CRUD </a>
-            <a mat-button (click)="logout()" *ngIf="isLoggedIn"> Log Out</a>
-        </div>
-        <button mat-icon-button style="margin-left: auto;">
-            <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
-        </button>
-    </mat-toolbar-row>
-</mat-toolbar>
-<mat-sidenav-container>
-    <mat-sidenav #sidenav>
-        <mat-nav-list>
-            <a mat-list-item [routerLink]="'/products'" (click)="sidenav.toggle()"> Products </a>
-            <a mat-list-item [routerLink]="'/categories'" (click)="sidenav.toggle()"> Categories </a>
-            <a mat-list-item [routerLink]="'/static-data'"(click)="sidenav.toggle()"> Static Data CRUD </a>
-            <a mat-list-item (click)="logout(); sidenav.toggle();" *ngIf="isLoggedIn"> Log Out </a>
-            <a mat-list-item (click)="sidenav.toggle()">Close</a>
-        </mat-nav-list>
-    </mat-sidenav>
-    <mat-sidenav-content>
-        <ngx-spinner size="medium" type="ball-clip-rotate-multiple"></ngx-spinner>
-        <router-outlet></router-outlet>
-    </mat-sidenav-content>
-</mat-sidenav-container>
+<ngx-loading-bar [color]="'#482980'" [includeSpinner]="false"></ngx-loading-bar>
+<app-navbar></app-navbar>
+<ngx-spinner size="medium" type="ball-clip-rotate-multiple"></ngx-spinner>
+<router-outlet></router-outlet>

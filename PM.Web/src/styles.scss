@@ -46,6 +46,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .has-error {
+    label {
+        color: #f44336;
+    }
+
     input,
     textarea {
         color: #f44336;
@@ -68,6 +72,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     font-size: 12px;
 }
 
+.required:after {
+    color: #B80000;
+    content: ' *';
+    display: inline;
+}
+
+.control-label {
+    margin-bottom: 4px;
+}
+
 .input-group-text {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
@@ -75,4 +89,20 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .mr-2 {
     margin-right: 8px !important;
+}
+
+.ml-2 {
+    margin-left: 8px !important;
+}
+
+.card {
+    box-shadow: 0 0 7px #ccc;
+
+    .card-header {
+        font-weight: bold;
+    }
+}
+
+.list-style-none {
+    list-style: none;
 }

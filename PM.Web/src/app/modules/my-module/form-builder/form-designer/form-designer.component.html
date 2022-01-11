@@ -1,0 +1,119 @@
+<div class="container-xl mt-3">
+    <div class="alert alert-danger mx-auto" *ngIf="sharedData.formDesignErros.length > 0" style="max-width: 450px;">
+        <ul class="mb-0 list-style-none">
+            <li *ngFor="let error of sharedData.formDesignErros">
+                <i class="fa fa-times-circle"></i> {{ error }}
+            </li>
+        </ul>
+    </div>
+    <div class="row" cdkDropListGroup>
+        <div class="col-8">
+            <div class="card">
+                <div class="card-header">
+                    {{ sharedData.formMetaData.title }}
+                    <button mat-raised-button style="visibility: hidden;">x</button>
+                </div>
+                <div class="card-body">
+                    <div
+                        *ngFor="let row of sharedData.designData"
+                        id="{{ row.id }}"
+                        class="d-flex"
+                        style="margin-left: -.5rem; margin-right: -.5rem;"
+                        cdkDropList
+                        cdkDropListOrientation="horizontal"
+                        [cdkDropListData]="row.columns"
+                        [cdkDropListConnectedTo]="connectedTo"
+                        (cdkDropListDropped)="dropOnRow($event)">
+                        <div
+                            *ngFor="let column of row.columns"
+                            cdkDrag
+                            class="flex-grow-1 mx-2 my-1">
+                            <div
+                                class="element-container"
+                                (click)="selectElement(column)"
+                                [ngClass]="{ 'selected' : sharedData.selectedElement && column.id == sharedData.selectedElement.id }">
+
+                                <div class="d-flex justify-content-between mb-1">
+                                    <label [ngClass]="{ 'required' : column.isRequired}">{{ column.label }}</label>
+                                    <button
+                                        *ngIf="sharedData.selectedElement && column.id == sharedData.selectedElement.id"
+                                        class="btn btn-sm btn-danger"
+                                        style="font-size: 11px; padding: .15rem .25rem;"
+                                        (click)="deleteElement(column.id)">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+
+                                <ng-container *ngIf="column.type == elementType.Text">
+                                    <input type="text" class="form-control" />
+                                </ng-container>
+
+                                <ng-container *ngIf="column.type == elementType.Numeric">
+                                    <input type="number" class="form-control" />
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        [id]="dropRowId"
+                        class="row-drop-zone"
+                        cdkDropList
+                        [cdkDropListData]="[]"
+                        (cdkDropListDropped)="dropOnNewRow($event)">
+                        Drop element here to add new row
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-end">
+                        <button mat-raised-button color="primary" (click)="save(true)">Save and Finish</button>
+                        <span class="mx-1"></span>
+                        <button mat-raised-button color="primary" (click)="save(false)">Save</button>
+                        <span class="mx-1"></span>
+                        <button mat-raised-button (click)="cancel()">Cancel</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <kendo-tabstrip (tabSelect)="onConfigurationTabChange($event)">
+                        <kendo-tabstrip-tab title="Elements" [selected]="true">
+                            <ng-template kendoTabContent>
+                                <div
+                                    [id]="availableElementsListId"
+                                    cdkDropList
+                                    [cdkDropListData]="sharedData.availableFormElements"
+                                    [cdkDropListConnectedTo]="connectedTo">
+                                    <div
+                                        *ngFor="let item of sharedData.availableFormElements"
+                                        cdkDrag
+                                        class="card my-2"
+                                        style="cursor: grab;">
+                                        <div class="card-body">
+                                            {{ item.title }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <small class="text-muted mt-2">Drag and Drop element to add to form</small>
+                            </ng-template>
+                        </kendo-tabstrip-tab>
+                        <kendo-tabstrip-tab title="Properties">
+                            <ng-template kendoTabContent>
+                                <app-form-element-properties></app-form-element-properties>
+                            </ng-template>
+                        </kendo-tabstrip-tab>
+                        <kendo-tabstrip-tab title="Form Properties">
+                            <ng-template kendoTabContent>
+                                <div class="form-field-set">
+                                    <label for="form-title" class="required">Form Title</label>
+                                    <input type="text" class="form-control" [(ngModel)]="sharedData.formMetaData.title">
+                                </div>
+                            </ng-template>
+                        </kendo-tabstrip-tab>
+                    </kendo-tabstrip>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

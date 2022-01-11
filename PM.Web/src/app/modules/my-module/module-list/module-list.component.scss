@@ -1,0 +1,18 @@
+.module-card {
+    padding: 2rem .6rem;
+    margin: .8rem 0;
+    border: 2px solid #673AB7;
+    border-radius: 8px;
+    transition: .2s ease-in all;
+
+    &:hover {
+        background-color: rgba($color: #673AB7, $alpha: 0.9);
+        color: #fff;
+        cursor: pointer;
+
+        .text-success,
+        .text-danger {
+            color: #fff !important;
+        }
+    }
+}

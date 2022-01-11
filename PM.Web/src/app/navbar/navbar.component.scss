@@ -1,0 +1,15 @@
+a {
+    line-height: 59px;
+    border-bottom: 5px solid transparent;
+    border-radius: 0;
+
+    &.active {
+        background-color: #58319b;
+        border-color: #dedede;
+    }
+
+    &:hover {
+        color: #fff;
+        border-color: #dedede;
+    }
+}

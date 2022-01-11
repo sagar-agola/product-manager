@@ -27,7 +27,13 @@
                 <!-- right toolbar -->
                 <div class="d-flex">
                     <!-- General Search -->
-                    <kendo-textbox class="general-search" [(ngModel)]="searchTerm" [clearButton]="true" (valueChange)="loadGridItems()" placeholder="Start typing to search..."></kendo-textbox>
+                    <kendo-textbox
+                        class="general-search"
+                        placeholder="Start typing to search..."
+                        [clearButton]="true"
+                        (valueChange)="onGeneralSearchChanged()"
+                        [(ngModel)]="searchTerm"
+                        ></kendo-textbox>
                     
                     <div *ngIf="tableDefinition.toolbar.right" class="d-flex">
                         <div *ngFor="let item of tableDefinition.toolbar.right; let i = index">
@@ -149,7 +155,12 @@
                                     [title]="button.title"
                                     [ngClass]="{ 'mr-2' : i + 1 < tableDefinition.buttons.length }"
                                     (click)="button.callBack(dataItem)">
+
+                                    <!-- by default show icon button -->
                                     <i *ngIf="button.icon" class="{{ button.icon }}"></i>
+
+                                    <!-- show text button only if icon is not specified and title is specified -->
+                                    <span *ngIf="!button.icon && button.title">{{ button.title }}</span>
                                 </button>
                             </ng-container>
                         </div>

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AppComponent } from './app.component';
 import { AuthGuard } from './common/guards/auth.guard';
 import { NotFoundComponent } from './modules/common-components/not-found/not-found.component';
 
@@ -13,6 +12,16 @@ const routes: Routes = [
   {
     path: 'categories',
     loadChildren: () => import("src/app/modules/category/category.module").then(m => m.CategoryModule),
+    canActivate: [ AuthGuard ]
+  },
+  {
+    path: 'events',
+    loadChildren: () => import("src/app/modules/event/event.module").then(m => m.EventModule),
+    canActivate: [ AuthGuard ]
+  },
+  {
+    path: 'modules',
+    loadChildren: () => import("src/app/modules/my-module/my-module.module").then(m => m.MyModuleModule),
     canActivate: [ AuthGuard ]
   },
   {

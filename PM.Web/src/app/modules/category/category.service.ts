@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { GridDataResult } from '@progress/kendo-angular-grid';
 import { Observable } from 'rxjs';
-import { PaginatedResponse } from 'src/app/common/models/paginated-response.model';
 import { BaseService } from 'src/app/common/services/base.service';
 import { NotificationService } from 'src/app/common/services/notification.service';
 import { environment } from 'src/environments/environment';

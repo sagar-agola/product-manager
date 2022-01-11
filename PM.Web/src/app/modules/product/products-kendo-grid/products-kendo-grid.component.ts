@@ -151,7 +151,7 @@ export class ProductsKendoGridComponent implements OnInit, AfterViewInit {
       ]
     },
     defaultSort: {
-      field: "Title",
+      field: "Id",
       dir: "desc"
     },
   };
