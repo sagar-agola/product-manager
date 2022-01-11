@@ -16,6 +16,10 @@
 
     <ng-container *ngIf="sharedData.selectedElement.type == elementType.Text">
         <div class="form-field-set">
+            <label>Placeholder</label>
+            <input type="text" class="form-control" [(ngModel)]="sharedData.selectedElement['placeholder']" />
+        </div>
+        <div class="form-field-set">
             <label>Min Length</label>
             <input type="text" class="form-control" [(ngModel)]="sharedData.selectedElement['minLength']" />
         </div>

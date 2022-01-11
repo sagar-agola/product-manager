@@ -2,7 +2,7 @@
     <label class="control-label" [ngClass]="{ 'required' : element.isRequired}">{{ element.label }}</label>
 
     <ng-container *ngIf="element.type == elementType.Text">
-        <input type="text" class="form-control" [(ngModel)]="sharedData.answer[element.bind]" [name]="element.bind" 
+        <input type="text" class="form-control" [(ngModel)]="sharedData.answer[element.bind]" [name]="element.bind" [placeholder]="element['placeholder']"
             [LimitTextTo]="element['maxLength']" [minLength]="element['minLength']" (input)="sharedData.ValidateTextElement(element)" (focusout)="sharedData.ValidateTextElement(element)" />
     </ng-container>
 

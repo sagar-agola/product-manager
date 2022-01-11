@@ -1,6 +1,6 @@
 import { FormElement } from "../form-element.model";
 
-export class NumericFormElement extends FormElement {
+export interface NumericFormElement extends FormElement {
     maxValue?: number;
-    minValue?: number
+    minValue?: number;
 }

@@ -45,7 +45,7 @@
                                 </div>
 
                                 <ng-container *ngIf="column.type == elementType.Text">
-                                    <input type="text" class="form-control" />
+                                    <input type="text" class="form-control" [placeholder]="column['placeholder']" />
                                 </ng-container>
 
                                 <ng-container *ngIf="column.type == elementType.Numeric">

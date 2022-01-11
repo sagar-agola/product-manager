@@ -5,6 +5,7 @@ import { FormElement } from '../models/form-element.model';
 import { Guid } from 'guid-typescript';
 import { FormMetaData } from '../models/form-meta-data.model';
 import { FormDesignDetail } from '../models/form-design-detail.model';
+import { TextFormElement } from '../models/element-types/text-form-element.model';
 
 @Injectable({
   providedIn: 'root'
@@ -42,10 +43,11 @@ export class FormBuilderDataService {
           id: Guid.createEmpty(),
           title: "Textbox",
           label: "Text Element",
+          placeholder: "",
           isRequired: false,
           type: FormElementTypeEnum.Text,
           bind: "textElement1"
-        };
+        } as TextFormElement;
       case FormElementTypeEnum.Numeric:
         return {
           id: Guid.createEmpty(),
@@ -54,7 +56,7 @@ export class FormBuilderDataService {
           isRequired: false,
           type: FormElementTypeEnum.Numeric,
           bind: "numericElement1"
-        }
+        } as TextFormElement;
       default:
         return null;
     }
