@@ -60,17 +60,24 @@ namespace PM.Business.Repositories
 
         public async Task<ExecutionResult<List<EventFormDetail>>> GetFormsDetail(int eventId)
         {
-            List<EventFormDetail> forms = await (from module in _context.Modules
-                                                 from eventObj in _context.Events.Where(e => e.ModuleId == module.Id)
+            List<EventFormDetail> forms = await (from eventObj in _context.Events
+                                                 from module in _context.Modules.Where(m => m.Id == eventObj.ModuleId)
                                                  from form in _context.FormDesigns.Where(f => f.ModuleId == module.Id)
                                                  from answer in _context.FormAnswers.Where(a => a.FormDesignId == form.Id).DefaultIfEmpty()
                                                  where
-                                                    module.UserId == _authService.UserId &&
-                                                    eventObj.UserId == _authService.UserId &&
-                                                    module.DeletedAt.HasValue == false &&
-                                                    eventObj.DeletedAt.HasValue == false &&
-                                                    form.DeletedAt.HasValue == false &&
-                                                    answer.DeletedAt.HasValue == false
+                                                      eventObj.Id == eventId &&
+                                                      eventObj.UserId == _authService.UserId &&
+                                                      eventObj.DeletedAt.HasValue == false &&
+                                                      module.UserId == _authService.UserId &&
+                                                      module.DeletedAt.HasValue == false &&
+                                                      form.DeletedAt.HasValue == false &&
+                                                      (
+                                                          answer == null ||
+                                                          (
+                                                              answer.EventId == eventObj.Id &&
+                                                              answer.DeletedAt.HasValue == false
+                                                          )
+                                                      )
                                                  select new EventFormDetail
                                                  {
                                                      FormDesignId = form.Id,

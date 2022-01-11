@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { AppConsts } from 'src/app/common/app-consts';
 import { EventService } from '../../event.service';
 
@@ -16,6 +17,7 @@ export class EventDashboardPageComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private spinner: NgxSpinnerService,
     private _eventService: EventService
   ) { }
 
@@ -29,7 +31,10 @@ export class EventDashboardPageComponent implements OnInit {
   }
 
   getFormsDetail(): void {
+    this.spinner.show();
     this._eventService.GetFormsDetail(this.eventId).subscribe(response => {
+      this.spinner.hide();
+
       if (response && response.length > 0) {
         this.formsDetail = response
       }
