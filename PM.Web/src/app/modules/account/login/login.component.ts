@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/common/services/notification.service';
 import { UserService } from 'src/app/modules/account/user.service';
+import { NavbarService } from 'src/app/navbar/navbar.service';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private router: Router,
     private _notificationService: NotificationService,
-    private _userService: UserService
+    private _userService: UserService,
+    private _navbarService: NavbarService
   ) { }
 
   ngOnInit(): void {
@@ -45,6 +47,7 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('currentUser', JSON.stringify(response));
   
           this._userService.UpdateLoginStatus(true);
+          this._navbarService.updateModuleList();
 
           this.router.navigate(['/products']).then(() => {
             this._notificationService.showSimpleNotification(`Welcome back ${response.firstName}`);

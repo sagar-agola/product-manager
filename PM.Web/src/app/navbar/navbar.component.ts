@@ -37,6 +37,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   getModuleList(): void {
+    if (this.isLoggedIn == false) {
+      return;
+    }
+    
     this._moduleService.GetNavbarModuleList().subscribe(response => {
       if (response && response.length > 0) {
         this.modules = response.map(item => {
@@ -51,6 +55,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   logout(): void {
+    this.modules = [];
     this._userService.Logout();
   }
 }

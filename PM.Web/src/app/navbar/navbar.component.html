@@ -2,15 +2,18 @@
     <mat-toolbar-row>
         <h1>Product Manager</h1>
         <div style="margin-left: 70px;">
-            <a mat-button [routerLink]="'/products'" routerLinkActive="active"> Products </a>
-            <a mat-button [routerLink]="'/categories'" routerLinkActive="active"> Categories </a>
-            <a mat-button [matMenuTriggerFor]="addMenu"> Add </a>
-            <a mat-button [matMenuTriggerFor]="registersMenu"> Registers </a>
-            <a mat-button [routerLink]="'/modules'" routerLinkActive="active"> Modules </a>
+            <ng-container *ngIf="isLoggedIn">
+                <a mat-button [routerLink]="'/products'" routerLinkActive="active"> Products </a>
+                <a mat-button [routerLink]="'/categories'" routerLinkActive="active"> Categories </a>
+                <a mat-button [matMenuTriggerFor]="addMenu"> Add </a>
+                <a mat-button [matMenuTriggerFor]="registersMenu"> Registers </a>
+                <a mat-button [routerLink]="'/modules'" routerLinkActive="active"> Modules </a>
+            </ng-container>
             <a mat-button [routerLink]="'/static-data'" routerLinkActive="active"> Static Data CRUD </a>
         </div>
         <div style="margin-left: auto; margin-right: 12px;">
             <a mat-button (click)="logout()" *ngIf="isLoggedIn"> Log Out</a>
+            <a mat-button [routerLink]="'/account/login'" routerLinkActive="active" *ngIf="!isLoggedIn"> Login </a>
         </div>
 
         <!-- Add Menu -->
