@@ -55,17 +55,17 @@ export class FormFillSharedDataService {
       });
     }
 
-    if (element["max"] && answer && Number(answer) > Number(element["max"])) {
+    if (element["maxValue"] && answer && Number(answer) > Number(element["maxValue"])) {
       this.errors.push({
         bind: element.bind,
-        message: `${element.label} cannot be more than ${element["max"]}.`
+        message: `${element.label} cannot be more than ${element["maxValue"]}.`
       });
     }
 
-    if (element["min"] && answer && Number(answer) < Number(element["min"])) {
+    if (element["minValue"] && answer && Number(answer) < Number(element["minValue"])) {
       this.errors.push({
         bind: element.bind,
-        message: `${element.label} cannot be less than ${element["min"]}.`
+        message: `${element.label} cannot be less than ${element["minValue"]}.`
       });
     }
   }
