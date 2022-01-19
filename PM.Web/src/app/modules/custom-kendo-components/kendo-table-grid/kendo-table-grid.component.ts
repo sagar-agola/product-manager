@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { GridDataResult, PageChangeEvent, PagerSettings } from '@progress/kendo-angular-grid';
+import { DetailExpandEvent, GridDataResult, PageChangeEvent, PagerSettings } from '@progress/kendo-angular-grid';
 import { CompositeFilterDescriptor, SortDescriptor } from '@progress/kendo-data-query';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { KendoColumn } from '../models/kendo-column.model';
@@ -14,10 +14,10 @@ import { debounceTime } from 'rxjs/operators';
   templateUrl: './kendo-table-grid.component.html',
   styleUrls: ['./kendo-table-grid.component.scss']
 })
-export class KendoTableGridComponent implements OnInit, OnDestroy {
+export class KendoTableGridComponent<T> implements OnInit, OnDestroy {
 
   @ViewChild(TooltipDirective) tooltipDir: TooltipDirective;
-  @Input() tableDefinition: KendoTableDefinition;
+  @Input() tableDefinition: KendoTableDefinition<T>;
 
   private filterChangeSubscription: Subscription;
   private filterTextChanged: Subject<void> = new Subject<void>();
@@ -88,6 +88,18 @@ export class KendoTableGridComponent implements OnInit, OnDestroy {
     });
 
     this.loadGridItems();
+  }
+
+  onExpand(event: DetailExpandEvent): void {
+    if (!event.dataItem.expandDetails) {
+      event.dataItem.expandDetails = {};
+
+      this.tableDefinition.expandSection.dataSource(event.dataItem.id).subscribe(response => {
+        if (response) {
+          event.dataItem.expandDetails = response;
+        }
+      });
+    }
   }
 
   showTooltip(e: MouseEvent): void {

@@ -8,8 +8,11 @@
             <div class="card-title">
                 <b>{{ data.title }}</b>
             </div>
+            <div class="text-center my-3" *ngIf="!data.id">
+                Loading <i class="fa fa-spinner fa-spin mx-2"></i>
+            </div>
         </div>
-        <div class="card-body">
+        <div class="card-body" *ngIf="data.id">
             <div class="d-flex justify-content-between">
                 <div style="text-align: justify; white-space: normal; width: 45%;">
                     {{ data.description }}

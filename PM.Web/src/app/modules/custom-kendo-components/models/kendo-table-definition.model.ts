@@ -6,9 +6,9 @@ import { KendoColumn } from "./kendo-column.model";
 import { KendoTableGridRequest } from "./kendo-table-grid-request.model";
 import { KendoToolbarItem } from "./kendo-toolbar-item.model";
 import { DataItem } from "@progress/kendo-angular-grid";
-import { TemplateRef } from "@angular/core";
+import { KendoExpandSection } from "./kendo-expand-section.model";
 
-export class KendoTableDefinition {
+export class KendoTableDefinition<T> {
     columns: KendoColumn[];
     buttons: KendoButton<DataItem>[];
     emptyTableText: string;
@@ -18,6 +18,6 @@ export class KendoTableDefinition {
         left?: KendoToolbarItem[],
         right?: KendoToolbarItem[]
     };
-    expandTemplate?: TemplateRef<any>;
+    expandSection?: KendoExpandSection<T>;
     dataSource: (request: KendoTableGridRequest) => Observable<GridDataResult>;
 }

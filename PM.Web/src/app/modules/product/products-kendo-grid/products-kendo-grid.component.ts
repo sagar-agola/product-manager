@@ -12,6 +12,7 @@ import { KendoColumnType } from '../../custom-kendo-components/models/kendo-colu
 import { KendoTableDefinition } from '../../custom-kendo-components/models/kendo-table-definition.model';
 import { KendoTableGridRequest } from '../../custom-kendo-components/models/kendo-table-grid-request.model';
 import { KendoToolbarTypeEnum } from '../../custom-kendo-components/models/kendo-toolbar-item.model';
+import { ProductDetail } from '../models/product-detail.model';
 import { ProductService } from '../product.service';
 
 @Component({
@@ -21,12 +22,12 @@ import { ProductService } from '../product.service';
 })
 export class ProductsKendoGridComponent implements OnInit, AfterViewInit {
 
-  @ViewChild('grid') grid: KendoTableGridComponent;
+  @ViewChild('grid') grid: KendoTableGridComponent<ProductDetail>;
   @ViewChild('productExpandTemplate', { read: TemplateRef }) productExpandTemplate: TemplateRef<any> 
 
   shouldLoadGrid: boolean = false;
   baseApiUrl:  string = environment.apiUrl;
-  tableDefinition: KendoTableDefinition = {
+  tableDefinition: KendoTableDefinition<ProductDetail> = {
     dataSource: (model: KendoTableGridRequest) => this._productService.GetKendoData(model),
     emptyTableText: "There are no products",
     gridHeaderText: "Products",
@@ -169,7 +170,10 @@ export class ProductsKendoGridComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.tableDefinition.expandTemplate = this.productExpandTemplate;
+    this.tableDefinition.expandSection = {
+      template: this.productExpandTemplate,
+      dataSource: (id: number) => this._productService.Get(id)
+    };
     this.shouldLoadGrid = true;
     this.cdr.detectChanges();
   }
