@@ -181,6 +181,9 @@ export class FormDesignerComponent implements OnInit {
       case FormElementTypeEnum.Numeric:
         this.insertNumericElement(element, rowId);
         break;
+      case FormElementTypeEnum.Dropdown:
+        this.insertDropdownElement(element, rowId);
+        break;
     }
   }
 
@@ -211,6 +214,29 @@ export class FormDesignerComponent implements OnInit {
 
     let numericElementcount: number = this.sharedData.GetElementCountByType(element.type);
     element.bind = `numericElement${numericElementcount + 1}`;
+
+    let isRowFound: boolean = false;
+    this.sharedData.designData.forEach(row => {
+      if (row.id == rowId) {
+        row.columns.push({ ...element });
+        this.sharedData.selectedElement = { ...element };
+        isRowFound = true;
+      }
+    });
+
+    if (isRowFound == false) {
+      this.sharedData.designData.push({
+        id: rowId,
+        columns: [
+          { ...element }
+        ]
+      });
+    }
+  }
+
+  insertDropdownElement(element: TextFormElement, rowId: string): void {
+    let dropdownElementcount: number = this.sharedData.GetElementCountByType(element.type);
+    element.bind = `dropdownElement${dropdownElementcount + 1}`;
 
     let isRowFound: boolean = false;
     this.sharedData.designData.forEach(row => {

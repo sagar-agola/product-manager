@@ -6,6 +6,7 @@ import { Guid } from 'guid-typescript';
 import { FormMetaData } from '../models/form-meta-data.model';
 import { FormDesignDetail } from '../models/form-design-detail.model';
 import { TextFormElement } from '../models/element-types/text-form-element.model';
+import { DropdownElement } from '../models/element-types/dropdown-element.module';
 
 @Injectable({
   providedIn: 'root'
@@ -30,10 +31,19 @@ export class FormBuilderDataService {
 
   private activate(): void {
     this.designData = [];
-    this.availableFormElements = [
-      this.GetDefaultElementByType(FormElementTypeEnum.Text),
-      this.GetDefaultElementByType(FormElementTypeEnum.Numeric)
-    ];
+    this.setAvailableElements();
+  }
+
+  private setAvailableElements(): void {
+    this.availableFormElements = [];
+
+    Object.values(FormElementTypeEnum).forEach((value: FormElementTypeEnum) => {
+      const element: FormElement = this.GetDefaultElementByType(value);
+
+      if (element) {
+        this.availableFormElements.push(element);
+      }
+    });
   }
 
   GetDefaultElementByType(type: FormElementTypeEnum): FormElement {
@@ -57,6 +67,29 @@ export class FormBuilderDataService {
           type: FormElementTypeEnum.Numeric,
           bind: "numericElement1"
         } as TextFormElement;
+      case FormElementTypeEnum.Dropdown:
+        return {
+          id: Guid.createEmpty(),
+          title: "Dropdown Element",
+          label: "Dropdown Element",
+          isRequired: false,
+          type: FormElementTypeEnum.Dropdown,
+          bind: "dropdownElement1",
+          options: [
+            {
+              id: 1,
+              value: "option 1"
+            },
+            {
+              id: 2,
+              value: "option 2"
+            }
+          ],
+          defaultOption: {
+            id: 1,
+            value: "option 1"
+          }
+        } as DropdownElement;
       default:
         return null;
     }
