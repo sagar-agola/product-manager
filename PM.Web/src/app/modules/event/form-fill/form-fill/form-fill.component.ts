@@ -43,23 +43,7 @@ export class FormFillComponent implements OnInit {
       if (response) {
         this.designData = JSON.parse(response.designData);
         this.sharedData.formDesign = response;
-        this.setDefaultAnswer();
       }
-    });
-  }
-
-  setDefaultAnswer(): void {
-    this.designData.forEach(row => {
-      row.columns.forEach(column => {
-        switch (column.type) {
-          case FormElementTypeEnum.Text:
-            this.sharedData.answer[column.bind] = "";   
-            break;
-          case FormElementTypeEnum.Numeric:
-            this.sharedData.answer[column.bind] = "";   
-            break;
-        }
-      });
     });
   }
 
@@ -94,6 +78,9 @@ export class FormFillComponent implements OnInit {
             break;
           case FormElementTypeEnum.Numeric:
             this.sharedData.ValidateNumericElement(column);
+            break;
+          case FormElementTypeEnum.Dropdown:
+            this.sharedData.ValidateDropdownElement(column);
             break;
           default:
             break;

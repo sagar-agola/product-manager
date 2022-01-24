@@ -69,4 +69,16 @@ export class FormFillSharedDataService {
       });
     }
   }
+
+  ValidateDropdownElement(element: FormElement): void {
+    this.errors = this.errors.filter(error => error.bind != element.bind);
+    let answer: any = this.answer[element.bind];
+
+    if (element.isRequired && !answer) {
+      this.errors.push({
+        bind: element.bind,
+        message: `${element.label} is required.`
+      });
+    }
+  }
 }

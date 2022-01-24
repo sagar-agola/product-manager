@@ -168,7 +168,7 @@
                     </ng-template>
                 </kendo-grid-column>
 
-                <ng-container *ngIf="tableDefinition.expandSection.template">
+                <ng-container *ngIf="tableDefinition.expandSection && tableDefinition.expandSection.template">
                     <div *kendoGridDetailTemplate="let dataItem">
                         <ng-template [ngTemplateOutlet]="tableDefinition.expandSection.template" [ngTemplateOutletContext]="{ data: dataItem.expandDetails }"></ng-template>
                     </div>

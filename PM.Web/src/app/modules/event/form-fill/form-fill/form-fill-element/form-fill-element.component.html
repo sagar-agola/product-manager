@@ -10,4 +10,11 @@
         <input type="number" class="form-control" [(ngModel)]="sharedData.answer[element.bind]" [name]="element.bind"
             (input)="sharedData.ValidateNumericElement(element)" (focusout)="sharedData.ValidateNumericElement(element)" />
     </ng-container>
+
+    <ng-container *ngIf="element.type == elementType.Dropdown">
+        <select class="form-control" [required]="element.isRequired" [(ngModel)]="sharedData.answer[element.bind]" [name]="element.bind"
+            (change)="sharedData.ValidateDropdownElement(element)">
+            <option [value]="option.id" *ngFor="let option of element['options']">{{ option.value }}</option>
+        </select>
+    </ng-container>
 </div>
