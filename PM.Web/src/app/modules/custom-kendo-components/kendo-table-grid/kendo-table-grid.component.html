@@ -76,7 +76,8 @@
                 [filter]="filter"
                 [resizable]="true"
                 (pageChange)="onPageChange($event)"
-                (sortChange)="onSortChange($event)">
+                (sortChange)="onSortChange($event)"
+                (detailExpand)="onExpand($event)">
 
                 <!-- Columns -->
                 <ng-container *ngFor="let column of tableDefinition.columns">
@@ -167,9 +168,9 @@
                     </ng-template>
                 </kendo-grid-column>
 
-                <ng-container *ngIf="tableDefinition.expandTemplate">
+                <ng-container *ngIf="tableDefinition.expandSection && tableDefinition.expandSection.template">
                     <div *kendoGridDetailTemplate="let dataItem">
-                        <ng-template [ngTemplateOutlet]="tableDefinition.expandTemplate" [ngTemplateOutletContext]="{ data: dataItem }"></ng-template>
+                        <ng-template [ngTemplateOutlet]="tableDefinition.expandSection.template" [ngTemplateOutletContext]="{ data: dataItem.expandDetails }"></ng-template>
                     </div>
                 </ng-container>
 

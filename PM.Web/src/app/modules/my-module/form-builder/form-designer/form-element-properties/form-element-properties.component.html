@@ -16,6 +16,10 @@
 
     <ng-container *ngIf="sharedData.selectedElement.type == elementType.Text">
         <div class="form-field-set">
+            <label>Placeholder</label>
+            <input type="text" class="form-control" [(ngModel)]="sharedData.selectedElement['placeholder']" />
+        </div>
+        <div class="form-field-set">
             <label>Min Length</label>
             <input type="text" class="form-control" [(ngModel)]="sharedData.selectedElement['minLength']" />
         </div>
@@ -33,6 +37,45 @@
         <div class="form-field-set">
             <label>Max Value</label>
             <input type="text" class="form-control" [(ngModel)]="sharedData.selectedElement['maxValue']" />
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="sharedData.selectedElement.type == elementType.Dropdown">
+        <div class="mb-2">
+            <label>Options</label>
+            <table class="w-100">
+                <tr>
+                    <td width="50%">Text</td>
+                    <td width="40%">Value</td>
+                    <td width="10%"></td>
+                </tr>
+                <tr *ngFor="let option of sharedData.selectedElement['options']">
+                    <td class="pr-2">
+                        <input type="text" [(ngModel)]="option.value" class="form-control" style="padding: .12rem .5rem;" />
+                    </td>
+                    <td class="px-2">
+                        <input type="text" [(ngModel)]="option.id" class="form-control" style="padding: .12rem .5rem;" />
+                    </td>
+                    <td class="pl-2">
+                        <button class="custom-button red" (click)="removeDropdownOption(option)">
+                            <i class="fa fa-trash mr-0"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="pr-2">
+                        <input type="text" [(ngModel)]="newDropdownOption.value" class="form-control" style="padding: .12rem .5rem;" />
+                    </td>
+                    <td class="px-2">
+                        <input type="text" [(ngModel)]="newDropdownOption.id" class="form-control" style="padding: .12rem .5rem;" />
+                    </td>
+                    <td class="pl-2">
+                        <button class="custom-button green" (click)="addNewDropdownOption()">
+                            <i class="fa fa-save mr-0"></i>
+                        </button>
+                    </td>
+                </tr>
+            </table>
         </div>
     </ng-container>
 

@@ -16,9 +16,9 @@ import { EventService } from '../../event.service';
 })
 export class RegisterGridComponent implements OnInit {
 
-  @ViewChild('grid') grid: KendoTableGridComponent;
+  @ViewChild('grid') grid: KendoTableGridComponent<any>;
   
-  tableDefinition: KendoTableDefinition = {
+  tableDefinition: KendoTableDefinition<any> = {
     dataSource: (model: KendoTableGridRequest) => this.getData(model),
     emptyTableText: "There are no categories",
     gridHeaderText: "Categories",

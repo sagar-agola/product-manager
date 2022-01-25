@@ -11,6 +11,7 @@ import { KendoColumnType } from '../../custom-kendo-components/models/kendo-colu
 import { KendoTableDefinition } from '../../custom-kendo-components/models/kendo-table-definition.model';
 import { KendoTableGridRequest } from '../../custom-kendo-components/models/kendo-table-grid-request.model';
 import { KendoToolbarTypeEnum } from '../../custom-kendo-components/models/kendo-toolbar-item.model';
+import { CategoryDetail } from '../models/category-detail.model';
 
 @Component({
   selector: 'app-categories-kendo-grid',
@@ -19,9 +20,9 @@ import { KendoToolbarTypeEnum } from '../../custom-kendo-components/models/kendo
 })
 export class CategoriesKendoGridComponent implements OnInit {
 
-  @ViewChild('grid') grid: KendoTableGridComponent;
+  @ViewChild('grid') grid: KendoTableGridComponent<CategoryDetail>;
   
-  tableDefinition: KendoTableDefinition = {
+  tableDefinition: KendoTableDefinition<CategoryDetail> = {
     dataSource: (model: KendoTableGridRequest) => this._categoryService.GetKendoData(model),
     emptyTableText: "There are no categories",
     gridHeaderText: "Categories",

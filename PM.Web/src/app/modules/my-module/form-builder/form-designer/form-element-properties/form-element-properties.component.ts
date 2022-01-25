@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonHelpersService } from 'src/app/common/services/common-helpers.service';
+import { NotificationService } from 'src/app/common/services/notification.service';
+import { DropdownElement, DropdownOption } from '../../models/element-types/dropdown-element.module';
 import { FormElementTypeEnum } from '../../models/form-element-type.enum';
 import { ReservedField } from '../../models/reserved-field.model';
 import { FormBuilderDataService } from '../../services/form-builder-data.service';
@@ -13,9 +14,10 @@ import { ReservedFieldService } from '../../services/reserved-field.service';
 export class FormElementPropertiesComponent implements OnInit {
 
   elementType = FormElementTypeEnum;
+  newDropdownOption: DropdownOption = {};
 
   constructor(
-    private _commonHelpers: CommonHelpersService,
+    private _notificationService: NotificationService,
     public sharedData: FormBuilderDataService,
     public reservedFieldService: ReservedFieldService
   ) { }
@@ -50,5 +52,34 @@ export class FormElementPropertiesComponent implements OnInit {
       }
     });
   }
+
+  //#region Dropdown
+
+  addNewDropdownOption(): void {
+    if (!this.newDropdownOption.id) {
+      this._notificationService.showSimpleNotification("Option Value is required", 3000);
+      return;
+    }
+
+    if (!this.newDropdownOption.value) {
+      this._notificationService.showSimpleNotification("Option Text is required", 3000);
+      return;
+    }
+
+    const isDuplicate: boolean = (this.sharedData.selectedElement as DropdownElement).options.some(o => o.id == this.newDropdownOption.id || o.value == this.newDropdownOption.value);
+    if (isDuplicate) {
+      this._notificationService.showSimpleNotification("Duplicate option", 3000);
+      return;
+    }
+
+    (this.sharedData.selectedElement as DropdownElement).options.push(this.newDropdownOption);
+    this.newDropdownOption = {};
+  }
+
+  removeDropdownOption(option: DropdownOption): void {
+    (this.sharedData.selectedElement as DropdownElement).options = (this.sharedData.selectedElement as DropdownElement).options.filter(item => item.value != option.value && item.id != option.id);
+  }
+
+  //#endregion
 
 }

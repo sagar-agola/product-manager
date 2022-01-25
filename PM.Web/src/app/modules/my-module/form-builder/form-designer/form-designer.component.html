@@ -45,11 +45,18 @@
                                 </div>
 
                                 <ng-container *ngIf="column.type == elementType.Text">
-                                    <input type="text" class="form-control" />
+                                    <input type="text" class="form-control" [placeholder]="column['placeholder']" />
                                 </ng-container>
 
                                 <ng-container *ngIf="column.type == elementType.Numeric">
                                     <input type="number" class="form-control" />
+                                </ng-container>
+
+                                <ng-container *ngIf="column.type == elementType.Dropdown">
+                                    <select class="form-control">
+                                        <option value="">Select</option>
+                                        <option [ngValue]="option.id" *ngFor="let option of column['options']">{{ option.value }}</option>
+                                    </select>
                                 </ng-container>
                             </div>
                         </div>
