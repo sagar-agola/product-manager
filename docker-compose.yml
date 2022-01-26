@@ -6,12 +6,13 @@ services:
     ports:
       - 14331:1433
     volumes:
-      - productmanager-data:/productmanager-data
+      - productmanager-db:/productmanager-db
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: "Asd@1234"
       MSSQL_PID: Express
   pm-api:
+    container_name: pm-api
     build:
       context: .
       args:
@@ -20,5 +21,15 @@ services:
       ASPNETCORE_ENVIRONMENT: "Development"
     ports:
       - 8080:80
+  pm-web:
+    container_name: pm-web
+    build:
+      context: ./PM.Web
+    ports:
+      - 4200:4200
+    volumes:
+      - productmanager-web:/productmanager-web
+    command: bash -c "npm install && ng serve --host 0.0.0.0 --port 4200 --prod"
 volumes:
-  productmanager-data:
+  productmanager-db:
+  productmanager-web:
