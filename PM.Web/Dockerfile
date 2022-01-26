@@ -1,8 +1,15 @@
-FROM node:14.17.6
+FROM node:14.17.6 as build-step
 
-RUN mkdir /usr/src/app
-WORKDIR /usr/src/app
+RUN mkdir /app
+WORKDIR /app
 
-RUN npm install -g @angular/cli@12.2.13
+COPY package.json /app
+RUN npm install
 
-COPY . .
+COPY . /app
+
+RUN npm run build
+
+FROM nginx
+COPY --from=build-step /app/dist/Web usr/share/nginx/html
+EXPOSE 4200:80
