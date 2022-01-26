@@ -76,7 +76,7 @@ namespace PM.Api.ServiceInstallers
                     .AllowCredentials());
 
                 options.AddPolicy("ProductionCorsPolicy", builder => builder
-                    .WithOrigins("http://localhost")
+                    .WithOrigins("http://productmanager.com")
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials());
