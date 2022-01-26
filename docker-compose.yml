@@ -14,11 +14,9 @@ services:
   pm-api:
     container_name: pm-api
     build:
-      context: .
-      args:
-        buildninfo: 1
+      context: . # This docker file should be in PM.Api folder by from there it can't restore class library project that's why it is here
     environment:
-      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_ENVIRONMENT: "Production"
     ports:
       - 8080:80
   pm-web:
@@ -26,6 +24,6 @@ services:
     build:
       context: ./PM.Web
     ports:
-      - 4200:80
+      - 80:80
 volumes:
   productmanager-db:

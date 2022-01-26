@@ -35,6 +35,16 @@ namespace PM.Api
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Product Manager DEV Api");
                 });
             }
+            else if (env.IsProduction())
+            {
+                app.UseCors("ProductionCorsPolicy");
+
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Product Manager PROD Api");
+                });
+            }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

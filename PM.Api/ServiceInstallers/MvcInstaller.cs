@@ -74,6 +74,12 @@ namespace PM.Api.ServiceInstallers
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials());
+
+                options.AddPolicy("ProductionCorsPolicy", builder => builder
+                    .WithOrigins("http://localhost")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
             });
 
             #endregion
