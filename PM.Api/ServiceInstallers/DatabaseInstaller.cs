@@ -15,7 +15,7 @@ namespace PM.Api.ServiceInstallers
         {
             services.AddDbContext<ProductManagerDbContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")).EnableSensitiveDataLogging();
+                options.UseSqlServer(configuration.GetConnectionString("DockerConnection")).EnableSensitiveDataLogging();
             });
         }
     }

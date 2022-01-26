@@ -1,0 +1,24 @@
+﻿version: '3.1'
+services:
+  pm-database:
+    container_name: pm-database
+    image: mcr.microsoft.com/mssql/server
+    ports:
+      - 14331:1433
+    volumes:
+      - productmanager-data:/productmanager-data
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Asd@1234"
+      MSSQL_PID: Express
+  pm-api:
+    build:
+      context: .
+      args:
+        buildninfo: 1
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+    ports:
+      - 8080:80
+volumes:
+  productmanager-data:
