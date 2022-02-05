@@ -19,6 +19,8 @@ namespace PM.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.InstallServices(Configuration);
+
+            // Test commit to trigger build
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
